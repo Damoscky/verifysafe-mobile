@@ -1,0 +1,18 @@
+class NamedRoutes {
+
+  //onboarding
+  static const landing = '/landing';
+  static const selectUserType = '/selectUserType';
+  static const basicInfo = '/basicInfo';
+
+  //auth
+  static const login = '/login';
+  static const forgotPassword = '/forgotPassword';
+  static const createPassword = '/createPassword';
+  static const otp = '/otp';
+
+  //bottom-nav
+  static const bottomNav = '/bottomNav';
+
+
+}

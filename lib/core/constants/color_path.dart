@@ -1,0 +1,113 @@
+
+import 'dart:ui';
+
+import 'package:flutter/material.dart';
+
+class ColorPath {
+
+  //brand colors
+  static const gulfBlue = Color(0xff06184D);
+
+
+  //other colors
+  static const paleGrey = Color(0xff667085);
+  static const porcelainGrey = Color(0xffF6F7F8);
+  static const mysticGrey = Color(0xffD9DFE9);
+  static const slateGrey = Color(0xff71808E);
+  static const mirageBlack = Color(0xff141B2B);
+  static const troutGrey = Color(0xff4F5862);
+  static const redOrange = Color(0xffFF2F31);
+  static const oxfordBlue = Color(0xff344054);
+  static const meadowGreen = Color(0xff15B79E);
+  static const stormGrey = Color(0xff6E7191);
+  static const whisperGrey = Color(0xffEFF0F6);
+  static const athensGrey = Color(0xffFCFCFD);
+  static const athensGrey2 = Color(0xffF2F4F7);
+  static const athensGrey3 = Color(0xffEAECF0);
+  static const clearGreen = Color(0xffEBFFFA);
+  static const shamrockGreen = Color(0xff30B895);
+  static const mintGreen = Color(0xffD7FEF4);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  static Color dynamicColor(String? hexString) {
+    // Return default color if hexString is null or empty
+    if (hexString == null || hexString.isEmpty) {
+      return gulfBlue;
+    }
+    try {
+      // Remove the '#' character if it exists
+      final hexCode = hexString.replaceAll('#', '');
+
+      // Parse the hexadecimal string to an integer
+      return Color(int.parse('FF$hexCode', radix: 16));
+    } catch (e) {
+      debugPrint('Error parsing color: $e');
+      return gulfBlue;
+    }
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+}
