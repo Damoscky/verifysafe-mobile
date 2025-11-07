@@ -11,6 +11,7 @@ import 'package:verifysafe/ui/pages/authentication/forgot_password.dart';
 import 'package:verifysafe/ui/pages/authentication/onboarding/biometrics_setup.dart';
 import 'package:verifysafe/ui/pages/authentication/onboarding/select_user_type.dart';
 import 'package:verifysafe/ui/pages/authentication/onboarding/sign_up_successful.dart';
+import 'package:verifysafe/ui/pages/bottom_nav.dart';
 import 'package:verifysafe/ui/widgets/authentication/terms.dart';
 import 'package:verifysafe/ui/widgets/custom_appbar.dart';
 import 'package:verifysafe/ui/widgets/custom_svg.dart';
@@ -119,7 +120,7 @@ class _LoginState extends State<Login> {
                         child: CustomButton(
                             buttonText: 'Log in',
                             onPressed: (){
-
+                              pushAndClearAllNavigation(context: context, widget: const BottomNav(), routeName: NamedRoutes.bottomNav);
                             }
                         ),
                       ),

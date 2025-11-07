@@ -1,0 +1,1 @@
+enum UserType{worker, agency, employer}
