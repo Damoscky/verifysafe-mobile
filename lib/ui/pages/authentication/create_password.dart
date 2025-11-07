@@ -6,7 +6,7 @@ import 'package:verifysafe/core/constants/named_routes.dart';
 import 'package:verifysafe/core/data/enum/password_type.dart';
 import 'package:verifysafe/core/data/view_models/authentication_vms/password_vm.dart';
 import 'package:verifysafe/core/utilities/navigator.dart';
-import 'package:verifysafe/ui/widgets/alert_dialogs/action_completed.dart';
+import 'package:verifysafe/ui/widgets/bottom_sheets/action_completed.dart';
 import 'package:verifysafe/ui/widgets/authentication/password_requirement.dart';
 import 'package:verifysafe/ui/widgets/authentication/terms.dart';
 

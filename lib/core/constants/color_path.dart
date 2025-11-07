@@ -32,6 +32,9 @@ class ColorPath {
   static const funGreen = Color(0xff008A47);
   static const jaffaOrange = Color(0xffEA7E30);
   static const milanoRed = Color(0xffCA1902);
+  static const foamGreen = Color(0xffECFDF3);
+  static const dawnYellow = Color(0xffFFFAEB);
+  static const vesuBrown = Color(0xffB54708);
 
 
 

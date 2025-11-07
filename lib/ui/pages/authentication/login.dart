@@ -121,13 +121,13 @@ class _LoginState extends State<Login> {
                         child: CustomButton(
                             buttonText: 'Log in',
                             onPressed: (){
-                              pushNavigation(context: context, widget: ManageGuarantor(), routeName: NamedRoutes.manageGuarantor);
+                              pushNavigation(context: context, widget: BottomNav(), routeName: NamedRoutes.bottomNav);
                             }
                         ),
                       ),
                       Clickable(
                         onPressed: (){
-                          pushNavigation(context: context, widget: const BiometricsSetup(), routeName: NamedRoutes.biometricsSetup);
+                          pushNavigation(context: context, widget: const SignUpSuccessful(), routeName: NamedRoutes.signupSuccessful);
                         },
                         child: Container(
                           margin: EdgeInsets.only(left: 16.w),

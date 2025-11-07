@@ -17,6 +17,8 @@ class NamedRoutes {
 
   //guarantor
   static const manageGuarantor = '/manageGuarantor';
+  static const addGuarantor = '/addGuarantor';
+  static const viewGuarantorDetails = '/viewGuarantorDetails';
 
 
   //bottom-nav

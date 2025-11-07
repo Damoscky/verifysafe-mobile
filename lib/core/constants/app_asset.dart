@@ -15,6 +15,7 @@ class AppAsset {
   static const String pwdVisible = '$_iconDirectory/pwd_visible.svg';
   static const String passwordCheckmark = '$_iconDirectory/password_checkmark.svg';
   static const String actionCompleted = '$_iconDirectory/action_completed.svg';
+  static const String actionConfirmation = '$_iconDirectory/action_confirmation.svg';
   static const String worker = '$_iconDirectory/worker.svg';
   static const String agency = '$_iconDirectory/agency.svg';
   static const String employer = '$_iconDirectory/employer.svg';

@@ -3,10 +3,19 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:verifysafe/core/constants/app_asset.dart';
 import 'package:verifysafe/core/constants/app_dimension.dart';
 import 'package:verifysafe/core/constants/app_theme/custom_color_scheme.dart';
+import 'package:verifysafe/core/constants/named_routes.dart';
+import 'package:verifysafe/core/utilities/navigator.dart';
+import 'package:verifysafe/ui/pages/guarantor/add_guarantor.dart';
+import 'package:verifysafe/ui/pages/guarantor/view_guarantor_details.dart';
+import 'package:verifysafe/ui/widgets/bottom_sheets/sort_options.dart';
 import 'package:verifysafe/ui/widgets/clickable.dart';
 import 'package:verifysafe/ui/widgets/custom_svg.dart';
+import 'package:verifysafe/ui/widgets/sort_and_filter_tab.dart';
+import 'package:verifysafe/ui/widgets/verifysafe_container.dart';
+import 'package:verifysafe/ui/widgets/verifysafe_tag.dart';
 
 import '../../../core/constants/color_path.dart';
+import '../../widgets/bottom_sheets/base_bottom_sheet.dart';
 import '../../widgets/custom_appbar.dart';
 import '../../widgets/screen_title.dart';
 
@@ -30,7 +39,9 @@ class _ManageGuarantorState extends State<ManageGuarantor> {
           Padding(
             padding: EdgeInsets.only(right: AppDimension.paddingRight),
             child: Clickable(
-              onPressed: (){},
+              onPressed: (){
+                pushNavigation(context: context, widget: const AddGuarantor(), routeName: NamedRoutes.addGuarantor);
+              },
               child: Row(
                 children: [
                   CustomAssetViewer(
@@ -213,9 +224,185 @@ class _ManageGuarantorState extends State<ManageGuarantor> {
 
                     ],
                   ),
-                  SizedBox(height: 16.h,)
                 ],
               ),
+            ),
+            SizedBox(height: 16.h,),
+            SortAndFilterTab(
+                sortOnPressed: (){
+                  baseBottomSheet(
+                    context: context,
+                    content: SortOptions(
+                      filterOptions: [
+                        'Date',
+                        'Ascending',
+                        'Descending'
+                      ],
+                      onSelected: (value){
+                        //todo: perform action
+                      },
+                    ),
+                  );
+                },
+                filterOnPressed: (){
+                  //todo: open filter options bottom-sheet
+                }),
+            SizedBox(height: 16.h,),
+            ListView.separated(
+              itemCount: 3,
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              padding: EdgeInsets.zero,
+              itemBuilder: (BuildContext context, int index) {
+                return Clickable(
+                  onPressed: (){
+                    pushNavigation(context: context, widget: const ViewGuarantorDetails(), routeName: NamedRoutes.viewGuarantorDetails);
+                  },
+                  child: VerifySafeContainer(
+                    padding: EdgeInsets.symmetric(
+                      vertical: 16.h,
+                      horizontal: 16.w
+                    ),
+                      borderRadius: BorderRadius.all(Radius.circular(16.r)),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'Jideson & Co.',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyLarge
+                                          ?.copyWith(
+                                          fontWeight: FontWeight.w700,
+                                          color: Theme.of(context).colorScheme.textPrimary
+                                      ),
+                                    ),
+                                    SizedBox(height: 4.h,),
+                                    Text(
+                                      'Dec 19, 2013 10:39 AM',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodySmall
+                                          ?.copyWith(
+                                          fontWeight: FontWeight.w400,
+                                          color: Theme.of(context).colorScheme.text4
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              SizedBox(width: 10.w,),
+                              VerifySafeTag(status: index == 0 ? 'Accepted' : 'Pending')
+                            ],
+                          ),
+                          SizedBox(height: 12.h,),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'Contact',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodySmall
+                                          ?.copyWith(
+                                          fontWeight: FontWeight.w400,
+                                          color: Theme.of(context).colorScheme.text4
+                                      ),
+                                    ),
+                                    SizedBox(height: 4.h,),
+                                    Text(
+                                      'jideson@yahoo.com',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyMedium
+                                          ?.copyWith(
+                                          fontWeight: FontWeight.w400,
+                                          color: Theme.of(context).colorScheme.text5
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              SizedBox(width: 10.w,),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'Relationship',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodySmall
+                                          ?.copyWith(
+                                          fontWeight: FontWeight.w400,
+                                          color: Theme.of(context).colorScheme.text4
+                                      ),
+                                    ),
+                                    SizedBox(height: 4.h,),
+                                    Text(
+                                      'Brother',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyMedium
+                                          ?.copyWith(
+                                          fontWeight: FontWeight.w400,
+                                          color: Theme.of(context).colorScheme.text5
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: 12.h,),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Address',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodySmall
+                                    ?.copyWith(
+                                    fontWeight: FontWeight.w400,
+                                    color: Theme.of(context).colorScheme.text4
+                                ),
+                              ),
+                              SizedBox(height: 4.h,),
+                              Text(
+                                '1901 Donovan Cir. Shiloh, Tokyo 86563',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyMedium
+                                    ?.copyWith(
+                                    fontWeight: FontWeight.w400,
+                                    color: Theme.of(context).colorScheme.text5
+                                ),
+                              ),
+                            ],
+                          )
+
+                        ],
+                      )
+                  ),
+                );
+              },
+              separatorBuilder: (context, index) {
+                return SizedBox(height: 16.h,);
+              },
             )
 
           ],

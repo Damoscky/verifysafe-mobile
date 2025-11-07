@@ -13,7 +13,7 @@ import 'package:verifysafe/ui/pages/authentication/create_password.dart';
 
 import '../../../core/constants/app_dimension.dart';
 import '../../../core/constants/color_path.dart';
-import '../../widgets/alert_dialogs/action_completed.dart';
+import '../../widgets/bottom_sheets/action_completed.dart';
 import '../../widgets/bottom_sheets/base_bottom_sheet.dart';
 import '../../widgets/custom_appbar.dart';
 import '../../widgets/custom_button.dart';
