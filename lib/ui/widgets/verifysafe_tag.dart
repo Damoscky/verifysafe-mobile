@@ -9,21 +9,25 @@ class VerifySafeTag extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 2.h),
-      decoration: BoxDecoration(
-        color: _statusContainerColor(status: status),
-        borderRadius: BorderRadius.all(Radius.circular(16.r)),
-      ),
-      child:Center(
-        child: Text(
-          _statusText(status: status),
-          style: Theme.of(context).textTheme.bodySmall?.copyWith(
-            color: _statusTextColor(status: status),
-            fontWeight: FontWeight.w500,
+    return Row(
+      children: [
+        Container(
+          padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 2.h),
+          decoration: BoxDecoration(
+            color: _statusContainerColor(status: status),
+            borderRadius: BorderRadius.all(Radius.circular(16.r)),
           ),
-        ),
-      ),
+          child:Center(
+            child: Text(
+              _statusText(status: status),
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                color: _statusTextColor(status: status),
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ),
+        )
+      ],
     );
   }
 
@@ -37,7 +41,7 @@ class VerifySafeTag extends StatelessWidget {
         return ColorPath.dawnYellow;//dawnBrown
       case 'failed':
       case 'rejected':
-        return ColorPath.athensGrey2;
+        return ColorPath.provincialPink;
       default:
         return Colors.white;
     }
@@ -54,7 +58,7 @@ class VerifySafeTag extends StatelessWidget {
         return ColorPath.vesuBrown;
       case 'failed':
       case 'rejected':
-        return ColorPath.athensGrey2;
+        return ColorPath.thunderbirdRed;
       default:
         return Colors.white;
     }
