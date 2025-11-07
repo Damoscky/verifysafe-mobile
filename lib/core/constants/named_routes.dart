@@ -4,6 +4,8 @@ class NamedRoutes {
   static const landing = '/landing';
   static const selectUserType = '/selectUserType';
   static const basicInfo = '/basicInfo';
+  static const agencyInfo = '/agencyInfo';
+  static const employerInfo = '/employerInfo';
 
   //auth
   static const login = '/login';

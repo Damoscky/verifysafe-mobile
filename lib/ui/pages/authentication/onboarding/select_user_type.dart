@@ -4,6 +4,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:verifysafe/core/constants/app_theme/custom_color_scheme.dart';
 import 'package:verifysafe/core/constants/named_routes.dart';
 import 'package:verifysafe/core/utilities/navigator.dart';
+import 'package:verifysafe/ui/pages/authentication/onboarding/agency/agency_info.dart';
+import 'package:verifysafe/ui/pages/authentication/onboarding/employer/employer_info.dart';
 import 'package:verifysafe/ui/pages/authentication/onboarding/worker/basic_info.dart';
 import 'package:verifysafe/ui/widgets/clickable.dart';
 import 'package:verifysafe/ui/widgets/custom_svg.dart';
@@ -71,7 +73,14 @@ class _SelectUserTypeState extends ConsumerState<SelectUserType> {
                       return;
                     }
 
+                    if(vm.userType == 1){
+                      //nav to agency info
+                      pushNavigation(context: context, widget: const AgencyInfo(), routeName: NamedRoutes.agencyInfo);
+                      return;
+                    }
 
+                    //nav to employer info
+                    pushNavigation(context: context, widget: const EmployerInfo(), routeName: NamedRoutes.employerInfo);
 
                   },
                   child: VerifySafeContainer(

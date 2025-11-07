@@ -50,7 +50,7 @@ class _CreatePasswordState extends ConsumerState<CreatePassword> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             ScreenTitle(
-              headerText: 'Create your new password',
+              headerText: widget.passwordType == PasswordType.createdUser ? 'Reset your password':'Create your new password',
               secondSub: 'Please enter password below.',
               ),
             SizedBox(height: 24.h,),
@@ -115,7 +115,7 @@ class _CreatePasswordState extends ConsumerState<CreatePassword> {
               ),
             ),
             PasswordRequirement(),
-            if(widget.passwordType == PasswordType.forgotPassword)
+            if(widget.passwordType == PasswordType.forgotPassword || widget.passwordType == PasswordType.createdUser)
               Padding(
               padding: EdgeInsets.only(top: 45.h),
               child: Align(
@@ -135,6 +135,10 @@ class _CreatePasswordState extends ConsumerState<CreatePassword> {
                           subtitle: 'You have successfully changed your password.',
                            buttonText: 'Sign in',
                            onPressed: (){
+                            if(widget.passwordType == PasswordType.createdUser){
+                              //todo: perform action
+                              return;
+                            }
                             popUntilNavigation(context: context, route: NamedRoutes.login);
                            },
                         ),
