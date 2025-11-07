@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:verifysafe/core/constants/app_asset.dart';
 import 'package:verifysafe/core/constants/color_path.dart';
-import 'package:verifysafe/ui/widgets/custom_svg.dart';
-
-import '../../core/data/enum/tag_type.dart';
 import '../../core/utilities/utilities.dart';
 
 class VerifySafeTag extends StatelessWidget {

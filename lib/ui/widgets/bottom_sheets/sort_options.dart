@@ -46,12 +46,11 @@ class _SortOptionsState extends State<SortOptions> {
             children: [
               Text(
                 'Sort by',
-                style: Theme.of(context)
-                    .textTheme
+                style:textTheme
                     .titleMedium
                     ?.copyWith(
                     fontWeight: FontWeight.w700,
-                    color: Theme.of(context).colorScheme.textPrimary
+                    color: colorScheme.textPrimary
                 ),
               ),
               Clickable(
@@ -62,12 +61,11 @@ class _SortOptionsState extends State<SortOptions> {
                 },
                 child: Text(
                   'Clear',
-                  style: Theme.of(context)
-                      .textTheme
+                  style:textTheme
                       .bodyLarge
                       ?.copyWith(
                       fontWeight: FontWeight.w400,
-                      color: Theme.of(context).colorScheme.textSecondary
+                      color: colorScheme.textSecondary
                   ),
                 ),
               ),
@@ -93,8 +91,7 @@ class _SortOptionsState extends State<SortOptions> {
                   children: [
                     Text(
                       label,
-                      style: Theme.of(context)
-                          .textTheme
+                      style: textTheme
                           .bodyLarge
                           ?.copyWith(
                           fontWeight: isSelected ? FontWeight.w700:FontWeight.w400,

@@ -1,6 +1,4 @@
 import 'dart:io';
-
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:verifysafe/core/constants/app_dimension.dart';
@@ -8,16 +6,13 @@ import 'package:verifysafe/core/constants/app_theme/custom_color_scheme.dart';
 import 'package:verifysafe/core/constants/named_routes.dart';
 import 'package:verifysafe/core/utilities/navigator.dart';
 import 'package:verifysafe/ui/pages/authentication/forgot_password.dart';
-import 'package:verifysafe/ui/pages/authentication/onboarding/biometrics_setup.dart';
 import 'package:verifysafe/ui/pages/authentication/onboarding/select_user_type.dart';
-import 'package:verifysafe/ui/pages/guarantor/manage_guarantor.dart';
 import 'package:verifysafe/ui/pages/authentication/onboarding/sign_up_successful.dart';
 import 'package:verifysafe/ui/pages/bottom_nav.dart';
 import 'package:verifysafe/ui/widgets/authentication/terms.dart';
 import 'package:verifysafe/ui/widgets/custom_appbar.dart';
 import 'package:verifysafe/ui/widgets/custom_svg.dart';
 import 'package:verifysafe/ui/widgets/screen_title.dart';
-
 import '../../../core/constants/app_asset.dart';
 import '../../../core/constants/color_path.dart';
 import '../../../core/utilities/validator.dart';
