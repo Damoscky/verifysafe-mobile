@@ -9,7 +9,7 @@ AppBar customAppBar({
   required BuildContext context,
   String? title,
   FontWeight? titleFontWeight,
-  double titleSize = 16,
+  double titleSize = 14,
   List<Widget>? actions,
   bool centerTitle = true,
   VoidCallback? leadingIconOnPressed,
@@ -34,9 +34,9 @@ AppBar customAppBar({
     title: useCustomTitleWidget ? titleWidget :
     title != null ?  Text(
       title,
-      style: textTheme.titleSmall?.copyWith(
+      style: textTheme.bodyMedium?.copyWith(
           fontSize: titleSize.sp,
-          fontWeight: titleFontWeight ?? FontWeight.w400,
+          fontWeight: titleFontWeight ?? FontWeight.w700,
           color: textColor ?? colorScheme.appbarTitle
       ),
     ):null,

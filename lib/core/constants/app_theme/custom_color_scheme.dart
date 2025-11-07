@@ -43,7 +43,7 @@ extension CustomColorScheme on ColorScheme {
   Color get assetBg => brightness == Brightness.light ?  ColorPath.athensGrey2 : Colors.black;
 
   //appbar
-  Color get appbarTitle => brightness == Brightness.light ? ColorPath.athensGrey2 : Colors.white;
+  Color get appbarTitle => textPrimary;
   Color get appbarDivider => brightness == Brightness.light ? ColorPath.athensGrey : Colors.white;
 
   //password requirement widget

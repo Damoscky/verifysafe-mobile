@@ -20,6 +20,7 @@ class AppAsset {
   static const String employer = '$_iconDirectory/employer.svg';
   static const String faceId = '$_iconDirectory/face_id.svg';
   static const String fingerprint = '$_iconDirectory/fingerprint.svg';
+  static const String add = '$_iconDirectory/add.svg';
 
 
 

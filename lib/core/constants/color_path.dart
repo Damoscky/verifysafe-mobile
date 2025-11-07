@@ -24,10 +24,14 @@ class ColorPath {
   static const athensGrey = Color(0xffFCFCFD);
   static const athensGrey2 = Color(0xffF2F4F7);
   static const athensGrey3 = Color(0xffEAECF0);
+  static const athensGrey4 = Color(0xffE6E8ED);
   static const clearGreen = Color(0xffEBFFFA);
   static const shamrockGreen = Color(0xff30B895);
   static const mintGreen = Color(0xffD7FEF4);
   static const indigoBlue = Color(0xff5F79C3);
+  static const funGreen = Color(0xff008A47);
+  static const jaffaOrange = Color(0xffEA7E30);
+  static const milanoRed = Color(0xffCA1902);
 
 
 

@@ -15,6 +15,10 @@ class NamedRoutes {
   static const createPassword = '/createPassword';
   static const otp = '/otp';
 
+  //guarantor
+  static const manageGuarantor = '/manageGuarantor';
+
+
   //bottom-nav
   static const bottomNav = '/bottomNav';
 
