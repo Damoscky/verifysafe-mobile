@@ -5,8 +5,6 @@ import 'package:verifysafe/core/constants/app_dimension.dart';
 import 'package:verifysafe/core/constants/app_theme/custom_color_scheme.dart';
 import 'package:verifysafe/core/constants/named_routes.dart';
 import 'package:verifysafe/core/utilities/navigator.dart';
-import 'package:verifysafe/ui/pages/guarantor/add_guarantor.dart';
-import 'package:verifysafe/ui/pages/guarantor/view_guarantor_details.dart';
 import 'package:verifysafe/ui/pages/support_and_misconducts/submit_report.dart';
 import 'package:verifysafe/ui/pages/support_and_misconducts/view_report.dart';
 import 'package:verifysafe/ui/widgets/bottom_sheets/sort_options.dart';
@@ -14,8 +12,6 @@ import 'package:verifysafe/ui/widgets/clickable.dart';
 import 'package:verifysafe/ui/widgets/custom_svg.dart';
 import 'package:verifysafe/ui/widgets/sort_and_filter_tab.dart';
 import 'package:verifysafe/ui/widgets/verifysafe_container.dart';
-import 'package:verifysafe/ui/widgets/verifysafe_tag.dart';
-
 import '../../../core/constants/color_path.dart';
 import '../../widgets/bottom_sheets/base_bottom_sheet.dart';
 import '../../widgets/custom_appbar.dart';

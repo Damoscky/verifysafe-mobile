@@ -2,23 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:verifysafe/core/constants/app_asset.dart';
-import 'package:verifysafe/core/constants/app_theme/custom_color_scheme.dart';
 import 'package:verifysafe/core/utilities/navigator.dart';
 import 'package:verifysafe/ui/widgets/upload_attachment.dart';
-
 import '../../../core/constants/app_dimension.dart';
-import '../../../core/constants/color_path.dart';
-import '../../../core/utilities/input_formatters/nigerian_phone_number_formatter.dart';
 import '../../../core/utilities/validator.dart';
 import '../../widgets/bottom_sheets/action_completed.dart';
 import '../../widgets/bottom_sheets/base_bottom_sheet.dart';
 import '../../widgets/custom_appbar.dart';
 import '../../widgets/custom_button.dart';
 import '../../widgets/custom_drop_down.dart';
-import '../../widgets/custom_painter/dotted_border.dart';
-import '../../widgets/custom_svg.dart';
 import '../../widgets/custom_text_field.dart';
-import '../../widgets/verifysafe_container.dart';
+
 
 class SubmitReport extends StatefulWidget {
   const SubmitReport({super.key});

@@ -7,14 +7,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../core/constants/color_path.dart';
 
 
-import 'package:verifysafe/core/constants/app_theme/custom_color_scheme.dart';
-import 'package:verifysafe/core/utilities/extensions/color_extensions.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../../core/constants/color_path.dart';
-
 class CustomTextField extends StatefulWidget {
   final String label;
   final double? height;

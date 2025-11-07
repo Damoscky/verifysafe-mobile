@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:verifysafe/core/constants/app_theme/custom_color_scheme.dart';
 import 'package:verifysafe/core/utilities/extensions/color_extensions.dart';
-import '../../core/constants/app_asset.dart';
 import '../../core/constants/color_path.dart';
 import 'custom_painter/dotted_border.dart';
 import 'custom_svg.dart';

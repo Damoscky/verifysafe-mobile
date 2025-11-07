@@ -8,8 +8,6 @@ import 'package:verifysafe/core/utilities/navigator.dart';
 import 'package:verifysafe/ui/pages/authentication/forgot_password.dart';
 import 'package:verifysafe/ui/pages/authentication/onboarding/select_user_type.dart';
 import 'package:verifysafe/ui/pages/authentication/onboarding/sign_up_successful.dart';
-import 'package:verifysafe/ui/pages/bottom_nav.dart';
-import 'package:verifysafe/ui/pages/guarantor/manage_guarantor.dart';
 import 'package:verifysafe/ui/pages/support_and_misconducts/support_and_misconducts.dart';
 import 'package:verifysafe/ui/widgets/authentication/terms.dart';
 import 'package:verifysafe/ui/widgets/custom_appbar.dart';
