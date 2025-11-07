@@ -6,6 +6,8 @@ class NamedRoutes {
   static const basicInfo = '/basicInfo';
   static const agencyInfo = '/agencyInfo';
   static const employerInfo = '/employerInfo';
+  static const biometricsSetup = '/biometricsSetup';
+  static const signupSuccessful = '/signupSuccessful';
 
   //auth
   static const login = '/login';

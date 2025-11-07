@@ -8,7 +8,9 @@ import 'package:verifysafe/core/constants/app_theme/custom_color_scheme.dart';
 import 'package:verifysafe/core/constants/named_routes.dart';
 import 'package:verifysafe/core/utilities/navigator.dart';
 import 'package:verifysafe/ui/pages/authentication/forgot_password.dart';
+import 'package:verifysafe/ui/pages/authentication/onboarding/biometrics_setup.dart';
 import 'package:verifysafe/ui/pages/authentication/onboarding/select_user_type.dart';
+import 'package:verifysafe/ui/pages/authentication/onboarding/sign_up_successful.dart';
 import 'package:verifysafe/ui/widgets/authentication/terms.dart';
 import 'package:verifysafe/ui/widgets/custom_appbar.dart';
 import 'package:verifysafe/ui/widgets/custom_svg.dart';
@@ -122,7 +124,9 @@ class _LoginState extends State<Login> {
                         ),
                       ),
                       Clickable(
-                        onPressed: (){},
+                        onPressed: (){
+                          pushNavigation(context: context, widget: const SignUpSuccessful(), routeName: NamedRoutes.signupSuccessful);
+                        },
                         child: Container(
                           margin: EdgeInsets.only(left: 16.w),
                           height: 56.h,
