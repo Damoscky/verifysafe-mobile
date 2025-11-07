@@ -27,6 +27,7 @@ class CustomButton extends StatelessWidget {
   final String? buttonIcon;
   final bool showButtonIcon;
   final bool useDottedBorder;
+  final double? borderRadius;
 
   const CustomButton({
     super.key,
@@ -47,7 +48,8 @@ class CustomButton extends StatelessWidget {
     this.buttonHorizontalPadding = 24,
     this.buttonIcon,
     this.showButtonIcon = false,
-    this.useDottedBorder = false
+    this.useDottedBorder = false,
+    this.borderRadius
   });
 
   @override
@@ -96,7 +98,7 @@ class CustomButton extends StatelessWidget {
         child: CustomPaint(
           painter: DottedBorder(
               color: ColorPath.redOrange,
-            borderRadius: BorderRadius.all(Radius.circular(8.r))
+            borderRadius: BorderRadius.all(Radius.circular(borderRadius ?? 12.r))
           ),
           child: useBorderColor
               ? TextButton(
@@ -104,7 +106,7 @@ class CustomButton extends StatelessWidget {
             style: TextButton.styleFrom(
               padding: EdgeInsets.symmetric(horizontal: buttonHorizontalPadding),
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12.r),
+                borderRadius: BorderRadius.circular(borderRadius ?? 12.r),
                 side: BorderSide(color: borderColor ?? Colors.grey, width: 1.w),
               ),
               backgroundColor: Colors.transparent,
@@ -124,7 +126,7 @@ class CustomButton extends StatelessWidget {
               disabledBackgroundColor:
               disableBgColor ?? colorScheme.brandColor.withCustomOpacity(0.4),
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12.r),
+                borderRadius: BorderRadius.circular(borderRadius ?? 12.r),
               ),
             ),
             child: buttonChild,
@@ -144,7 +146,7 @@ class CustomButton extends StatelessWidget {
         style: TextButton.styleFrom(
           padding: EdgeInsets.symmetric(horizontal: buttonHorizontalPadding),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12.r),
+            borderRadius: BorderRadius.circular(borderRadius ?? 12.r),
             side: BorderSide(color: borderColor ?? Colors.grey, width: 1.w),
           ),
           backgroundColor: Colors.transparent,
@@ -162,9 +164,9 @@ class CustomButton extends StatelessWidget {
           elevation: 0,
           backgroundColor: bgColor ?? colorScheme.brandColor,
           disabledBackgroundColor:
-          disableBgColor ?? colorScheme.brandColor.withAlpha((255 * 0.4).toInt()), //todo: update
+          disableBgColor ?? colorScheme.brandColor.withCustomOpacity(0.4),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12.r),
+            borderRadius: BorderRadius.circular(borderRadius ?? 12.r),
           ),
         ),
         child: buttonChild,

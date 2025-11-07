@@ -20,6 +20,11 @@ class NamedRoutes {
   static const addGuarantor = '/addGuarantor';
   static const viewGuarantorDetails = '/viewGuarantorDetails';
 
+  //support and misconducts
+  static const supportAndMisconducts = '/supportAndMisconducts';
+  static const viewReport = '/viewReport';
+  static const submitReport = '/submitReport';
+
 
   //bottom-nav
   static const bottomNav = '/bottomNav';

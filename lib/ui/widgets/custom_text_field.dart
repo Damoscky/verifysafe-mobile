@@ -46,6 +46,7 @@ class CustomTextField extends StatefulWidget {
   final bool showLabel;
   final Color? borderColor;
   final double? borderWidth;
+  final bool useDefaultHeight;
 
   const CustomTextField({
     super.key,
@@ -79,6 +80,7 @@ class CustomTextField extends StatefulWidget {
     this.isOtp = false,
     this.borderColor,
     this.borderWidth,
+    this.useDefaultHeight = true
   });
 
   @override
@@ -142,7 +144,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
         if (widget.showLabel) SizedBox(height: 8.h),
         AnimatedContainer(
           duration: const Duration(milliseconds: 200),
-          height: widget.height?.h ?? 56.h,
+          height: widget.useDefaultHeight ? widget.height?.h ?? 56.h : null,
           width: double.infinity,
           decoration: BoxDecoration(
             color: colorScheme.textFieldFillColor,
