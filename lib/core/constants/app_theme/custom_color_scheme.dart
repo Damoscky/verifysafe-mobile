@@ -32,7 +32,7 @@ extension CustomColorScheme on ColorScheme {
   Color get textFieldFillColor => brightness == Brightness.light ?  Colors.white : Colors.black;
   Color get textFieldLabel => brightness == Brightness.light ? ColorPath.oxfordBlue: Colors.white;
   Color get textFieldBorder => brightness == Brightness.light ? ColorPath.athensGrey2 : Colors.white;
-  Color get textFieldFocusedBorder => Colors.blue;
+  Color get textFieldFocusedBorder => ColorPath.indigoBlue;
   Color get textFieldHint => brightness == Brightness.light ? ColorPath.paleGrey : Colors.white;
   Color get textFieldSuffixIcon => textPrimary;
 

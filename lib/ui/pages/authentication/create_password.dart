@@ -8,6 +8,7 @@ import 'package:verifysafe/core/data/view_models/authentication_vms/password_vm.
 import 'package:verifysafe/core/utilities/navigator.dart';
 import 'package:verifysafe/ui/widgets/alert_dialogs/action_completed.dart';
 import 'package:verifysafe/ui/widgets/authentication/password_requirement.dart';
+import 'package:verifysafe/ui/widgets/authentication/terms.dart';
 
 import '../../../core/constants/app_asset.dart';
 import '../../../core/constants/app_dimension.dart';
@@ -71,7 +72,7 @@ class _CreatePasswordState extends ConsumerState<CreatePassword> {
                   child: CustomAssetViewer(
                     asset:  _hidePwd
                         ? AppAsset.pwdHidden
-                        : AppAsset.pwdHidden,
+                        : AppAsset.pwdVisible,
                     height: 16.h,
                     width: 16.w,
                     colorFilter: ColorFilter.mode(
@@ -88,7 +89,7 @@ class _CreatePasswordState extends ConsumerState<CreatePassword> {
               label: 'Confirm Password',
               hintText: 'Confirm your password',
               obscure: _hideConfirmPwd,
-              // controller: _password,
+              controller: _confirmPwd,
               validator: FieldValidator.validate,
               keyboardType: TextInputType.text,
               suffixIcon: Padding(
@@ -102,7 +103,7 @@ class _CreatePasswordState extends ConsumerState<CreatePassword> {
                   child: CustomAssetViewer(
                     asset:  _hideConfirmPwd
                         ? AppAsset.pwdHidden
-                        : AppAsset.pwdHidden,
+                        : AppAsset.pwdVisible,
                     height: 16.h,
                     width: 16.w,
                     colorFilter: ColorFilter.mode(
@@ -114,32 +115,66 @@ class _CreatePasswordState extends ConsumerState<CreatePassword> {
               ),
             ),
             PasswordRequirement(),
-            SizedBox(height: 45.h,),
-            Align(
-              alignment: Alignment.centerRight,
-              child: CustomButton(
-                  buttonWidth: null,
-                  buttonHorizontalPadding: 43.w,
-                  buttonText: 'Save',
-                  onPressed: (){
+            if(widget.passwordType == PasswordType.forgotPassword)
+              Padding(
+              padding: EdgeInsets.only(top: 45.h),
+              child: Align(
+                alignment: Alignment.centerRight,
+                child: CustomButton(
+                    buttonWidth: null,
+                    buttonHorizontalPadding: 43.w,
+                    buttonText: 'Save',
+                    onPressed: (){
 
-                    baseBottomSheet(
-                      context: context,
-                      isDismissible: false,
-                      enableDrag: false,
-                      content: ActionCompleted(
-                        title: 'Success!',
-                        subtitle: 'You have successfully changed your password.',
-                         buttonText: 'Sign in',
-                         onPressed: (){
-                          popUntilNavigation(context: context, route: NamedRoutes.login);
-                         },
-                      ),
-                    );
+                      baseBottomSheet(
+                        context: context,
+                        isDismissible: false,
+                        enableDrag: false,
+                        content: ActionCompleted(
+                          title: 'Success!',
+                          subtitle: 'You have successfully changed your password.',
+                           buttonText: 'Sign in',
+                           onPressed: (){
+                            popUntilNavigation(context: context, route: NamedRoutes.login);
+                           },
+                        ),
+                      );
 
-                  }
+                    }
+                ),
               ),
-            ),
+            )
+            else Padding(
+              padding: EdgeInsets.only(top: 24.h),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Terms(
+                    textAlign: TextAlign.left,
+                  ),
+                  SizedBox(height: 24.h,),
+                  CustomButton(
+                      buttonText: 'Submit',
+                      onPressed: (){
+                        baseBottomSheet(
+                          context: context,
+                          isDismissible: false,
+                          enableDrag: false,
+                          content: ActionCompleted(
+                            title: 'Success!',
+                            subtitle: 'You have successfully created your password.',
+                            buttonText: 'Sign in',
+                            onPressed: (){
+                              popUntilNavigation(context: context, route: NamedRoutes.login);
+                            },
+                          ),
+                        );
+                      }
+                  ),
+
+                ],
+              ),
+            )
 
 
           ],

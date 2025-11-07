@@ -27,6 +27,7 @@ class ColorPath {
   static const clearGreen = Color(0xffEBFFFA);
   static const shamrockGreen = Color(0xff30B895);
   static const mintGreen = Color(0xffD7FEF4);
+  static const indigoBlue = Color(0xff5F79C3);
 
 
 

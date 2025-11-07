@@ -41,18 +41,21 @@ class ActionCompleted extends StatelessWidget {
             ),
           ),
           SizedBox(height: 8.h,),
-          Text(
-            subtitle,
-            style: textTheme.bodyLarge?.copyWith(
-              fontWeight: FontWeight.w400,
-              color:colorScheme.textPrimary,
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 38.w),
+            child: Text(
+              subtitle,
+              style: textTheme.bodyLarge?.copyWith(
+                fontWeight: FontWeight.w400,
+                color:colorScheme.textPrimary,
+              ),
+              textAlign: TextAlign.center,
             ),
-            textAlign: TextAlign.center,
           ),
           SizedBox(height: 36.h,),
           CustomButton(
             buttonWidth: null,
-              buttonHorizontalPadding: 37.w,
+              buttonHorizontalPadding: 24.w,
               buttonText:buttonText,
               onPressed: onPressed
           ),
