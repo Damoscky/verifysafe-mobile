@@ -21,6 +21,12 @@ class AppAsset {
   static const String faceId = '$_iconDirectory/face_id.svg';
   static const String fingerprint = '$_iconDirectory/fingerprint.svg';
   static const String add = '$_iconDirectory/add.svg';
+  static const String home = '$_iconDirectory/home.svg';
+  static const String profile = '$_iconDirectory/profile.svg';
+  static const String workHistory = '$_iconDirectory/work_history.svg';
+  static const String navWorker = '$_iconDirectory/nav_worker.png';
+  static const String navWorker2 = '$_iconDirectory/nav_worker2.png';
+  static const String navEmployer = '$_iconDirectory/nav_employer.svg';
 
 
 
