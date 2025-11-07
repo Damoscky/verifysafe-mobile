@@ -23,7 +23,7 @@ class AppTheme {
         //   statusBarBrightness: Brightness.dark,
         // ),
       ),
-    fontFamily: '', //todo: add font family
+    fontFamily: 'SFProDisplay', //todo: add font family
     useMaterial3: true
   );
 
@@ -45,7 +45,7 @@ class AppTheme {
         //   statusBarBrightness: Brightness.dark,
         // ),
       ),
-      fontFamily: '',  //todo: add font family
+      fontFamily: 'SFProDisplay',  //todo: add font family
       useMaterial3: true
   );
 

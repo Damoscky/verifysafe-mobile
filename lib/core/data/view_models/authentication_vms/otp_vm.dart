@@ -89,13 +89,18 @@ class OtpViewModel extends BaseState {
   //returns sub-title for otp screen
   List<String> otpSubtitle({required OtpType otpType}) {
     if (otpType == OtpType.forgotPassword) {
-      final message = "We’ve sent a unique code to||so you can confirm ownership. Please enter the code below.";
-      return message.split('||');
+      final message = "We’ve sent a unique code to|so you can confirm ownership. Please enter the code below.";
+      return message.split('|');
+    }
+
+    if(otpType == OtpType.verifyEmail){
+      final message = "A unique code to have been sent to|for email verification. Please enter the code below.";
+      return message.split('|');
     }
 
 
-    final message =  "A unique code to have been sent to||.Please enter the code below.";
-    return message.split('||');
+    final message =  "A unique code to have been sent to|.Please enter the code below.";
+    return message.split('|');
   }
 }
 

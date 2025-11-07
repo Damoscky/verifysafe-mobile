@@ -1,4 +1,5 @@
 enum PasswordType {
   forgotPassword,
-  onboarding
+  onboarding,
+  createdUser
 }

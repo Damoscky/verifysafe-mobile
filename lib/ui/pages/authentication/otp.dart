@@ -13,6 +13,8 @@ import 'package:verifysafe/ui/pages/authentication/create_password.dart';
 
 import '../../../core/constants/app_dimension.dart';
 import '../../../core/constants/color_path.dart';
+import '../../widgets/alert_dialogs/action_completed.dart';
+import '../../widgets/bottom_sheets/base_bottom_sheet.dart';
 import '../../widgets/custom_appbar.dart';
 import '../../widgets/custom_button.dart';
 import '../../widgets/screen_title.dart';
@@ -152,10 +154,27 @@ class _OtpState extends ConsumerState<Otp> {
                   buttonText: 'Verify',
                   onPressed: (){
 
-                    if(widget.otpType == OtpType.forgotPassword){
-                      pushNavigation(context: context, widget: const CreatePassword(passwordType: PasswordType.forgotPassword), routeName: NamedRoutes.createPassword);
-                      return;
-                    }
+                    baseBottomSheet(
+                      context: context,
+                      isDismissible: false,
+                      enableDrag: false,
+                      content: ActionCompleted(
+                        title: 'Email Verified!',
+                        subtitle: 'Your email address verification was successful',
+                        buttonText: 'Continue',
+                        onPressed: (){
+                          if(widget.otpType == OtpType.forgotPassword){
+                            replaceNavigation(context: context, widget: const CreatePassword(passwordType: PasswordType.forgotPassword), routeName: NamedRoutes.createPassword);
+                            return;
+                          }
+
+                          if(widget.otpType == OtpType.verifyEmail){
+                            replaceNavigation(context: context, widget: const CreatePassword(passwordType: PasswordType.onboarding), routeName: NamedRoutes.createPassword);
+                            return;
+                          }
+                        },
+                      ),
+                    );
 
                   }
               ),

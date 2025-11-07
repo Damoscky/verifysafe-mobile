@@ -38,7 +38,7 @@ class _BasicInfoState extends State<BasicInfo> {
         context: context,
       ),
       body: SingleChildScrollView(
-        padding: EdgeInsets.symmetric(horizontal: AppDimension.paddingLeft),
+        padding: EdgeInsets.only(left: AppDimension.paddingLeft, right: AppDimension.paddingRight, bottom: 40.h),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

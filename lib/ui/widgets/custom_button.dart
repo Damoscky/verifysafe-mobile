@@ -2,6 +2,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:verifysafe/core/constants/app_theme/custom_color_scheme.dart';
+import 'package:verifysafe/core/utilities/extensions/color_extensions.dart';
 import '../../core/constants/app_asset.dart';
 import '../../core/constants/color_path.dart';
 import 'custom_painter/dotted_border.dart';
@@ -121,7 +122,7 @@ class CustomButton extends StatelessWidget {
               elevation: 0,
               backgroundColor: bgColor ?? colorScheme.brandColor,
               disabledBackgroundColor:
-              disableBgColor ?? colorScheme.brandColor.withAlpha((255 * 0.4).toInt()), //todo: update
+              disableBgColor ?? colorScheme.brandColor.withCustomOpacity(0.4),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12.r),
               ),

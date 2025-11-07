@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -6,7 +8,11 @@ import 'package:verifysafe/core/constants/app_theme/custom_color_scheme.dart';
 import 'package:verifysafe/core/constants/named_routes.dart';
 import 'package:verifysafe/core/utilities/navigator.dart';
 import 'package:verifysafe/ui/pages/authentication/forgot_password.dart';
+import 'package:verifysafe/ui/pages/authentication/onboarding/biometrics_setup.dart';
 import 'package:verifysafe/ui/pages/authentication/onboarding/select_user_type.dart';
+import 'package:verifysafe/ui/pages/authentication/onboarding/sign_up_successful.dart';
+import 'package:verifysafe/ui/pages/bottom_nav.dart';
+import 'package:verifysafe/ui/widgets/authentication/terms.dart';
 import 'package:verifysafe/ui/widgets/custom_appbar.dart';
 import 'package:verifysafe/ui/widgets/custom_svg.dart';
 import 'package:verifysafe/ui/widgets/screen_title.dart';
@@ -76,7 +82,7 @@ class _LoginState extends State<Login> {
                         child: CustomAssetViewer(
                           asset:  _hidePwd
                               ? AppAsset.pwdHidden
-                              : AppAsset.pwdHidden,
+                              : AppAsset.pwdVisible,
                           height: 16.h,
                           width: 16.w,
                           colorFilter: ColorFilter.mode(
@@ -108,11 +114,34 @@ class _LoginState extends State<Login> {
                     ),
                   ),
                   SizedBox(height: 40.h,),
-                  CustomButton(
-                      buttonText: 'Log in',
-                      onPressed: (){
-
-                      }
+                  Row(
+                    children: [
+                      Expanded(
+                        child: CustomButton(
+                            buttonText: 'Log in',
+                            onPressed: (){
+                              pushAndClearAllNavigation(context: context, widget: const BottomNav(), routeName: NamedRoutes.bottomNav);
+                            }
+                        ),
+                      ),
+                      Clickable(
+                        onPressed: (){
+                          pushNavigation(context: context, widget: const SignUpSuccessful(), routeName: NamedRoutes.signupSuccessful);
+                        },
+                        child: Container(
+                          margin: EdgeInsets.only(left: 16.w),
+                          height: 56.h,
+                          width: 56.w,
+                          decoration: BoxDecoration(
+                            color: ColorPath.athensGrey3,
+                            borderRadius: BorderRadius.all(Radius.circular(12.r))
+                          ),
+                          child: Center(
+                            child: CustomAssetViewer(asset: Platform.isIOS ? AppAsset.faceId:AppAsset.fingerprint),
+                          ),
+                        ),
+                      )
+                    ],
                   ),
                   SizedBox(height: 16.h,),
                   CustomButton(
@@ -132,58 +161,7 @@ class _LoginState extends State<Login> {
           Padding(
             padding: EdgeInsets.only(left: 63.w, right: 63.w, bottom: 15.h),
             child: SafeArea(
-              child: RichText(
-                textAlign: TextAlign.center,
-                text: TextSpan(
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      fontWeight: FontWeight.w400,
-                      color: ColorPath.stormGrey,
-                  ),
-                  children: [
-                    const TextSpan(
-                      text: 'By continuing, you agree to our ',
-                    ),
-                    TextSpan(
-                      text: 'Terms of Service',
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          fontWeight: FontWeight.w700,
-                          color: Theme.of(context).colorScheme.textPrimary
-                      ),
-                      recognizer: TapGestureRecognizer()
-                        ..onTap = () async {
-                          // pushNavigation(context: context,
-                          //     widget: const InAppWebView(
-                          //         url: terms,
-                          //         title: 'Privacy Policy'
-                          //     ),
-                          //     routeName: NamedRoutes.inAppWebView
-                          // );
-                        },
-                    ),
-                    const TextSpan(
-                      text: ' and ',
-                    ),
-                    TextSpan(
-                      text: 'Data Policy.',
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          fontWeight: FontWeight.w700,
-                          color: Theme.of(context).colorScheme.textPrimary
-                      ),
-                      recognizer: TapGestureRecognizer()
-                        ..onTap = () async {
-                          /*pushNavigation(context: context,
-                                                        widget: const InAppWebView(
-                                                            url: terms,
-                                                            title: 'Terms and Game Rules'
-                                                        ),
-                                                        routeName: NamedRoutes.inAppWebView
-                                                    );*/
-                        },
-                    ),
-              
-                  ],
-                ),
-              ),
+              child: Terms(),
             ),
           )
         ],
