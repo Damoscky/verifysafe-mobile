@@ -14,6 +14,7 @@ class ColorPath {
   static const porcelainGrey = Color(0xffF6F7F8);
   static const mysticGrey = Color(0xffD9DFE9);
   static const slateGrey = Color(0xff71808E);
+  static const chateauGrey = Color(0xffABB2BA);
   static const mirageBlack = Color(0xff141B2B);
   static const troutGrey = Color(0xff4F5862);
   static const redOrange = Color(0xffFF2F31);
@@ -35,7 +36,10 @@ class ColorPath {
   static const foamGreen = Color(0xffECFDF3);
   static const dawnYellow = Color(0xffFFFAEB);
   static const vesuBrown = Color(0xffB54708);
-
+  static const persianGreen = Color(0xff009999);
+  static const aquamarine = Color(0xff66FFDD);
+  static const tangaroa = Color(0xff02132E);
+  static const congressBlue = Color(0xff053C94);
 
 
 

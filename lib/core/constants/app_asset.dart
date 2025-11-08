@@ -28,6 +28,13 @@ class AppAsset {
   static const String navWorker = '$_iconDirectory/nav_worker.png';
   static const String navWorker2 = '$_iconDirectory/nav_worker2.png';
   static const String navEmployer = '$_iconDirectory/nav_employer.svg';
+  static const String dashboardMenu = '$_iconDirectory/dashboard_menu.svg';
+  static const String notification = '$_iconDirectory/notification.svg';
+  static const String employmentIcon = '$_iconDirectory/employment_icon.svg';
+  static const String circularDB = '$_iconDirectory/circular_db.svg';
+  static const String circularDoc = '$_iconDirectory/circular_doc.svg';
+
+
 
 
 
