@@ -28,6 +28,7 @@ class ColorPath {
   static const athensGrey4 = Color(0xffE6E8ED);
   static const clearGreen = Color(0xffEBFFFA);
   static const shamrockGreen = Color(0xff30B895);
+  static const niagaraGreen = Color(0xff06A77D);
   static const mintGreen = Color(0xffD7FEF4);
   static const indigoBlue = Color(0xff5F79C3);
   static const funGreen = Color(0xff008A47);
@@ -47,6 +48,8 @@ class ColorPath {
   static const aquamarine = Color(0xff66FFDD);
   static const tangaroa = Color(0xff02132E);
   static const congressBlue = Color(0xff053C94);
+  static const cornflowerLilac = Color(0xffFFB5AB);
+
 
 
 

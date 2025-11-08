@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:verifysafe/core/constants/app_theme/custom_color_scheme.dart';
 import 'package:verifysafe/core/data/enum/user_type.dart';
+import 'package:verifysafe/ui/widgets/menu_drawer.dart';
 import '../../core/constants/color_path.dart';
 import '../../core/data/view_models/bottom_nav_view_model.dart';
 import '../../core/utilities/firebase_messaging_utils.dart';
@@ -17,7 +18,7 @@ class BottomNav extends ConsumerStatefulWidget {
 
 class _BottomNavState extends ConsumerState<BottomNav> {
   //[UserType] variable to be updated based on logged in user
-  UserType _userType = UserType.worker;
+  final UserType _userType = UserType.agency;
 
   @override
   void initState() {
@@ -39,6 +40,8 @@ class _BottomNavState extends ConsumerState<BottomNav> {
       },
       child: Scaffold(
         extendBodyBehindAppBar: true,
+        key: bottomNavVm.scaffoldKey,
+        drawer: const MenuDrawer(),
         bottomNavigationBar: Theme(
           data: Theme.of(context).copyWith(
             splashColor: Colors.transparent,

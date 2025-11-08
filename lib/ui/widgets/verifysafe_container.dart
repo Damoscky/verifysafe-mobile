@@ -12,7 +12,8 @@ class VerifySafeContainer extends StatelessWidget {
   final Border? border;
   final BorderRadius? borderRadius;
   final List<BoxShadow>? boxShadow;
-  const VerifySafeContainer({super.key, this.boxShadow, this.borderRadius, this.border, this.bgColor, this.margin, required this.child, this.padding, this.width});
+  final Gradient? gradient;
+  const VerifySafeContainer({super.key, this.boxShadow, this.borderRadius, this.border, this.bgColor, this.margin, required this.child, this.padding, this.width,this.gradient});
 
   @override
   Widget build(BuildContext context) {
@@ -23,6 +24,7 @@ class VerifySafeContainer extends StatelessWidget {
       decoration: BoxDecoration(
           color: bgColor ?? Theme.of(context).colorScheme.containerBg,
           border: border,
+          gradient: gradient,
           boxShadow: boxShadow,
           borderRadius: borderRadius ?? BorderRadius.all(Radius.circular(8.r))
       ),

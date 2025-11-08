@@ -38,6 +38,18 @@ class AppAsset {
   static const String employmentIcon = '$_iconDirectory/employment_icon.svg';
   static const String circularDB = '$_iconDirectory/circular_db.svg';
   static const String circularDoc = '$_iconDirectory/circular_doc.svg';
+  static const String empty = '$_iconDirectory/empty.svg';
+  static const String addWorker = '$_iconDirectory/add_worker.svg';
+  static const String addEmployer = '$_iconDirectory/add_employer.svg';
+  static const String bottomsheetCloser = '$_iconDirectory/bottomsheet_closer.svg';
+  static const String verifyIcon = '$_iconDirectory/verify_icon.svg';
+  static const String support = '$_iconDirectory/support.svg';
+  static const String ratings = '$_iconDirectory/ratings.svg';
+  static const String guarantor = '$_iconDirectory/guarantor.svg';
+  static const String rateApp = '$_iconDirectory/rate_app.svg';
+  static const String feedback = '$_iconDirectory/feedback.svg';
+  static const String tandc = '$_iconDirectory/tandc.svg';
+  static const String briefcase = '$_iconDirectory/briefcase.svg';
 
 
 
