@@ -5,11 +5,13 @@ import '../../core/utilities/utilities.dart';
 
 class VerifySafeTag extends StatelessWidget {
   final String status;
-  const VerifySafeTag({super.key, required this.status});
+  final bool useEndAlignment;
+  const VerifySafeTag({super.key, required this.status,this.useEndAlignment = false});
 
   @override
   Widget build(BuildContext context) {
     return Row(
+      mainAxisAlignment: useEndAlignment ? MainAxisAlignment.end : MainAxisAlignment.start,
       children: [
         Container(
           padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 2.h),
@@ -17,7 +19,7 @@ class VerifySafeTag extends StatelessWidget {
             color: _statusContainerColor(status: status),
             borderRadius: BorderRadius.all(Radius.circular(16.r)),
           ),
-          child:Center(
+          child: Center(
             child: Text(
               _statusText(status: status),
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
@@ -26,7 +28,7 @@ class VerifySafeTag extends StatelessWidget {
               ),
             ),
           ),
-        )
+        ),
       ],
     );
   }
@@ -35,10 +37,11 @@ class VerifySafeTag extends StatelessWidget {
     switch (status.toLowerCase()) {
       case 'accepted':
       case 'completed':
+      case 'verified':
         return ColorPath.foamGreen;
       case 'pending':
       case 'in-progress':
-        return ColorPath.dawnYellow;//dawnBrown
+        return ColorPath.dawnYellow; //dawnBrown
       case 'failed':
       case 'rejected':
         return ColorPath.provincialPink;
@@ -48,10 +51,11 @@ class VerifySafeTag extends StatelessWidget {
   }
 
   //returns status color
- Color _statusTextColor({required String status}) {
+  Color _statusTextColor({required String status}) {
     switch (status.toLowerCase()) {
       case 'accepted':
       case 'completed':
+      case 'verified':
         return ColorPath.funGreen;
       case 'pending':
       case 'in-progress':

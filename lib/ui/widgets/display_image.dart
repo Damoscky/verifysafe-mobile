@@ -26,7 +26,7 @@ class DisplayImage extends StatefulWidget {
     this.firstName = '',
     this.lastName = '',
     this.borderColor,
-    this.fontSize
+    this.fontSize,
   });
 
   @override
@@ -34,9 +34,7 @@ class DisplayImage extends StatefulWidget {
 }
 
 class _DisplayImageState extends State<DisplayImage> {
-
   ImageProvider? _imageProvider;
-
 
   @override
   void initState() {
@@ -73,40 +71,46 @@ class _DisplayImageState extends State<DisplayImage> {
     return url != null && url.trim().isNotEmpty;
   }
 
-
   @override
   Widget build(BuildContext context) {
-
     return Container(
       padding: EdgeInsets.all(widget.borderWidth.w),
       decoration: BoxDecoration(
         color: widget.borderColor ?? Colors.transparent,
+        gradient: widget.linearGradient,
         shape: BoxShape.circle,
       ),
       child: Container(
         width: widget.size.w,
         height: widget.size.h,
-        decoration: const BoxDecoration(
-          color: Colors.transparent,
+        decoration: BoxDecoration(
+          color: widget.errorWidget == null && _imageProvider == null
+              ? ColorPath.athensGrey
+              : Colors.transparent,
           shape: BoxShape.circle,
         ),
         child: _imageProvider != null
             ? CircleAvatar(
-          backgroundColor: Colors.transparent,
-          radius: widget.size.r,
-          backgroundImage: _imageProvider,
-        ):Center(
-          child: widget.errorWidget ?? Text(
-            Utilities.getNameInitials(
-                firstName: widget.firstName, lastName: widget.lastName),
-            style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                fontWeight: FontWeight.w700,
-                fontSize: widget.fontSize,
-                color: Colors.red
-            ),
-            textAlign: TextAlign.center,
-          ),
-        ),
+                backgroundColor: Colors.transparent,
+                radius: widget.size.r,
+                backgroundImage: _imageProvider,
+              )
+            : Center(
+                child:
+                    widget.errorWidget ??
+                    Text(
+                      Utilities.getNameInitials(
+                        firstName: widget.firstName,
+                        lastName: widget.lastName,
+                      ),
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                        fontWeight: FontWeight.w700,
+                        fontSize: widget.fontSize,
+                        color: ColorPath.persianGreen,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+              ),
       ),
     );
   }
