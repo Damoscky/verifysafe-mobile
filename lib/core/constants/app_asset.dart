@@ -28,6 +28,11 @@ class AppAsset {
   static const String navWorker = '$_iconDirectory/nav_worker.png';
   static const String navWorker2 = '$_iconDirectory/nav_worker2.png';
   static const String navEmployer = '$_iconDirectory/nav_employer.svg';
+  static const String telephone = '$_iconDirectory/telephone.svg';
+  static const String whatsapp = '$_iconDirectory/whatsapp.svg';
+  static const String verificationBadge = '$_iconDirectory/verification_badge.svg';
+  static const String uploadSuccessful = '$_iconDirectory/upload_successful.svg';
+  static const String addAttachment = '$_iconDirectory/add_attachment.svg';
   static const String dashboardMenu = '$_iconDirectory/dashboard_menu.svg';
   static const String notification = '$_iconDirectory/notification.svg';
   static const String employmentIcon = '$_iconDirectory/employment_icon.svg';

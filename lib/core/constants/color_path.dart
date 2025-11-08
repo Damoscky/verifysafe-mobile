@@ -36,6 +36,13 @@ class ColorPath {
   static const foamGreen = Color(0xffECFDF3);
   static const dawnYellow = Color(0xffFFFAEB);
   static const vesuBrown = Color(0xffB54708);
+  static const gloryGreen = Color(0xff9FE1D7);
+  static const aquaGreen = Color(0xffE8F8F5);
+  static const provincialPink = Color(0xffFEF3F2);
+  static const thunderbirdRed = Color(0xffB42318);
+  static const creamYellow = Color(0xffFFE49A);
+  static const mischkaGrey = Color(0xffD0D5DD);
+  static const gullGrey = Color(0xff98A2B3);
   static const persianGreen = Color(0xff009999);
   static const aquamarine = Color(0xff66FFDD);
   static const tangaroa = Color(0xff02132E);

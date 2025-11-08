@@ -7,14 +7,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../core/constants/color_path.dart';
 
 
-import 'package:verifysafe/core/constants/app_theme/custom_color_scheme.dart';
-import 'package:verifysafe/core/utilities/extensions/color_extensions.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../../core/constants/color_path.dart';
-
 class CustomTextField extends StatefulWidget {
   final String label;
   final double? height;
@@ -46,6 +38,7 @@ class CustomTextField extends StatefulWidget {
   final bool showLabel;
   final Color? borderColor;
   final double? borderWidth;
+  final bool useDefaultHeight;
 
   const CustomTextField({
     super.key,
@@ -79,6 +72,7 @@ class CustomTextField extends StatefulWidget {
     this.isOtp = false,
     this.borderColor,
     this.borderWidth,
+    this.useDefaultHeight = true
   });
 
   @override
@@ -142,7 +136,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
         if (widget.showLabel) SizedBox(height: 8.h),
         AnimatedContainer(
           duration: const Duration(milliseconds: 200),
-          height: widget.height?.h ?? 56.h,
+          height: widget.useDefaultHeight ? widget.height?.h ?? 56.h : null,
           width: double.infinity,
           decoration: BoxDecoration(
             color: colorScheme.textFieldFillColor,

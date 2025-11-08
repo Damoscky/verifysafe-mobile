@@ -89,6 +89,11 @@ class _CustomDropdownState extends State<CustomDropdown> {
           width: double.infinity,
           decoration: BoxDecoration(
             color: colorScheme.textFieldFillColor,
+            border: Border.all(
+                color: _errorText != null ? ColorPath.redOrange
+                    : colorScheme.textFieldBorder,
+                width: 1.w
+            ),
             borderRadius: BorderRadius.all(Radius.circular(8.r)),
           ),
           child: Center(
@@ -125,31 +130,39 @@ class _CustomDropdownState extends State<CustomDropdown> {
                   minWidth: 16.w,
                   minHeight: 16.h,
                 ),
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8.r),
-                  borderSide: BorderSide(
-                    color: _errorText != null ? Colors.red : colorScheme.textFieldBorder,
-                    width: 1.w,
-                  ),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(
-                    color: _errorText != null ?Colors.red: colorScheme.textFieldBorder,
-                    width: 1.w,
-                  ),
-                  borderRadius: BorderRadius.circular(8.r),
-                ),
-                disabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8.r),
-                  borderSide: BorderSide(color: colorScheme.textFieldBorder, width: 0.5.w),
-                ),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8.r),
-                  borderSide: BorderSide(
-                    color: _errorText != null ? Colors.red : colorScheme.textFieldBorder,
-                    width: 1.w,
-                  ),
-                ),
+                border: InputBorder.none,
+                enabledBorder: InputBorder.none,
+                focusedBorder: InputBorder.none,
+                errorBorder: InputBorder.none,
+                disabledBorder: InputBorder.none,
+                focusedErrorBorder: InputBorder.none,
+
+
+                // enabledBorder: OutlineInputBorder(
+                //   borderRadius: BorderRadius.circular(8.r),
+                //   borderSide: BorderSide(
+                //     color: _errorText != null ? Colors.red : colorScheme.textFieldBorder,
+                //     width: 1.w,
+                //   ),
+                // ),
+                // focusedBorder: OutlineInputBorder(
+                //   borderSide: BorderSide(
+                //     color: _errorText != null ?Colors.red: colorScheme.textFieldBorder,
+                //     width: 1.w,
+                //   ),
+                //   borderRadius: BorderRadius.circular(8.r),
+                // ),
+                // disabledBorder: OutlineInputBorder(
+                //   borderRadius: BorderRadius.circular(8.r),
+                //   borderSide: BorderSide(color: colorScheme.textFieldBorder, width: 0.5.w),
+                // ),
+                // border: OutlineInputBorder(
+                //   borderRadius: BorderRadius.circular(8.r),
+                //   borderSide: BorderSide(
+                //     color: _errorText != null ? Colors.red : colorScheme.textFieldBorder,
+                //     width: 1.w,
+                //   ),
+                // ),
               ),
               icon: Padding(
                 padding: EdgeInsets.only(right: 0.w),
