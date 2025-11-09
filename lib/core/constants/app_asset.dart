@@ -27,6 +27,7 @@ class AppAsset {
   static const String workHistory = '$_iconDirectory/work_history.svg';
   static const String navWorker = '$_iconDirectory/nav_worker.png';
   static const String navWorker2 = '$_iconDirectory/nav_worker2.png';
+  static const String secureGuy = '$_iconDirectory/secure_guy.png';
   static const String navEmployer = '$_iconDirectory/nav_employer.svg';
   static const String telephone = '$_iconDirectory/telephone.svg';
   static const String whatsapp = '$_iconDirectory/whatsapp.svg';
@@ -50,6 +51,13 @@ class AppAsset {
   static const String feedback = '$_iconDirectory/feedback.svg';
   static const String tandc = '$_iconDirectory/tandc.svg';
   static const String briefcase = '$_iconDirectory/briefcase.svg';
+  static const String profilePersonal = '$_iconDirectory/profile_personal.svg';
+  static const String profileAgency = '$_iconDirectory/profile_agency.svg';
+  static const String profileEmployment = '$_iconDirectory/profile_employment.svg';
+  static const String profileSecurity = '$_iconDirectory/profile_security.svg';
+  static const String profileVerification = '$_iconDirectory/profile_verification.svg';
+  static const String logout = '$_iconDirectory/logout.svg';
+
 
 
 
