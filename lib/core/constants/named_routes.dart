@@ -25,6 +25,11 @@ class NamedRoutes {
   static const viewReport = '/viewReport';
   static const submitReport = '/submitReport';
 
+  //profile and settings
+  static const termsAndCondition = '/termsAndCondition';
+  static const settings = '/settings';
+  static const notificationSettings = '/notificationSettings';
+  static const rateApp = '/rateApp';
 
   //bottom-nav
   static const bottomNav = '/bottomNav';

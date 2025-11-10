@@ -2,12 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:verifysafe/core/constants/app_asset.dart';
+import 'package:verifysafe/core/constants/app_dimension.dart';
 import 'package:verifysafe/core/constants/app_theme/custom_color_scheme.dart';
 import 'package:verifysafe/core/constants/color_path.dart';
 import 'package:verifysafe/core/constants/named_routes.dart';
 import 'package:verifysafe/core/data/enum/user_type.dart';
 import 'package:verifysafe/core/utilities/navigator.dart';
 import 'package:verifysafe/ui/pages/authentication/login.dart';
+import 'package:verifysafe/ui/pages/profile/settings/notification_settings.dart';
+import 'package:verifysafe/ui/pages/profile/settings/settings.dart';
 import 'package:verifysafe/ui/widgets/clickable.dart';
 import 'package:verifysafe/ui/widgets/custom_appbar.dart';
 import 'package:verifysafe/ui/widgets/custom_svg.dart';
@@ -36,7 +39,7 @@ class _ProfileState extends ConsumerState<Profile> {
         showBottom: true,
       ),
       body: ListView(
-        padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 16.h),
+        padding: EdgeInsets.symmetric(horizontal: AppDimension.paddingLeft, vertical: 16.h),
         children: [
           ProfileInfoCard(userType: UserType.agency),
           SizedBox(height: 32.h),
@@ -102,14 +105,19 @@ class _ProfileState extends ConsumerState<Profile> {
             title: "Security",
             subTitle: "Change and update password",
             asset: AppAsset.profileSecurity,
-            onPressed: () {},
+            onPressed: () {
+              pushNavigation(context: context, widget: Settings(),routeName: NamedRoutes.settings);
+            },
           ),
           CustomDivider(),
           ProfileActionTile(
             title: "Notification settings",
             subTitle: "Customize your notifications",
             asset: AppAsset.profileAgency,
-            onPressed: () {},
+            onPressed: () {
+              pushNavigation(context: context, widget: NotificationSettings(),routeName: NamedRoutes.notificationSettings);
+
+            },
           ),
           SizedBox(height: 42.h),
           Clickable(

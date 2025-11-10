@@ -7,16 +7,20 @@ import 'package:verifysafe/ui/widgets/custom_svg.dart';
 class ProfileActionTile extends StatelessWidget {
   final String title;
   final String subTitle;
-  final  void Function()? onPressed;
+  final void Function()? onPressed;
   final String asset;
+  final bool showChevron;
+  final double? height;
 
-
-  const ProfileActionTile({super.key,
+  const ProfileActionTile({
+    super.key,
     required this.title,
     required this.subTitle,
     required this.asset,
-    this.onPressed
-    });
+    this.onPressed,
+    this.showChevron = true,
+    this.height,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -25,15 +29,16 @@ class ProfileActionTile extends StatelessWidget {
     return Clickable(
       onPressed: onPressed,
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          CustomSvg(asset: asset, height: 52.h),
+          CustomSvg(asset: asset, height: height ?? 52.h),
           SizedBox(width: 10.w),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                 title,
+                  title,
                   style: textTheme.bodyLarge?.copyWith(
                     color: colorScheme.blackText,
                     fontWeight: FontWeight.w700,
@@ -42,12 +47,14 @@ class ProfileActionTile extends StatelessWidget {
                 SizedBox(height: 2.h),
                 Text(
                   subTitle,
-                  style: textTheme.bodyMedium?.copyWith(color: colorScheme.text4),
+                  style: textTheme.bodyMedium?.copyWith(
+                    color: colorScheme.text4,
+                  ),
                 ),
               ],
             ),
           ),
-          Icon(Icons.chevron_right_outlined),
+          if (showChevron) Icon(Icons.chevron_right_outlined),
         ],
       ),
     );

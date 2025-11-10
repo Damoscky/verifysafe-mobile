@@ -36,6 +36,7 @@ class AppAsset {
   static const String addAttachment = '$_iconDirectory/add_attachment.svg';
   static const String dashboardMenu = '$_iconDirectory/dashboard_menu.svg';
   static const String notification = '$_iconDirectory/notification.svg';
+  static const String notification2 = '$_iconDirectory/notification2.svg';
   static const String employmentIcon = '$_iconDirectory/employment_icon.svg';
   static const String circularDB = '$_iconDirectory/circular_db.svg';
   static const String circularDoc = '$_iconDirectory/circular_doc.svg';
@@ -57,6 +58,19 @@ class AppAsset {
   static const String profileSecurity = '$_iconDirectory/profile_security.svg';
   static const String profileVerification = '$_iconDirectory/profile_verification.svg';
   static const String logout = '$_iconDirectory/logout.svg';
+  static const String about = '$_iconDirectory/about.svg';
+  static const String privacyPolicy = '$_iconDirectory/privacy_policy.svg';
+  static const String contentPolicy = '$_iconDirectory/content_policy.svg';
+  static const String help = '$_iconDirectory/help.svg';
+  static const String padlock = '$_iconDirectory/padlock.svg';
+  static const String twoFa = '$_iconDirectory/2fa.svg';
+  static const String rate1 = '$_iconDirectory/rate1.png';
+  static const String rate2 = '$_iconDirectory/rate2.png';
+  static const String rate3 = '$_iconDirectory/rate3.png';
+  static const String rate4 = '$_iconDirectory/rate4.png';
+  static const String rate5 = '$_iconDirectory/rate5.png';
+
+
 
 
 

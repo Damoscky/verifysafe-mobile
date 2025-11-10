@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:verifysafe/core/constants/app_asset.dart';
-import 'package:verifysafe/core/constants/app_theme/custom_color_scheme.dart';
 import 'package:verifysafe/core/constants/color_path.dart';
-import 'package:verifysafe/ui/widgets/custom_svg.dart';
+import 'package:verifysafe/core/constants/named_routes.dart';
+import 'package:verifysafe/core/utilities/navigator.dart';
+import 'package:verifysafe/ui/pages/guarantor/manage_guarantor.dart';
+import 'package:verifysafe/ui/pages/profile/settings/rate_app.dart';
+import 'package:verifysafe/ui/pages/profile/settings/terms_and_condition.dart';
+import 'package:verifysafe/ui/pages/support_and_misconducts/support_and_misconducts.dart';
 import 'package:verifysafe/ui/widgets/display_image.dart';
+import 'package:verifysafe/ui/widgets/menu_item.dart';
 
 class MenuDrawer extends StatelessWidget {
   const MenuDrawer({super.key});
@@ -73,11 +78,25 @@ class MenuDrawer extends StatelessWidget {
                             MenuItem(
                               title: "Support & Misconducts",
                               asset: AppAsset.support,
+                              onPressed: () {
+                                pushNavigation(
+                                  context: context,
+                                  widget: SupportAndMisconducts(),
+                                  routeName: NamedRoutes.supportAndMisconducts,
+                                );
+                              },
                             ),
                             SizedBox(height: 24.h),
                             MenuItem(
                               title: "Manage Guarantors",
                               asset: AppAsset.guarantor,
+                              onPressed: () {
+                                pushNavigation(
+                                  context: context,
+                                  widget: ManageGuarantor(),
+                                  routeName: NamedRoutes.manageGuarantor,
+                                );
+                              },
                             ),
                             SizedBox(height: 24.h),
                           ],
@@ -99,16 +118,37 @@ class MenuDrawer extends StatelessWidget {
                         MenuItem(
                           title: "Rate the VerifySafe app",
                           asset: AppAsset.rateApp,
+                          onPressed: () {
+                            pushNavigation(
+                              context: context,
+                              widget: RateApp(),
+                              routeName: NamedRoutes.rateApp,
+                            );
+                          },
                         ),
                         SizedBox(height: 24.h),
                         MenuItem(
                           title: "Share your  feedback",
                           asset: AppAsset.feedback,
+                          onPressed: () {
+                            pushNavigation(
+                              context: context,
+                              widget: RateApp(),
+                              routeName: NamedRoutes.rateApp,
+                            );
+                          },
                         ),
                         SizedBox(height: 24.h),
                         MenuItem(
                           title: "Terms & Conditions",
                           asset: AppAsset.tandc,
+                          onPressed: () {
+                            pushNavigation(
+                              context: context,
+                              widget: TermsAndCondition(),
+                              routeName: NamedRoutes.termsAndCondition,
+                            );
+                          },
                         ),
                         SizedBox(height: 24.h),
                       ],
@@ -120,28 +160,6 @@ class MenuDrawer extends StatelessWidget {
           ),
         ],
       ),
-    );
-  }
-}
-
-class MenuItem extends StatelessWidget {
-  final String title;
-  final String asset;
-  const MenuItem({super.key, this.title = "", this.asset = AppAsset.guarantor});
-
-  @override
-  Widget build(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
-    final textTheme = Theme.of(context).textTheme;
-    return Row(
-      children: [
-        CustomSvg(asset: asset),
-        SizedBox(width: 16.w),
-        Text(
-          title,
-          style: textTheme.bodyLarge?.copyWith(color: colorScheme.text4),
-        ),
-      ],
     );
   }
 }
