@@ -50,6 +50,8 @@ class AppAsset {
   static const String feedback = '$_iconDirectory/feedback.svg';
   static const String tandc = '$_iconDirectory/tandc.svg';
   static const String briefcase = '$_iconDirectory/briefcase.svg';
+  static const String ratingsIllustration = '$_iconDirectory/ratings_illustration.svg';
+  static const String star = '$_iconDirectory/star.svg';
 
 
 

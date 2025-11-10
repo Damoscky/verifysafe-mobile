@@ -3,6 +3,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:verifysafe/core/constants/app_asset.dart';
 import 'package:verifysafe/core/constants/app_theme/custom_color_scheme.dart';
 import 'package:verifysafe/core/constants/color_path.dart';
+import 'package:verifysafe/core/constants/named_routes.dart';
+import 'package:verifysafe/core/utilities/navigator.dart';
+import 'package:verifysafe/ui/pages/ratings_and_reviews.dart';
+import 'package:verifysafe/ui/widgets/clickable.dart';
 import 'package:verifysafe/ui/widgets/custom_svg.dart';
 import 'package:verifysafe/ui/widgets/display_image.dart';
 
@@ -68,6 +72,9 @@ class MenuDrawer extends StatelessWidget {
                             MenuItem(
                               title: "Ratings & Reviews",
                               asset: AppAsset.ratings,
+                              onPressed: (){
+                                replaceNavigation(context: context, widget: const RatingsAndReviews(), routeName: NamedRoutes.ratingsAndReviews);
+                              },
                             ),
                             SizedBox(height: 24.h),
                             MenuItem(
@@ -127,21 +134,25 @@ class MenuDrawer extends StatelessWidget {
 class MenuItem extends StatelessWidget {
   final String title;
   final String asset;
-  const MenuItem({super.key, this.title = "", this.asset = AppAsset.guarantor});
+  final VoidCallback? onPressed;
+  const MenuItem({super.key, this.title = "", this.asset = AppAsset.guarantor, this.onPressed});
 
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
-    return Row(
-      children: [
-        CustomSvg(asset: asset),
-        SizedBox(width: 16.w),
-        Text(
-          title,
-          style: textTheme.bodyLarge?.copyWith(color: colorScheme.text4),
-        ),
-      ],
+    return Clickable(
+      onPressed: onPressed,
+      child: Row(
+        children: [
+          CustomSvg(asset: asset),
+          SizedBox(width: 16.w),
+          Text(
+            title,
+            style: textTheme.bodyLarge?.copyWith(color: colorScheme.text4),
+          ),
+        ],
+      ),
     );
   }
 }
