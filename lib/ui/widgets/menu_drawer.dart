@@ -3,7 +3,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:verifysafe/core/constants/app_asset.dart';
 import 'package:verifysafe/core/constants/color_path.dart';
 import 'package:verifysafe/core/constants/named_routes.dart';
+import 'package:verifysafe/core/data/enum/user_type.dart';
 import 'package:verifysafe/core/utilities/navigator.dart';
+import 'package:verifysafe/ui/pages/billing/bill_type.dart';
 import 'package:verifysafe/ui/pages/guarantor/manage_guarantor.dart';
 import 'package:verifysafe/ui/pages/profile/settings/rate_app.dart';
 import 'package:verifysafe/ui/pages/profile/settings/terms_and_condition.dart';
@@ -12,7 +14,8 @@ import 'package:verifysafe/ui/widgets/display_image.dart';
 import 'package:verifysafe/ui/widgets/menu_item.dart';
 
 class MenuDrawer extends StatelessWidget {
-  const MenuDrawer({super.key});
+  final UserType userType;
+  const MenuDrawer({super.key, this.userType = UserType.agency});
 
   @override
   Widget build(BuildContext context) {
@@ -75,6 +78,36 @@ class MenuDrawer extends StatelessWidget {
                               asset: AppAsset.ratings,
                             ),
                             SizedBox(height: 24.h),
+                            if (userType != UserType.worker)
+                              Column(
+                                children: [
+                                  MenuItem(
+                                    title: "Billing & Payment",
+                                    asset: AppAsset.billing,
+                                    onPressed: () {
+                                      pushNavigation(
+                                        context: context,
+                                        widget: BillType(),
+                                        routeName: NamedRoutes.billType,
+                                      );
+                                    },
+                                  ),
+                                  SizedBox(height: 24.h),
+                                  MenuItem(
+                                    title: "Manage Guarantors",
+                                    asset: AppAsset.manage,
+                                    onPressed: () {
+                                      // pushNavigation(
+                                      //   context: context,
+                                      //   widget: SupportAndMisconducts(),
+                                      //   routeName:
+                                      //       NamedRoutes.supportAndMisconducts,
+                                      // );
+                                    },
+                                  ),
+                                  SizedBox(height: 24.h),
+                                ],
+                              ),
                             MenuItem(
                               title: "Support & Misconducts",
                               asset: AppAsset.support,
@@ -87,18 +120,23 @@ class MenuDrawer extends StatelessWidget {
                               },
                             ),
                             SizedBox(height: 24.h),
-                            MenuItem(
-                              title: "Manage Guarantors",
-                              asset: AppAsset.guarantor,
-                              onPressed: () {
-                                pushNavigation(
-                                  context: context,
-                                  widget: ManageGuarantor(),
-                                  routeName: NamedRoutes.manageGuarantor,
-                                );
-                              },
-                            ),
-                            SizedBox(height: 24.h),
+                            if (userType == UserType.worker)
+                              Column(
+                                children: [
+                                  MenuItem(
+                                    title: "Manage Guarantors",
+                                    asset: AppAsset.guarantor,
+                                    onPressed: () {
+                                      pushNavigation(
+                                        context: context,
+                                        widget: ManageGuarantor(),
+                                        routeName: NamedRoutes.manageGuarantor,
+                                      );
+                                    },
+                                  ),
+                                  SizedBox(height: 24.h),
+                                ],
+                              ),
                           ],
                         ),
                       ),

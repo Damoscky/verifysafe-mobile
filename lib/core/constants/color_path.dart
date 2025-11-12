@@ -50,6 +50,8 @@ class ColorPath {
   static const congressBlue = Color(0xff053C94);
   static const cornflowerLilac = Color(0xffFFB5AB);
   static const taraGreen = Color(0xffD7F4D7);
+  static const mintTulip = Color(0xffC2F5E8);
+
 
 
 

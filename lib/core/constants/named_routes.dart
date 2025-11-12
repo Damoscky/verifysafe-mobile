@@ -31,6 +31,10 @@ class NamedRoutes {
   static const notificationSettings = '/notificationSettings';
   static const rateApp = '/rateApp';
 
+  //billing
+  static const billType = '/billType';
+
+
   //bottom-nav
   static const bottomNav = '/bottomNav';
 

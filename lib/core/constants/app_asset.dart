@@ -69,6 +69,8 @@ class AppAsset {
   static const String rate3 = '$_iconDirectory/rate3.png';
   static const String rate4 = '$_iconDirectory/rate4.png';
   static const String rate5 = '$_iconDirectory/rate5.png';
+  static const String billing = '$_iconDirectory/billing.svg';
+  static const String manage = '$_iconDirectory/manage.svg';
 
 
 

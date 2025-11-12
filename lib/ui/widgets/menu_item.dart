@@ -24,7 +24,7 @@ class MenuItem extends StatelessWidget {
       onPressed: onPressed,
       child: Row(
         children: [
-          CustomSvg(asset: asset),
+          CustomAssetViewer(asset: asset),
           SizedBox(width: 16.w),
           Text(
             title,
