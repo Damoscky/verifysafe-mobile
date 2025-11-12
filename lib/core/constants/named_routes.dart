@@ -38,5 +38,8 @@ class NamedRoutes {
   //bottom-nav
   static const bottomNav = '/bottomNav';
 
+  //ratings and reviews
+  static const ratingsAndReviews = '/ratingsAndReviews';
+
 
 }

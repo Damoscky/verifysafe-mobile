@@ -52,6 +52,8 @@ class AppAsset {
   static const String feedback = '$_iconDirectory/feedback.svg';
   static const String tandc = '$_iconDirectory/tandc.svg';
   static const String briefcase = '$_iconDirectory/briefcase.svg';
+  static const String ratingsIllustration = '$_iconDirectory/ratings_illustration.svg';
+  static const String star = '$_iconDirectory/star.svg';
   static const String profilePersonal = '$_iconDirectory/profile_personal.svg';
   static const String profileAgency = '$_iconDirectory/profile_agency.svg';
   static const String profileEmployment = '$_iconDirectory/profile_employment.svg';
