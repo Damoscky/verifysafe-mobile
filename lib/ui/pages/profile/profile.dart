@@ -4,7 +4,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:verifysafe/core/constants/app_asset.dart';
 import 'package:verifysafe/core/constants/app_dimension.dart';
 import 'package:verifysafe/core/constants/app_theme/custom_color_scheme.dart';
-import 'package:verifysafe/core/constants/color_path.dart';
 import 'package:verifysafe/core/constants/named_routes.dart';
 import 'package:verifysafe/core/data/enum/user_type.dart';
 import 'package:verifysafe/core/utilities/navigator.dart';
@@ -13,6 +12,7 @@ import 'package:verifysafe/ui/pages/profile/settings/notification_settings.dart'
 import 'package:verifysafe/ui/pages/profile/settings/settings.dart';
 import 'package:verifysafe/ui/widgets/clickable.dart';
 import 'package:verifysafe/ui/widgets/custom_appbar.dart';
+import 'package:verifysafe/ui/widgets/custom_divider.dart';
 import 'package:verifysafe/ui/widgets/custom_svg.dart';
 import 'package:verifysafe/ui/widgets/profile/profile_action_tile.dart';
 import 'package:verifysafe/ui/widgets/profile/profile_info_card.dart';
@@ -152,20 +152,4 @@ class _ProfileState extends ConsumerState<Profile> {
   }
 }
 
-class CustomDivider extends StatelessWidget {
-  const CustomDivider({super.key});
 
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Container(
-          width: double.infinity,
-          height: 1.h,
-          color: ColorPath.stormGrey.withValues(alpha: .2),
-          margin: EdgeInsets.only(top: 16.h, bottom: 16.h),
-        ),
-      ],
-    );
-  }
-}

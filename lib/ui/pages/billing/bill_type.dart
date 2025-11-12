@@ -4,7 +4,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:verifysafe/core/constants/app_dimension.dart';
 import 'package:verifysafe/core/constants/app_theme/custom_color_scheme.dart';
 import 'package:verifysafe/core/constants/color_path.dart';
-import 'package:verifysafe/core/data/enum/tag_type.dart';
+import 'package:verifysafe/ui/widgets/bottom_sheets/base_bottom_sheet.dart';
+import 'package:verifysafe/ui/widgets/bottom_sheets/payment_successful.dart';
 import 'package:verifysafe/ui/widgets/custom_appbar.dart';
 import 'package:verifysafe/ui/widgets/custom_button.dart';
 import 'package:verifysafe/ui/widgets/naira_display.dart';
@@ -51,7 +52,17 @@ class _BillTypeState extends ConsumerState<BillType> {
                 horizontal: AppDimension.paddingLeft,
                 vertical: 32.h,
               ),
-              child: CustomButton(onPressed: () {}, buttonText: "Pay N 1,000"),
+              child: CustomButton(
+                onPressed: () {
+                  baseBottomSheet(
+                    context: context,
+                    isDismissible: false,
+                    enableDrag: false,
+                    content: PaymentSuccessful(),
+                  );
+                },
+                buttonText: "Pay N 1,000",
+              ),
             ),
         ],
       ),
@@ -208,7 +219,7 @@ class _SubscriptionItemState extends State<SubscriptionItem> {
             ),
           ),
           Container(
-            padding: EdgeInsets.all(16.w),
+            padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 24.h),
             decoration: BoxDecoration(
               color: widget.isCurrentPlan ? ColorPath.aquaGreen : null,
               borderRadius: BorderRadius.only(

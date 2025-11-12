@@ -1,5 +1,4 @@
 class NamedRoutes {
-
   //onboarding
   static const landing = '/landing';
   static const selectUserType = '/selectUserType';
@@ -30,16 +29,16 @@ class NamedRoutes {
   static const settings = '/settings';
   static const notificationSettings = '/notificationSettings';
   static const rateApp = '/rateApp';
+  static const viewWorker = '/viewWorker';
+  static const viewWorkHistory = '/viewWorkHistory';
+
 
   //billing
   static const billType = '/billType';
-
 
   //bottom-nav
   static const bottomNav = '/bottomNav';
 
   //ratings and reviews
   static const ratingsAndReviews = '/ratingsAndReviews';
-
-
 }

@@ -97,12 +97,11 @@ class MenuDrawer extends StatelessWidget {
                                     title: "Manage Guarantors",
                                     asset: AppAsset.manage,
                                     onPressed: () {
-                                      // pushNavigation(
-                                      //   context: context,
-                                      //   widget: SupportAndMisconducts(),
-                                      //   routeName:
-                                      //       NamedRoutes.supportAndMisconducts,
-                                      // );
+                                      pushNavigation(
+                                        context: context,
+                                        widget: ManageGuarantor(),
+                                        routeName: NamedRoutes.manageGuarantor,
+                                      );
                                     },
                                   ),
                                   SizedBox(height: 24.h),
