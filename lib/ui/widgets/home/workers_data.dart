@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:verifysafe/core/constants/app_asset.dart';
+import 'package:verifysafe/core/constants/named_routes.dart';
+import 'package:verifysafe/core/utilities/navigator.dart';
+import 'package:verifysafe/ui/pages/workers/view_worker.dart';
 import 'package:verifysafe/ui/widgets/empty_state.dart';
 import 'package:verifysafe/ui/widgets/listview_items/worker_data_item.dart';
 
@@ -29,7 +32,15 @@ class WorkersData extends StatelessWidget {
           physics: const NeverScrollableScrollPhysics(),
           padding: EdgeInsets.only(left: 24.w, right: 24.w, top: 16.h),
           itemBuilder: (context, index) {
-            return WorkerDataItem();
+            return WorkerDataItem(
+              onPressed: () {
+                pushNavigation(
+                  context: context,
+                  widget: ViewWorker(),
+                  routeName: NamedRoutes.viewWorker,
+                );
+              },
+            );
           },
           separatorBuilder: (context, index) {
             return SizedBox(height: 16.h);

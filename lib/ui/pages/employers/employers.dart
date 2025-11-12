@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:verifysafe/core/constants/app_dimension.dart';
 import 'package:verifysafe/core/constants/app_theme/custom_color_scheme.dart';
 import 'package:verifysafe/core/constants/color_path.dart';
 import 'package:verifysafe/core/data/enum/user_type.dart';
@@ -33,7 +34,7 @@ class _EmployersState extends ConsumerState<Employers> {
         title: 'Employer',
         actions: [
           Padding(
-            padding: EdgeInsets.only(right: 24.w),
+            padding: EdgeInsets.only(right:AppDimension.paddingRight),
             child: Clickable(
               onPressed: () {
                 //todo::: handle route here
@@ -60,7 +61,7 @@ class _EmployersState extends ConsumerState<Employers> {
         children: [
           EmployersDashboardCard(),
           Padding(
-            padding: EdgeInsets.only(left: 24.w, right: 24.w),
+            padding: EdgeInsets.only(left:AppDimension.paddingLeft, right: AppDimension.paddingRight),
             child: CustomTextField(
               hintText: "Search for Employer",
               onChanged: (value) {
@@ -76,8 +77,7 @@ class _EmployersState extends ConsumerState<Employers> {
           ),
           SizedBox(height: 16.h),
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: 24.h),
-
+            padding: EdgeInsets.symmetric(horizontal: AppDimension.paddingLeft),
             child: SortAndFilterTab(
               sortOnPressed: () {},
               filterOnPressed: () {},
@@ -85,7 +85,7 @@ class _EmployersState extends ConsumerState<Employers> {
           ),
           SizedBox(height: 16.h),
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: 24.h),
+            padding: EdgeInsets.symmetric(horizontal: AppDimension.paddingLeft),
             child: Text(
               "View work history below",
               style: textTheme.bodyMedium?.copyWith(color: colorScheme.text4),

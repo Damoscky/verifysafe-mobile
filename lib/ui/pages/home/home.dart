@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:verifysafe/core/constants/app_dimension.dart';
 import 'package:verifysafe/core/constants/app_theme/custom_color_scheme.dart';
 import 'package:verifysafe/core/constants/color_path.dart';
 import 'package:verifysafe/core/data/enum/user_type.dart';
@@ -75,7 +76,11 @@ class _HomeState extends ConsumerState<Home> {
         children: [
           //WELCOMEBACK ANALYTICS CONTAINER
           Container(
-            padding: EdgeInsets.only(left: 24.w, right: 24.w, bottom: 24.h),
+            padding: EdgeInsets.only(
+              left: AppDimension.paddingLeft,
+              right: AppDimension.paddingRight,
+              bottom: 24.h,
+            ),
             color: colorScheme.brandColor,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,

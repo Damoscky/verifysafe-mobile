@@ -20,7 +20,7 @@ class WorkersDashboardCard extends StatelessWidget {
       child: Stack(
         alignment: AlignmentDirectional.bottomEnd,
         children: [
-          CustomAssetViewer(asset: AppAsset.navWorker2, height: 32.h),
+          CustomAssetViewer(asset: AppAsset.secureGuy, height: 32.h),
           Row(
             children: [
               Expanded(
