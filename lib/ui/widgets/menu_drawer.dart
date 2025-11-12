@@ -3,10 +3,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:verifysafe/core/constants/app_asset.dart';
 import 'package:verifysafe/core/constants/color_path.dart';
 import 'package:verifysafe/core/constants/named_routes.dart';
-import 'package:verifysafe/core/utilities/navigator.dart';
-import 'package:verifysafe/ui/pages/ratings_and_reviews.dart';
-import 'package:verifysafe/ui/widgets/clickable.dart';
-import 'package:verifysafe/core/constants/named_routes.dart';
 import 'package:verifysafe/core/data/enum/user_type.dart';
 import 'package:verifysafe/core/utilities/navigator.dart';
 import 'package:verifysafe/ui/pages/billing/bill_type.dart';
@@ -80,9 +76,6 @@ class MenuDrawer extends StatelessWidget {
                             MenuItem(
                               title: "Ratings & Reviews",
                               asset: AppAsset.ratings,
-                              onPressed: (){
-                                replaceNavigation(context: context, widget: const RatingsAndReviews(), routeName: NamedRoutes.ratingsAndReviews);
-                              },
                             ),
                             SizedBox(height: 24.h),
                             if (userType != UserType.worker)
@@ -205,28 +198,6 @@ class MenuDrawer extends StatelessWidget {
           ),
         ],
       ),
-    );
-  }
-}
-
-class MenuItem extends StatelessWidget {
-  final String title;
-  final String asset;
-  const MenuItem({super.key, this.title = "", this.asset = AppAsset.guarantor});
-
-  @override
-  Widget build(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
-    final textTheme = Theme.of(context).textTheme;
-    return Row(
-      children: [
-        CustomSvg(asset: asset),
-        SizedBox(width: 16.w),
-        Text(
-          title,
-          style: textTheme.bodyLarge?.copyWith(color: colorScheme.text4),
-        ),
-      ],
     );
   }
 }
