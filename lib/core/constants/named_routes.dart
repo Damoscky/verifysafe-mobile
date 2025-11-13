@@ -39,6 +39,9 @@ class NamedRoutes {
   static const viewWorker = '/viewWorker';
   static const viewWorkHistory = '/viewWorkHistory';
 
+  //search
+  static const search = '/search';
+
 
   //billing
   static const billType = '/billType';
