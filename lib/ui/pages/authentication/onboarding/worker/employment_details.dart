@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
 import '../../../../../core/constants/app_dimension.dart';
-import '../../../../../core/utilities/input_formatters/nigerian_phone_number_formatter.dart';
 import '../../../../../core/utilities/validator.dart';
 import '../../../../widgets/custom_appbar.dart';
 import '../../../../widgets/custom_button.dart';
