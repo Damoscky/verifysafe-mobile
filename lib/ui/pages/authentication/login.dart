@@ -6,8 +6,14 @@ import 'package:verifysafe/core/constants/app_theme/custom_color_scheme.dart';
 import 'package:verifysafe/core/constants/named_routes.dart';
 import 'package:verifysafe/core/utilities/navigator.dart';
 import 'package:verifysafe/ui/pages/authentication/forgot_password.dart';
+import 'package:verifysafe/ui/pages/authentication/onboarding/employer/contact_person.dart';
+import 'package:verifysafe/ui/pages/authentication/onboarding/employer/services_and_specializations.dart';
+import 'package:verifysafe/ui/pages/authentication/onboarding/guarantor_details.dart';
+import 'package:verifysafe/ui/pages/authentication/onboarding/identity_verification.dart';
 import 'package:verifysafe/ui/pages/authentication/onboarding/select_user_type.dart';
 import 'package:verifysafe/ui/pages/authentication/onboarding/sign_up_successful.dart';
+import 'package:verifysafe/ui/pages/authentication/onboarding/worker/employment_details.dart';
+import 'package:verifysafe/ui/pages/authentication/onboarding/worker/work_history.dart';
 import 'package:verifysafe/ui/pages/bottom_nav.dart';
 import 'package:verifysafe/ui/pages/support_and_misconducts/support_and_misconducts.dart';
 import 'package:verifysafe/ui/widgets/authentication/terms.dart';
@@ -117,7 +123,7 @@ class _LoginState extends State<Login> {
                         child: CustomButton(
                             buttonText: 'Log in',
                             onPressed: (){
-                              pushNavigation(context: context, widget: BottomNav(), routeName: NamedRoutes.bottomNav);
+                              pushNavigation(context: context, widget: WorkHistory(), routeName: NamedRoutes.workHistory);
                             }
                         ),
                       ),

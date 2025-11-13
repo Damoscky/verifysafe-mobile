@@ -75,6 +75,9 @@ class AppAsset {
   static const String manage = '$_iconDirectory/manage.svg';
   static const String check = '$_iconDirectory/check.svg';
   static const String pdf = '$_iconDirectory/pdf.svg';
+  static const String check2 = '$_iconDirectory/check_2.svg';
+  static const String calendar = '$_iconDirectory/calendar.svg';
+  static const String delete = '$_iconDirectory/delete.svg';
 
 
 

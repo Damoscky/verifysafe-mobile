@@ -52,6 +52,9 @@ class ColorPath {
   static const cornflowerLilac = Color(0xffFFB5AB);
   static const taraGreen = Color(0xffD7F4D7);
   static const mintTulip = Color(0xffC2F5E8);
+  static const bermudaGreen = Color(0xff77D5C7);
+  static const fiordGrey = Color(0xff475467);
+  static const fairPink = Color(0xffFFEEEC);
 
 
 

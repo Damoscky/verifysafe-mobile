@@ -7,6 +7,13 @@ class NamedRoutes {
   static const employerInfo = '/employerInfo';
   static const biometricsSetup = '/biometricsSetup';
   static const signupSuccessful = '/signupSuccessful';
+  static const identityVerification = '/identityVerification';
+  static const contactPerson = '/contactPerson';
+  static const servicesAndSpecializations = '/servicesAndSpecializations';
+  static const guarantorDetails = '/guarantorDetails';
+  static const employmentDetails = '/employmentDetails';
+  static const workHistory = '/workHistory';
+  static const addWorkHistory = '/addWorkHistory';
 
   //auth
   static const login = '/login';

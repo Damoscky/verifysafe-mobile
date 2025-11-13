@@ -11,9 +11,11 @@ import 'custom_svg.dart';
 
 class UploadAttachment extends StatelessWidget {
   final String? title;
+  final String? subtitle;
   final String? buttonText;
   final VoidCallback? onPressed;
-  const UploadAttachment({super.key, this.title, this.buttonText, this.onPressed});
+  final bool showPrefixIcon;
+  const UploadAttachment({super.key, this.subtitle, this.showPrefixIcon = true, this.title, this.buttonText, this.onPressed});
 
   @override
   Widget build(BuildContext context) {
@@ -31,8 +33,8 @@ class UploadAttachment extends StatelessWidget {
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              CustomAssetViewer(asset: AppAsset.addAttachment, height: 32.h, width: 32.w,),
-              SizedBox(width: 12.w,),
+              if(showPrefixIcon)CustomAssetViewer(asset: AppAsset.addAttachment, height: 32.h, width: 32.w,),
+              if(showPrefixIcon)SizedBox(width: 12.w,),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -49,7 +51,7 @@ class UploadAttachment extends StatelessWidget {
                     ),
                     SizedBox(height: 1.h,),
                     Text(
-                      'PNG, JPG, PDF | 10MB max.',
+                      subtitle ?? 'PNG, JPG, PDF | 10MB max.',
                       style: Theme.of(context)
                           .textTheme
                           .bodySmall
