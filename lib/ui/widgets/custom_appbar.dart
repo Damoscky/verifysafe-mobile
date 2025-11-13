@@ -45,7 +45,7 @@ AppBar customAppBar({
       show: showLeadingIcon,
     ),
     bottom: PreferredSize(
-      preferredSize: Size.fromHeight(appbarBottomPadding?.h ?? 20.h),
+      preferredSize: Size.fromHeight(appbarBottomPadding?.h ?? 10.h),
       child: Container(
         color: showBottom ? ColorPath.mysticGrey:Colors.transparent,
         height: 1.h,
