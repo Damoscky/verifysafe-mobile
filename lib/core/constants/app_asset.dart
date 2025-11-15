@@ -78,6 +78,13 @@ class AppAsset {
   static const String check2 = '$_iconDirectory/check_2.svg';
   static const String calendar = '$_iconDirectory/calendar.svg';
   static const String delete = '$_iconDirectory/delete.svg';
+  static const String search = '$_iconDirectory/search.svg';
+  static const String close = '$_iconDirectory/close.svg';
+  static const String clock = '$_iconDirectory/clock.svg';
+  static const String searchFound = '$_iconDirectory/search_found.svg';
+  static const String searchNotFound = '$_iconDirectory/search_not_found.svg';
+  static const String searchLocked = '$_iconDirectory/search_locked.svg';
+  static const String searchSuspended = '$_iconDirectory/search_suspended.svg';
 
 
 
@@ -96,4 +103,5 @@ class AppAsset {
   static const String onboardingImage2 = '$_imageDirectory/onboarding_image_2.svg';
   static const String onboardingImage3 = '$_imageDirectory/onboarding_image_3.svg';
   static const String biometricsSetup = '$_imageDirectory/biometrics_setup.svg';
+  static const String searchEmptyState = '$_imageDirectory/search_empty_state.svg';
 }
