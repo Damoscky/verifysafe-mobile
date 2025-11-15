@@ -5,9 +5,6 @@ import 'package:verifysafe/core/constants/app_theme/custom_color_scheme.dart';
 import 'package:verifysafe/ui/widgets/clickable.dart';
 import 'package:verifysafe/ui/widgets/custom_button.dart';
 import 'package:verifysafe/ui/widgets/verifysafe_container.dart';
-
-
-import '../../core/constants/app_asset.dart';
 import '../../core/constants/color_path.dart';
 import 'custom_svg.dart';
 
