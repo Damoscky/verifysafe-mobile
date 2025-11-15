@@ -116,7 +116,7 @@ class _LoginState extends State<Login> {
                         child: CustomButton(
                             buttonText: 'Log in',
                             onPressed: (){
-                             pushNavigation(context: context, widget: Search(), routeName: NamedRoutes.search);
+                             pushNavigation(context: context, widget: Login(), routeName: NamedRoutes.login);
                             }
                         ),
                       ),
