@@ -3,7 +3,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:verifysafe/core/constants/app_dimension.dart';
 import 'package:verifysafe/core/constants/app_theme/custom_color_scheme.dart';
 import 'package:verifysafe/core/constants/color_path.dart';
+import 'package:verifysafe/core/constants/named_routes.dart';
 import 'package:verifysafe/core/utilities/date_utilitites.dart';
+import 'package:verifysafe/core/utilities/navigator.dart';
+import 'package:verifysafe/ui/pages/employers/view_contact_person.dart';
+import 'package:verifysafe/ui/pages/employers/view_services_and_specialization.dart';
+import 'package:verifysafe/ui/pages/profile/view_employment_details.dart';
 import 'package:verifysafe/ui/widgets/clickable.dart';
 import 'package:verifysafe/ui/widgets/custom_appbar.dart';
 import 'package:verifysafe/ui/widgets/custom_divider.dart';
@@ -182,19 +187,37 @@ class ViewWorkHistory extends StatelessWidget {
           ActionTile(
             title: "Employer Information",
             subTitle: "Change and update your employer information",
-            onPressed: () {},
+            onPressed: () {
+              pushNavigation(
+                context: context,
+                widget: ViewEmploymentDetails(canEdit: false),
+                routeName: NamedRoutes.viewEmploymentDetails,
+              );
+            },
           ),
           CustomDivider(),
           ActionTile(
             title: "Contact Person",
             subTitle: "Change and update contact person information",
-            onPressed: () {},
+            onPressed: () {
+              pushNavigation(
+                context: context,
+                widget: ViewContactPerson(),
+                routeName: NamedRoutes.viewContactPerson,
+              );
+            },
           ),
           CustomDivider(),
           ActionTile(
             title: "Services & Specialisations",
             subTitle: "Change and update services information",
-            onPressed: () {},
+            onPressed: () {
+              pushNavigation(
+                context: context,
+                widget: ViewServicesAndSpecialization(),
+                routeName: NamedRoutes.viewServicesAndSpecialization,
+              );
+            },
           ),
         ],
       ),

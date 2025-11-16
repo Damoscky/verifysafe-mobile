@@ -35,13 +35,26 @@ class NamedRoutes {
   static const termsAndCondition = '/termsAndCondition';
   static const settings = '/settings';
   static const notificationSettings = '/notificationSettings';
+  static const biometricsSettings = '/biometricsSettings';
+  static const changePassword = '/changePassword';
+  static const twoFaSettings = '/twoFaSettings';
+  static const twoFaPinScreen = '/twoFaPinScreen';
   static const rateApp = '/rateApp';
   static const viewWorker = '/viewWorker';
+  static const viewWorkerInfo = '/viewWorkerInfo';
+  static const viewWorkerWorkHistory = '/viewWorkerWorkHistory';
+  static const viewContactPerson = '/viewContactPerson';
+  static const viewServicesAndSpecialization = '/viewServicesAndSpecialization';
+  static const employerManageWorkerGuanantor = '/employerManageWorkerGuanantor';
+  static const viewWorkerAgencyInfo = '/viewWorkerAgencyInfo';
   static const viewWorkHistory = '/viewWorkHistory';
+  static const viewUserInformation = '/viewUserInformation';
+  static const verificationInformation = '/verificationInformation';
+  static const viewEmploymentDetails = '/viewEmploymentDetails';
+  static const showId = '/showId';
 
   //search
   static const search = '/search';
-
 
   //billing
   static const billType = '/billType';
@@ -51,4 +64,6 @@ class NamedRoutes {
 
   //ratings and reviews
   static const ratingsAndReviews = '/ratingsAndReviews';
+
+  static const workerInformation = '/workerInformation';
 }

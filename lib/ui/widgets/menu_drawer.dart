@@ -9,6 +9,7 @@ import 'package:verifysafe/ui/pages/billing/bill_type.dart';
 import 'package:verifysafe/ui/pages/guarantor/manage_guarantor.dart';
 import 'package:verifysafe/ui/pages/profile/settings/rate_app.dart';
 import 'package:verifysafe/ui/pages/profile/settings/terms_and_condition.dart';
+import 'package:verifysafe/ui/pages/ratings_and_reviews.dart';
 import 'package:verifysafe/ui/pages/support_and_misconducts/support_and_misconducts.dart';
 import 'package:verifysafe/ui/widgets/display_image.dart';
 import 'package:verifysafe/ui/widgets/menu_item.dart';
@@ -76,6 +77,13 @@ class MenuDrawer extends StatelessWidget {
                             MenuItem(
                               title: "Ratings & Reviews",
                               asset: AppAsset.ratings,
+                              onPressed: () {
+                                pushNavigation(
+                                  context: context,
+                                  widget: RatingsAndReviews(),
+                                  routeName: NamedRoutes.ratingsAndReviews,
+                                );
+                              },
                             ),
                             SizedBox(height: 24.h),
                             if (userType != UserType.worker)

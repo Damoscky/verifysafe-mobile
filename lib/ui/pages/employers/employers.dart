@@ -6,6 +6,8 @@ import 'package:verifysafe/core/constants/app_dimension.dart';
 import 'package:verifysafe/core/constants/app_theme/custom_color_scheme.dart';
 import 'package:verifysafe/core/constants/color_path.dart';
 import 'package:verifysafe/core/data/enum/user_type.dart';
+import 'package:verifysafe/ui/widgets/bottom_sheets/base_bottom_sheet.dart';
+import 'package:verifysafe/ui/widgets/bottom_sheets/sort_options.dart';
 import 'package:verifysafe/ui/widgets/clickable.dart';
 import 'package:verifysafe/ui/widgets/custom_appbar.dart';
 import 'package:verifysafe/ui/widgets/custom_text_field.dart';
@@ -34,7 +36,7 @@ class _EmployersState extends ConsumerState<Employers> {
         title: 'Employer',
         actions: [
           Padding(
-            padding: EdgeInsets.only(right:AppDimension.paddingRight),
+            padding: EdgeInsets.only(right: AppDimension.paddingRight),
             child: Clickable(
               onPressed: () {
                 //todo::: handle route here
@@ -61,7 +63,10 @@ class _EmployersState extends ConsumerState<Employers> {
         children: [
           EmployersDashboardCard(),
           Padding(
-            padding: EdgeInsets.only(left:AppDimension.paddingLeft, right: AppDimension.paddingRight),
+            padding: EdgeInsets.only(
+              left: AppDimension.paddingLeft,
+              right: AppDimension.paddingRight,
+            ),
             child: CustomTextField(
               hintText: "Search for Employer",
               onChanged: (value) {
@@ -79,7 +84,17 @@ class _EmployersState extends ConsumerState<Employers> {
           Padding(
             padding: EdgeInsets.symmetric(horizontal: AppDimension.paddingLeft),
             child: SortAndFilterTab(
-              sortOnPressed: () {},
+              sortOnPressed: () {
+                baseBottomSheet(
+                  context: context,
+                  content: SortOptions(
+                    filterOptions: ['Date', 'Ascending', 'Descending'],
+                    onSelected: (value) {
+                      //todo: perform action
+                    },
+                  ),
+                );
+              },
               filterOnPressed: () {},
             ),
           ),

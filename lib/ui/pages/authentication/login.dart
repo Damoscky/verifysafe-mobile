@@ -8,6 +8,7 @@ import 'package:verifysafe/core/utilities/navigator.dart';
 import 'package:verifysafe/ui/pages/authentication/forgot_password.dart';
 import 'package:verifysafe/ui/pages/authentication/onboarding/select_user_type.dart';
 import 'package:verifysafe/ui/pages/authentication/onboarding/sign_up_successful.dart';
+import 'package:verifysafe/ui/pages/bottom_nav.dart';
 import 'package:verifysafe/ui/widgets/authentication/terms.dart';
 import 'package:verifysafe/ui/widgets/custom_appbar.dart';
 import 'package:verifysafe/ui/widgets/custom_svg.dart';
@@ -18,7 +19,6 @@ import '../../../core/utilities/validator.dart';
 import '../../widgets/clickable.dart';
 import '../../widgets/custom_button.dart';
 import '../../widgets/custom_text_field.dart';
-import '../search.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -116,7 +116,7 @@ class _LoginState extends State<Login> {
                         child: CustomButton(
                             buttonText: 'Log in',
                             onPressed: (){
-                             pushNavigation(context: context, widget: Login(), routeName: NamedRoutes.login);
+                             pushNavigation(context: context, widget: BottomNav(), routeName: NamedRoutes.bottomNav);
                             }
                         ),
                       ),

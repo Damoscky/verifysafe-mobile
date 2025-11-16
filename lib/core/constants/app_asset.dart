@@ -85,6 +85,9 @@ class AppAsset {
   static const String searchNotFound = '$_iconDirectory/search_not_found.svg';
   static const String searchLocked = '$_iconDirectory/search_locked.svg';
   static const String searchSuspended = '$_iconDirectory/search_suspended.svg';
+  static const String capture = '$_iconDirectory/capture.svg';
+  static const String verifysafe = '$_iconDirectory/verifysafe.svg';
+  static const String bgLogo = '$_iconDirectory/bg_logo.svg';
 
 
 
