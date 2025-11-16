@@ -55,6 +55,7 @@ class ColorPath {
   static const bermudaGreen = Color(0xff77D5C7);
   static const fiordGrey = Color(0xff475467);
   static const fairPink = Color(0xffFFEEEC);
+  static const nevadaGrey = Color(0xff666E7A);
 
 
 

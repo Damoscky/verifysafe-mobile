@@ -24,6 +24,7 @@ class CustomDropdown extends StatefulWidget {
   final bool isCompulsory;
   final FocusNode? focusPointer;
   final bool showLabel;
+  final Color? fillColor;
 
   const CustomDropdown({
     super.key,
@@ -44,6 +45,7 @@ class CustomDropdown extends StatefulWidget {
     this.isCompulsory = false,
     this.focusPointer,
     this.showLabel = true,
+    this.fillColor
   });
 
   @override
@@ -88,7 +90,7 @@ class _CustomDropdownState extends State<CustomDropdown> {
           height: 56.h,
           width: double.infinity,
           decoration: BoxDecoration(
-            color: colorScheme.textFieldFillColor,
+            color: widget.fillColor ?? colorScheme.textFieldFillColor,
             border: Border.all(
                 color: _errorText != null ? ColorPath.redOrange
                     : colorScheme.textFieldBorder,

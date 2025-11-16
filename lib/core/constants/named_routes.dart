@@ -44,6 +44,9 @@ class NamedRoutes {
   static const showId = '/showId';
 
 
+  //search
+  static const search = '/search';
+
 
   //billing
   static const billType = '/billType';

@@ -40,8 +40,8 @@ class RateApp extends StatelessWidget {
           ),
           SizedBox(height: 16.h),
           CustomTextField(
-            height: 250.h,
-            maxLines: 10,
+            useDefaultHeight: false,
+            maxLines: 7,
             hintText: "Got any comments?",
           ),
           SizedBox(height: 32.h),
