@@ -78,6 +78,9 @@ class AppAsset {
   static const String check2 = '$_iconDirectory/check_2.svg';
   static const String calendar = '$_iconDirectory/calendar.svg';
   static const String delete = '$_iconDirectory/delete.svg';
+  static const String capture = '$_iconDirectory/capture.svg';
+  static const String verifysafe = '$_iconDirectory/verifysafe.svg';
+  static const String bgLogo = '$_iconDirectory/bg_logo.svg';
 
 
 

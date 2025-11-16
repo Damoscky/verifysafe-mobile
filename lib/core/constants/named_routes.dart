@@ -38,6 +38,11 @@ class NamedRoutes {
   static const rateApp = '/rateApp';
   static const viewWorker = '/viewWorker';
   static const viewWorkHistory = '/viewWorkHistory';
+  static const viewUserInformation = '/viewUserInformation';
+  static const verificationInformation = '/verificationInformation';
+  static const viewEmploymentDetails = '/viewEmploymentDetails';
+  static const showId = '/showId';
+
 
 
   //billing

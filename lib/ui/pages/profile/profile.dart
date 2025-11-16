@@ -5,11 +5,13 @@ import 'package:verifysafe/core/constants/app_asset.dart';
 import 'package:verifysafe/core/constants/app_dimension.dart';
 import 'package:verifysafe/core/constants/app_theme/custom_color_scheme.dart';
 import 'package:verifysafe/core/constants/named_routes.dart';
-import 'package:verifysafe/core/data/enum/user_type.dart';
 import 'package:verifysafe/core/utilities/navigator.dart';
 import 'package:verifysafe/ui/pages/authentication/login.dart';
 import 'package:verifysafe/ui/pages/profile/settings/notification_settings.dart';
 import 'package:verifysafe/ui/pages/profile/settings/settings.dart';
+import 'package:verifysafe/ui/pages/profile/verification_information.dart';
+import 'package:verifysafe/ui/pages/profile/view_employment_details.dart';
+import 'package:verifysafe/ui/pages/profile/view_user_information.dart';
 import 'package:verifysafe/ui/widgets/clickable.dart';
 import 'package:verifysafe/ui/widgets/custom_appbar.dart';
 import 'package:verifysafe/ui/widgets/custom_divider.dart';
@@ -39,9 +41,12 @@ class _ProfileState extends ConsumerState<Profile> {
         showBottom: true,
       ),
       body: ListView(
-        padding: EdgeInsets.symmetric(horizontal: AppDimension.paddingLeft, vertical: 16.h),
+        padding: EdgeInsets.symmetric(
+          horizontal: AppDimension.paddingLeft,
+          vertical: 16.h,
+        ),
         children: [
-          ProfileInfoCard(userType: UserType.agency),
+          ProfileInfoCard(showIdButton: true),
           SizedBox(height: 32.h),
           Text(
             "Personal Information",
@@ -50,34 +55,48 @@ class _ProfileState extends ConsumerState<Profile> {
             ),
           ),
           SizedBox(height: 16.h),
-          if (1 + 1 ==
-              3) //todo show [Personal info] for worker [Agency info] for employer and Agency
-            ProfileActionTile(
-              title: "Personal Information",
-              subTitle: "View and update personal data",
-              asset: AppAsset.profilePersonal,
-              onPressed: () {},
-            )
-          else
-            ProfileActionTile(
-              title: "Agency Information",
-              subTitle: "View and update data",
-              asset: AppAsset.profilePersonal,
-              onPressed: () {},
-            ),
+          ProfileActionTile(
+            title: 1 + 1 == 3
+                ? "Personal Information"
+                : "Agency Information", //todo show [Personal info] for worker [Agency info] for employer and Agency
+            subTitle: 1 + 1 == 3
+                ? "View and update personal data"
+                : "View and update data",
+            asset: AppAsset.profilePersonal,
+            onPressed: () {
+              pushNavigation(
+                context: context,
+                widget: ViewUserInformation(),
+                routeName: NamedRoutes.viewUserInformation,
+              );
+            },
+          ),
+
           CustomDivider(),
           ProfileActionTile(
             title: "Verification Information",
             subTitle: "Verify and update your data",
             asset: AppAsset.profileVerification,
-            onPressed: () {},
+            onPressed: () {
+              pushNavigation(
+                context: context,
+                widget: VerificationInformation(),
+                routeName: NamedRoutes.verificationInformation,
+              );
+            },
           ),
           CustomDivider(),
           ProfileActionTile(
             title: "Employment Details",
             subTitle: "View and update employmet data",
             asset: AppAsset.profileEmployment,
-            onPressed: () {},
+            onPressed: () {
+              pushNavigation(
+                context: context,
+                widget: ViewEmploymentDetails(),
+                routeName: NamedRoutes.viewEmploymentDetails,
+              );
+            },
           ),
           if (1 + 1 == 3) //todo show for worker
             Column(
@@ -106,7 +125,11 @@ class _ProfileState extends ConsumerState<Profile> {
             subTitle: "Change and update password",
             asset: AppAsset.profileSecurity,
             onPressed: () {
-              pushNavigation(context: context, widget: Settings(),routeName: NamedRoutes.settings);
+              pushNavigation(
+                context: context,
+                widget: Settings(),
+                routeName: NamedRoutes.settings,
+              );
             },
           ),
           CustomDivider(),
@@ -115,8 +138,11 @@ class _ProfileState extends ConsumerState<Profile> {
             subTitle: "Customize your notifications",
             asset: AppAsset.profileAgency,
             onPressed: () {
-              pushNavigation(context: context, widget: NotificationSettings(),routeName: NamedRoutes.notificationSettings);
-
+              pushNavigation(
+                context: context,
+                widget: NotificationSettings(),
+                routeName: NamedRoutes.notificationSettings,
+              );
             },
           ),
           SizedBox(height: 42.h),
@@ -151,5 +177,3 @@ class _ProfileState extends ConsumerState<Profile> {
     );
   }
 }
-
-
