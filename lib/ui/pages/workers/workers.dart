@@ -4,6 +4,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:verifysafe/core/constants/app_theme/custom_color_scheme.dart';
 import 'package:verifysafe/core/constants/color_path.dart';
+import 'package:verifysafe/ui/widgets/bottom_sheets/base_bottom_sheet.dart';
+import 'package:verifysafe/ui/widgets/bottom_sheets/sort_options.dart';
 import 'package:verifysafe/ui/widgets/clickable.dart';
 import 'package:verifysafe/ui/widgets/custom_appbar.dart';
 import 'package:verifysafe/ui/widgets/custom_text_field.dart';
@@ -77,7 +79,17 @@ class _WorkersState extends ConsumerState<Workers> {
             padding: EdgeInsets.symmetric(horizontal: 24.h),
 
             child: SortAndFilterTab(
-              sortOnPressed: () {},
+              sortOnPressed: () {
+                baseBottomSheet(
+                  context: context,
+                  content: SortOptions(
+                    filterOptions: ['Date', 'Ascending', 'Descending'],
+                    onSelected: (value) {
+                      //todo: perform action
+                    },
+                  ),
+                );
+              },
               filterOnPressed: () {},
             ),
           ),

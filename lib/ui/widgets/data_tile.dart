@@ -4,7 +4,13 @@ import 'package:verifysafe/core/constants/app_theme/custom_color_scheme.dart';
 class DataTile extends StatelessWidget {
   final String title;
   final String data;
-  const DataTile({super.key, required this.title, required this.data});
+  final Color? dataColor;
+  const DataTile({
+    super.key,
+    required this.title,
+    required this.data,
+    this.dataColor,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +26,7 @@ class DataTile extends StatelessWidget {
         Text(
           data,
           style: textTheme.bodyLarge?.copyWith(
-            color: colorScheme.blackText,
+            color: dataColor ?? colorScheme.blackText,
             fontWeight: FontWeight.w600,
           ),
         ),

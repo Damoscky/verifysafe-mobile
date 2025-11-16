@@ -187,7 +187,7 @@ class NotificationItem extends StatelessWidget {
                     ),
                   ],
                 ),
-                SizedBox(height: 2.h),
+                SizedBox(height: 16.h),
                 Text(
                   DateUtilities.timeAgo(
                     dateTime: DateTime.now().subtract(Duration(minutes: 10)),

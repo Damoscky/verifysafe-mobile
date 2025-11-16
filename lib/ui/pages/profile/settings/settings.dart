@@ -5,7 +5,10 @@ import 'package:verifysafe/core/constants/app_dimension.dart';
 import 'package:verifysafe/core/constants/app_theme/custom_color_scheme.dart';
 import 'package:verifysafe/core/constants/named_routes.dart';
 import 'package:verifysafe/core/utilities/navigator.dart';
+import 'package:verifysafe/ui/pages/profile/settings/biometrics_settings.dart';
+import 'package:verifysafe/ui/pages/profile/settings/change_password.dart';
 import 'package:verifysafe/ui/pages/profile/settings/notification_settings.dart';
+import 'package:verifysafe/ui/pages/profile/settings/two_fa_settings.dart';
 import 'package:verifysafe/ui/widgets/custom_appbar.dart';
 import 'package:verifysafe/ui/widgets/profile/profile_action_tile.dart';
 
@@ -21,7 +24,7 @@ class Settings extends StatelessWidget {
       appBar: customAppBar(
         context: context,
         showBottom: true,
-        title: "Terms & Conditions",
+        title: "Settings",
       ),
       body: Padding(
         padding: EdgeInsets.only(
@@ -41,6 +44,13 @@ class Settings extends StatelessWidget {
               asset: AppAsset.padlock,
               showChevron: false,
               height: 20,
+              onPressed: () {
+                pushNavigation(
+                  context: context,
+                  widget: ChangePassword(),
+                  routeName: NamedRoutes.changePassword,
+                );
+              },
             ),
             SizedBox(height: 24.h),
             ProfileActionTile(
@@ -49,6 +59,13 @@ class Settings extends StatelessWidget {
               asset: AppAsset.faceId,
               showChevron: false,
               height: 20,
+              onPressed: () {
+                pushNavigation(
+                  context: context,
+                  widget: BiometricsSettings(),
+                  routeName: NamedRoutes.biometricsSettings,
+                );
+              },
             ),
             SizedBox(height: 24.h),
             ProfileActionTile(
@@ -57,6 +74,13 @@ class Settings extends StatelessWidget {
               asset: AppAsset.twoFa,
               showChevron: false,
               height: 20,
+              onPressed: () {
+                pushNavigation(
+                  context: context,
+                  widget: TwoFaSettings(),
+                  routeName: NamedRoutes.twoFaSettings,
+                );
+              },
             ),
             SizedBox(height: 24.h),
             Text(

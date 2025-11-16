@@ -2,7 +2,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:verifysafe/core/constants/app_asset.dart';
 import 'package:verifysafe/core/constants/color_path.dart';
+import 'package:verifysafe/core/constants/named_routes.dart';
 import 'package:verifysafe/core/data/enum/user_type.dart';
+import 'package:verifysafe/core/utilities/navigator.dart';
+import 'package:verifysafe/ui/pages/authentication/onboarding/employer/employer_info.dart';
+import 'package:verifysafe/ui/pages/authentication/onboarding/worker/basic_info.dart';
+import 'package:verifysafe/ui/pages/search.dart';
 import 'package:verifysafe/ui/widgets/clickable.dart';
 import 'package:verifysafe/ui/widgets/custom_svg.dart';
 import 'package:verifysafe/ui/widgets/custom_text_field.dart';
@@ -29,16 +34,23 @@ class _DashboardBodyDataState extends State<DashboardBodyData> {
         if (widget.userType != UserType.worker)
           Padding(
             padding: EdgeInsets.only(left: 24.w, right: 24.w),
-            child: CustomTextField(
-              hintText: "Search...",
-              onChanged: (value) {
-                // todo::: handle route to search screen here
+            child: Clickable(
+              onPressed: () {
+                pushNavigation(
+                  context: context,
+                  widget: Search(),
+                  routeName: NamedRoutes.search,
+                );
               },
-              enabled: false,
-              borderColor: ColorPath.niagaraGreen,
-              suffixIcon: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Icon(CupertinoIcons.search),
+              child: CustomTextField(
+                hintText: "Search...",
+                onChanged: (value) {},
+                enabled: false,
+                borderColor: ColorPath.niagaraGreen,
+                suffixIcon: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Icon(CupertinoIcons.search),
+                ),
               ),
             ),
           ),
@@ -52,6 +64,11 @@ class _DashboardBodyDataState extends State<DashboardBodyData> {
                     child: Clickable(
                       onPressed: () {
                         //todo::: handle route to add worker
+                        pushNavigation(
+                          context: context,
+                          widget: BasicInfo(),
+                          routeName: NamedRoutes.basicInfo,
+                        );
                       },
                       child: VerifySafeContainer(
                         bgColor: ColorPath.aquaGreen,
@@ -77,6 +94,11 @@ class _DashboardBodyDataState extends State<DashboardBodyData> {
                     child: Clickable(
                       onPressed: () {
                         //todo::: handle route to add employer
+                         pushNavigation(
+                          context: context,
+                          widget: EmployerInfo(),
+                          routeName: NamedRoutes.employerInfo,
+                        );
                       },
                       child: VerifySafeContainer(
                         // bgColor: ColorPath.aquaGreen,

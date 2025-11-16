@@ -10,9 +10,8 @@ import 'package:verifysafe/ui/pages/guarantor/view_guarantor_details.dart';
 import 'package:verifysafe/ui/widgets/bottom_sheets/sort_options.dart';
 import 'package:verifysafe/ui/widgets/clickable.dart';
 import 'package:verifysafe/ui/widgets/custom_svg.dart';
+import 'package:verifysafe/ui/widgets/listview_items/guarantor_card_item.dart';
 import 'package:verifysafe/ui/widgets/sort_and_filter_tab.dart';
-import 'package:verifysafe/ui/widgets/verifysafe_container.dart';
-import 'package:verifysafe/ui/widgets/verifysafe_tag.dart';
 
 import '../../../core/constants/color_path.dart';
 import '../../widgets/bottom_sheets/base_bottom_sheet.dart';
@@ -254,150 +253,10 @@ class _ManageGuarantorState extends State<ManageGuarantor> {
               physics: const NeverScrollableScrollPhysics(),
               padding: EdgeInsets.zero,
               itemBuilder: (BuildContext context, int index) {
-                return Clickable(
+                return GuarantorCardItem(
                   onPressed: (){
-                    pushNavigation(context: context, widget: const ViewGuarantorDetails(), routeName: NamedRoutes.viewGuarantorDetails);
-                  },
-                  child: VerifySafeContainer(
-                    padding: EdgeInsets.symmetric(
-                      vertical: 16.h,
-                      horizontal: 16.w
-                    ),
-                      borderRadius: BorderRadius.all(Radius.circular(16.r)),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      'Jideson & Co.',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyLarge
-                                          ?.copyWith(
-                                          fontWeight: FontWeight.w700,
-                                          color: Theme.of(context).colorScheme.textPrimary
-                                      ),
-                                    ),
-                                    SizedBox(height: 4.h,),
-                                    Text(
-                                      'Dec 19, 2013 10:39 AM',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodySmall
-                                          ?.copyWith(
-                                          fontWeight: FontWeight.w400,
-                                          color: Theme.of(context).colorScheme.text4
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              SizedBox(width: 10.w,),
-                              VerifySafeTag(status: index == 0 ? 'Accepted' : 'Pending')
-                            ],
-                          ),
-                          SizedBox(height: 12.h,),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      'Contact',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodySmall
-                                          ?.copyWith(
-                                          fontWeight: FontWeight.w400,
-                                          color: Theme.of(context).colorScheme.text4
-                                      ),
-                                    ),
-                                    SizedBox(height: 4.h,),
-                                    Text(
-                                      'jideson@yahoo.com',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyMedium
-                                          ?.copyWith(
-                                          fontWeight: FontWeight.w400,
-                                          color: Theme.of(context).colorScheme.text5
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              SizedBox(width: 10.w,),
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      'Relationship',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodySmall
-                                          ?.copyWith(
-                                          fontWeight: FontWeight.w400,
-                                          color: Theme.of(context).colorScheme.text4
-                                      ),
-                                    ),
-                                    SizedBox(height: 4.h,),
-                                    Text(
-                                      'Brother',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyMedium
-                                          ?.copyWith(
-                                          fontWeight: FontWeight.w400,
-                                          color: Theme.of(context).colorScheme.text5
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                          SizedBox(height: 12.h,),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Address',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodySmall
-                                    ?.copyWith(
-                                    fontWeight: FontWeight.w400,
-                                    color: Theme.of(context).colorScheme.text4
-                                ),
-                              ),
-                              SizedBox(height: 4.h,),
-                              Text(
-                                '1901 Donovan Cir. Shiloh, Tokyo 86563',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodyMedium
-                                    ?.copyWith(
-                                    fontWeight: FontWeight.w400,
-                                    color: Theme.of(context).colorScheme.text5
-                                ),
-                              ),
-                            ],
-                          )
-
-                        ],
-                      )
-                  ),
+                  pushNavigation(context: context, widget: const ViewGuarantorDetails(), routeName: NamedRoutes.viewGuarantorDetails);
+                },
                 );
               },
               separatorBuilder: (context, index) {
