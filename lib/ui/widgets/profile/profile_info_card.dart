@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:verifysafe/core/constants/app_asset.dart';
 import 'package:verifysafe/core/constants/app_theme/custom_color_scheme.dart';
 import 'package:verifysafe/core/constants/color_path.dart';
 import 'package:verifysafe/core/constants/named_routes.dart';
+import 'package:verifysafe/core/data/view_models/user_view_model.dart';
 import 'package:verifysafe/core/utilities/image_and_doc_utils.dart';
 import 'package:verifysafe/core/utilities/navigator.dart';
 import 'package:verifysafe/ui/pages/profile/show_id.dart';
@@ -13,7 +15,7 @@ import 'package:verifysafe/ui/widgets/custom_svg.dart';
 import 'package:verifysafe/ui/widgets/display_image.dart';
 import 'package:verifysafe/ui/widgets/verifysafe_container.dart';
 
-class ProfileInfoCard extends StatelessWidget {
+class ProfileInfoCard extends ConsumerWidget {
   final bool showIdButton;
   final bool canCapture;
 
@@ -24,9 +26,10 @@ class ProfileInfoCard extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context,WidgetRef ref) {
     final textTheme = Theme.of(context).textTheme;
     final colorScheme = Theme.of(context).colorScheme;
+    final userVm = ref.watch(userViewModel);
     return VerifySafeContainer(
       padding: EdgeInsets.all(16.w),
       child: Column(
@@ -57,7 +60,7 @@ class ProfileInfoCard extends StatelessWidget {
           ),
           SizedBox(height: 16.h),
           Text(
-            "Folashade Onifade",
+            userVm.userData?.name ?? '',
             style: textTheme.bodyLarge?.copyWith(
               color: colorScheme.blackText,
               fontWeight: FontWeight.w700,

@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:verifysafe/core/constants/app_asset.dart';
 import 'package:verifysafe/core/constants/color_path.dart';
 import 'package:verifysafe/core/constants/named_routes.dart';
 import 'package:verifysafe/core/data/enum/user_type.dart';
+import 'package:verifysafe/core/data/view_models/user_view_model.dart';
 import 'package:verifysafe/core/utilities/navigator.dart';
 import 'package:verifysafe/ui/pages/billing/bill_type.dart';
 import 'package:verifysafe/ui/pages/guarantor/manage_guarantor.dart';
@@ -14,13 +16,14 @@ import 'package:verifysafe/ui/pages/support_and_misconducts/support_and_miscondu
 import 'package:verifysafe/ui/widgets/display_image.dart';
 import 'package:verifysafe/ui/widgets/menu_item.dart';
 
-class MenuDrawer extends StatelessWidget {
+class MenuDrawer extends ConsumerWidget {
   final UserType userType;
-  const MenuDrawer({super.key, this.userType = UserType.agency});
+  const MenuDrawer({super.key, this.userType = UserType.worker});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final textTheme = Theme.of(context).textTheme;
+    final vm = ref.watch(userViewModel);
     return Drawer(
       shape: const RoundedRectangleBorder(borderRadius: BorderRadius.zero),
       backgroundColor: Colors.white,
@@ -54,7 +57,10 @@ class MenuDrawer extends StatelessWidget {
                           borderColor: ColorPath.persianGreen,
                         ),
                         SizedBox(height: 16.h),
-                        Text("Folashade Onifade", style: textTheme.titleMedium),
+                        Text(
+                          vm.userData?.name ?? '',
+                          style: textTheme.titleMedium,
+                        ),
                         SizedBox(height: 4.h),
                         Text("@sadeoni"),
                         SizedBox(height: 16.h),

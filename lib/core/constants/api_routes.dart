@@ -22,4 +22,8 @@ class ApiRoutes {
   static var getStates = "${dotenv.env['GENERAL']}/states";
   static var getCities = "${dotenv.env['GENERAL']}/cities";
   static var getDropDowns = "${dotenv.env['GENERAL']}/dropdowns";
+
+  //profile
+  static var getUser = "${dotenv.env['PROFILE']}/me";
+
 }

@@ -162,7 +162,10 @@ class _LoginState extends ConsumerState<Login> {
                                         OnboardingSteps.identitiVerification) {
                                       replaceNavigation(
                                         context: context,
-                                        widget: BottomNav(),
+                                        widget: BottomNav(
+                                          userData:
+                                              vm.authorizationResponse?.user,
+                                        ),
                                         routeName: NamedRoutes.bottomNav,
                                       );
                                     } else {

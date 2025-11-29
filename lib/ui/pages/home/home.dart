@@ -8,6 +8,7 @@ import 'package:verifysafe/core/constants/color_path.dart';
 import 'package:verifysafe/core/data/enum/user_type.dart';
 import 'package:verifysafe/core/data/view_models/authentication_vms/authentication_view_model.dart';
 import 'package:verifysafe/core/data/view_models/bottom_nav_view_model.dart';
+import 'package:verifysafe/core/data/view_models/user_view_model.dart';
 import 'package:verifysafe/ui/widgets/display_image.dart';
 import 'package:verifysafe/ui/widgets/home/complete_profile_card.dart';
 import 'package:verifysafe/ui/widgets/home/dashboard_body_data.dart';
@@ -29,6 +30,7 @@ class _HomeState extends ConsumerState<Home> {
     final textTheme = Theme.of(context).textTheme;
     final bottomNavVm = ref.watch(bottomNavViewModel);
     final authVm = ref.watch(authenticationViewModel);
+    final userVm = ref.watch(userViewModel);
 
     return Scaffold(
       appBar: AppBar(
@@ -73,68 +75,67 @@ class _HomeState extends ConsumerState<Home> {
         ),
       ),
       body: //Scrollable Body
-      ListView(
-        padding: EdgeInsets.zero,
-        children: [
-          //WELCOMEBACK ANALYTICS CONTAINER
-          Container(
-            padding: EdgeInsets.only(
-              left: AppDimension.paddingLeft,
-              right: AppDimension.paddingRight,
-              bottom: 24.h,
-            ),
-            color: colorScheme.brandColor,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(height: 8.h),
-                Text.rich(
-                  TextSpan(
-                    text: "Welcome back, ",
-                    children: [
-                      TextSpan(
-                        text:
-                            authVm.authorizationResponse?.user?.name ??
-                            '', //todo::: replace with UserVM user
-                        style: textTheme.bodyLarge?.copyWith(
-                          color: Colors.white,
-                          fontWeight: FontWeight.w700,
+      RefreshIndicator(
+        onRefresh: () async {
+          userVm.getUserData();
+        },
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: [
+            //WELCOMEBACK ANALYTICS CONTAINER
+            Container(
+              padding: EdgeInsets.only(
+                left: AppDimension.paddingLeft,
+                right: AppDimension.paddingRight,
+                bottom: 24.h,
+              ),
+              color: colorScheme.brandColor,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(height: 8.h),
+                  Text.rich(
+                    TextSpan(
+                      text: "Welcome back, ",
+                      children: [
+                        TextSpan(
+                          text: userVm.userData?.name ?? '',
+                          style: textTheme.bodyLarge?.copyWith(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w700,
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
+                    style: textTheme.bodyLarge?.copyWith(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w400,
+                    ),
                   ),
-                  style: textTheme.bodyLarge?.copyWith(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w400,
+                  SizedBox(height: 24.h),
+                  //Dashboard Card
+                  DashboardOverviewCard(
+                    userType: userVm.userData?.userEnumType ?? UserType.worker,
                   ),
-                ),
-                SizedBox(height: 24.h),
-                //Dashboard Card
-                DashboardOverviewCard(
-                  userType:
-                      authVm.authorizationResponse?.user?.userEnumType ??
-                      UserType.worker,
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-          if (authVm.authorizationResponse?.onboarding?.completionPercentage !=
-              100)
-            Column(
-              children: [
-                SizedBox(height: 24.h),
-                CompleteProfileCard(),
-              ],
-            ),
-          DashboardBodyData(
-            userType:
-                authVm
+            if (authVm
                     .authorizationResponse
-                    ?.user
-                    ?.userEnumType ?? //todo::: replace with UserVM user
-                UserType.worker,
-          ),
-        ],
+                    ?.onboarding
+                    ?.completionPercentage !=
+                100)
+              Column(
+                children: [
+                  SizedBox(height: 24.h),
+                  CompleteProfileCard(),
+                ],
+              ),
+            DashboardBodyData(
+              userType: userVm.userData?.userEnumType ?? UserType.worker,
+            ),
+          ],
+        ),
       ),
     );
   }

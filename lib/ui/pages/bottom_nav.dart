@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:verifysafe/core/constants/app_theme/custom_color_scheme.dart';
 import 'package:verifysafe/core/data/enum/user_type.dart';
-import 'package:verifysafe/core/data/view_models/authentication_vms/authentication_view_model.dart';
+import 'package:verifysafe/core/data/models/user.dart';
+import 'package:verifysafe/core/data/view_models/user_view_model.dart';
 import 'package:verifysafe/ui/widgets/menu_drawer.dart';
 import '../../core/constants/color_path.dart';
 import '../../core/data/view_models/bottom_nav_view_model.dart';
 import '../widgets/bottom_nav_items.dart';
 
 class BottomNav extends ConsumerStatefulWidget {
-  const BottomNav({super.key});
+  final User? userData;
+  const BottomNav({super.key, this.userData});
 
   @override
   ConsumerState<BottomNav> createState() => _BottomNavState();
@@ -23,16 +26,19 @@ class _BottomNavState extends ConsumerState<BottomNav> {
   void initState() {
     //init push notification listeners
     // FirebaseMessagingUtils.pushNotificationListenerInit(context: context);
-
+    SchedulerBinding.instance.addPostFrameCallback((_) {
+      if (widget.userData != null) {
+        ref.read(userViewModel).userData = widget.userData;
+      }
+      setState(() {});
+    });
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     final bottomNavVm = ref.watch(bottomNavViewModel);
-    final authVm = ref.watch(
-      authenticationViewModel,
-    ); //todo::>>>temp till dashboard data is provided
+    final userVm = ref.watch(userViewModel);
 
     return PopScope(
       canPop: false,
@@ -44,7 +50,9 @@ class _BottomNavState extends ConsumerState<BottomNav> {
       child: Scaffold(
         extendBodyBehindAppBar: true,
         key: bottomNavVm.scaffoldKey,
-        drawer: const MenuDrawer(),
+        drawer: MenuDrawer(
+          userType: userVm.userData?.userEnumType ?? UserType.worker,
+        ),
         bottomNavigationBar: Theme(
           data: Theme.of(context).copyWith(
             splashColor: Colors.transparent,
@@ -68,8 +76,7 @@ class _BottomNavState extends ConsumerState<BottomNav> {
               currentIndex: bottomNavVm.currentIndex,
 
               items: bottomNavItems(
-                authVm.authorizationResponse?.user?.userEnumType ??
-                    UserType.worker,
+                userVm.userData?.userEnumType ?? UserType.worker,
               ),
             ),
           ),
@@ -79,8 +86,7 @@ class _BottomNavState extends ConsumerState<BottomNav> {
           child: IndexedStack(
             index: bottomNavVm.currentIndex,
             children: bottomNavVm.handleBottomNavChildren(
-              authVm.authorizationResponse?.user?.userEnumType ??
-                  UserType.worker,
+              userVm.userData?.userEnumType ?? UserType.worker,
             ),
           ),
         ),
