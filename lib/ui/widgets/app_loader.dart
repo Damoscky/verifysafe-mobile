@@ -17,7 +17,7 @@ class AppLoader extends StatelessWidget {
         itemBuilder: (BuildContext context, int index) {
 
           return CustomSvg(
-            asset: AppAsset.logo,
+            asset: AppAsset.verifyIcon,
             height: size?.h,
             width: size?.w,
           );

@@ -67,20 +67,20 @@ class _SelectUserTypeState extends ConsumerState<SelectUserType> {
                   onPressed: (){
                     vm.userType = index;
 
-                    if(vm.userType == 0){
+                    // if(vm.userType == 0){
                       //nav to basic info
                       pushNavigation(context: context, widget: const BasicInfo(), routeName: NamedRoutes.basicInfo);
                       return;
-                    }
+                    // }
 
-                    if(vm.userType == 1){
-                      //nav to agency info
-                      pushNavigation(context: context, widget: const AgencyInfo(), routeName: NamedRoutes.agencyInfo);
-                      return;
-                    }
+                    // if(vm.userType == 1){
+                    //   //nav to agency info
+                    //   pushNavigation(context: context, widget: const AgencyInfo(), routeName: NamedRoutes.agencyInfo);
+                    //   return;
+                    // }
 
-                    //nav to employer info
-                    pushNavigation(context: context, widget: const EmployerInfo(), routeName: NamedRoutes.employerInfo);
+                    // //nav to employer info
+                    // pushNavigation(context: context, widget: const EmployerInfo(), routeName: NamedRoutes.employerInfo);
 
                   },
                   child: VerifySafeContainer(

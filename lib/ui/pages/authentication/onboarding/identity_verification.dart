@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:verifysafe/core/constants/app_theme/custom_color_scheme.dart';
+import 'package:verifysafe/core/data/enum/user_type.dart';
 import 'package:verifysafe/core/utilities/validator.dart';
 
 import '../../../../core/constants/app_asset.dart';
@@ -18,7 +19,8 @@ import '../../../widgets/screen_title.dart';
 import '../../../widgets/upload_attachment.dart';
 
 class IdentityVerification extends StatefulWidget {
-  const IdentityVerification({super.key});
+  final UserType userType;
+  const IdentityVerification({super.key,required this.userType});
 
   @override
   State<IdentityVerification> createState() => _IdentityVerificationState();

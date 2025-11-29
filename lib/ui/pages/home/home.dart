@@ -6,6 +6,7 @@ import 'package:verifysafe/core/constants/app_dimension.dart';
 import 'package:verifysafe/core/constants/app_theme/custom_color_scheme.dart';
 import 'package:verifysafe/core/constants/color_path.dart';
 import 'package:verifysafe/core/data/enum/user_type.dart';
+import 'package:verifysafe/core/data/view_models/authentication_vms/authentication_view_model.dart';
 import 'package:verifysafe/core/data/view_models/bottom_nav_view_model.dart';
 import 'package:verifysafe/ui/widgets/display_image.dart';
 import 'package:verifysafe/ui/widgets/home/complete_profile_card.dart';
@@ -27,6 +28,7 @@ class _HomeState extends ConsumerState<Home> {
     final colorScheme = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
     final bottomNavVm = ref.watch(bottomNavViewModel);
+    final authVm = ref.watch(authenticationViewModel);
 
     return Scaffold(
       appBar: AppBar(
@@ -91,7 +93,9 @@ class _HomeState extends ConsumerState<Home> {
                     text: "Welcome back, ",
                     children: [
                       TextSpan(
-                        text: "Folashade", //todo::: replace with User's name
+                        text:
+                            authVm.authorizationResponse?.user?.name ??
+                            '', //todo::: replace with UserVM user
                         style: textTheme.bodyLarge?.copyWith(
                           color: Colors.white,
                           fontWeight: FontWeight.w700,
@@ -106,18 +110,30 @@ class _HomeState extends ConsumerState<Home> {
                 ),
                 SizedBox(height: 24.h),
                 //Dashboard Card
-                DashboardOverviewCard(userType: UserType.agency),
+                DashboardOverviewCard(
+                  userType:
+                      authVm.authorizationResponse?.user?.userEnumType ??
+                      UserType.worker,
+                ),
               ],
             ),
           ),
-          if (1 + 1 == 2)
+          if (authVm.authorizationResponse?.onboarding?.completionPercentage !=
+              100)
             Column(
               children: [
                 SizedBox(height: 24.h),
-                CompleteProfileCard(), //todo::: replace with condition for complete profile card
+                CompleteProfileCard(),
               ],
             ),
-          DashboardBodyData(userType: UserType.agency),
+          DashboardBodyData(
+            userType:
+                authVm
+                    .authorizationResponse
+                    ?.user
+                    ?.userEnumType ?? //todo::: replace with UserVM user
+                UserType.worker,
+          ),
         ],
       ),
     );

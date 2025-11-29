@@ -42,7 +42,7 @@ class _BaseUrlConfig {
   };
 
   static Map<String, dynamic> stagingConstants = {
-    baseUrl: dotenv.env['STAGING_BASE_URL'],
+    baseUrl: dotenv.env['BASE_URL'],
     payStackKey: dotenv.env['STAGING_PAY_STACK_KEY'],
   };
 

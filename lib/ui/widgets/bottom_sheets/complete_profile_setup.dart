@@ -1,22 +1,36 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:verifysafe/core/constants/app_asset.dart';
 import 'package:verifysafe/core/constants/app_theme/custom_color_scheme.dart';
 import 'package:verifysafe/core/constants/color_path.dart';
+import 'package:verifysafe/core/data/enum/user_type.dart';
+import 'package:verifysafe/core/data/view_models/authentication_vms/authentication_view_model.dart';
+import 'package:verifysafe/core/data/view_models/authentication_vms/onboarding_vms/onboarding_vm.dart';
 import 'package:verifysafe/core/utilities/navigator.dart';
 import 'package:verifysafe/ui/widgets/clickable.dart';
 import 'package:verifysafe/ui/widgets/custom_button.dart';
 import 'package:verifysafe/ui/widgets/custom_painter/custom_progress_bar.dart';
 import 'package:verifysafe/ui/widgets/custom_svg.dart';
+
 //TODO: HANDLE TEXT CONTEXT FOR USERTYPE
-class CompleteProfileSetup extends StatelessWidget {
+class CompleteProfileSetup extends ConsumerWidget {
   const CompleteProfileSetup({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final textTheme = Theme.of(context).textTheme;
     final colorScheme = Theme.of(context).colorScheme;
-
+    final onboardingVm = ref.watch(onboardingViewModel);
+    final authVm = ref.watch(authenticationViewModel);
+    final percentage =
+        (double.tryParse(
+              authVm.authorizationResponse?.onboarding?.completionPercentage
+                      ?.toString() ??
+                  '0',
+            ) ??
+            0) /
+        100;
     return Column(
       // crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
@@ -50,7 +64,7 @@ class CompleteProfileSetup extends StatelessWidget {
               ),
               SizedBox(height: 24.h),
               TweenAnimationBuilder<double>(
-                tween: Tween<double>(begin: 0.0, end: 45.0),
+                tween: Tween<double>(begin: 0.0, end: percentage),
                 duration: Duration(milliseconds: 1200),
                 curve: Curves.easeInOut,
                 builder: (context, value, child) {
@@ -62,7 +76,7 @@ class CompleteProfileSetup extends StatelessWidget {
                         height: 8.h,
                         child: CustomPaint(
                           painter: CustomProgressBar(
-                            percentage: value,
+                            percentage: percentage,
                             backgroundColor: ColorPath.gullGrey.withValues(
                               alpha: .2,
                             ),
@@ -73,7 +87,7 @@ class CompleteProfileSetup extends StatelessWidget {
                       ),
                       SizedBox(height: 8.h),
                       Text(
-                        "${value.toInt()}% of profile completed",
+                        "${authVm.authorizationResponse?.onboarding?.completionPercentage ?? '0'}% of profile completed",
                         style: textTheme.bodySmall?.copyWith(
                           color: colorScheme.text4,
                           fontWeight: FontWeight.w700,
@@ -106,7 +120,15 @@ class CompleteProfileSetup extends StatelessWidget {
               SizedBox(height: 32.h),
               CustomButton(
                 onPressed: () {
-                  //todo: handle complete profile route here based on userType
+                  onboardingVm.handleOnboardingNavigation(
+                    context: context,
+                    userType:
+                        authVm.authorizationResponse?.user?.userEnumType ??
+                        UserType.worker,
+                    currentStep:
+                        authVm.authorizationResponse?.onboarding?.currentStep ??
+                        '',
+                  );
                 },
                 buttonText: "Complete Profile",
               ),

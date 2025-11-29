@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:verifysafe/core/constants/color_path.dart';
+import 'package:verifysafe/core/data/view_models/authentication_vms/authentication_view_model.dart';
 import 'package:verifysafe/ui/widgets/bottom_sheets/base_bottom_sheet.dart';
 import 'package:verifysafe/ui/widgets/bottom_sheets/complete_profile_setup.dart';
 import 'package:verifysafe/ui/widgets/clickable.dart';
@@ -20,15 +21,15 @@ class _CompleteProfileCardState extends ConsumerState<CompleteProfileCard> {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
-
+    final authVm = ref.watch(authenticationViewModel);
     return Clickable(
       onPressed: () {
-          baseBottomSheet(
-                      context: context,
-                      isDismissible: false,
-                      enableDrag: false,
-                      content: CompleteProfileSetup(),
-                    );
+        baseBottomSheet(
+          context: context,
+          isDismissible: false,
+          enableDrag: false,
+          content: CompleteProfileSetup(),
+        );
       },
       child: VerifySafeContainer(
         padding: EdgeInsets.all(16.w),
@@ -57,7 +58,18 @@ class _CompleteProfileCardState extends ConsumerState<CompleteProfileCard> {
               ),
             ),
             SizedBox(width: 40.w),
-            AnimatedCircularProgress(percentage: 45),
+            AnimatedCircularProgress(
+              percentage:
+                  double.tryParse(
+                    authVm
+                            .authorizationResponse
+                            ?.onboarding
+                            ?.completionPercentage
+                            ?.toString() ??
+                        '0',
+                  ) ??
+                  0,
+            ),
           ],
         ),
       ),

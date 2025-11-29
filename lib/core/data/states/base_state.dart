@@ -19,6 +19,12 @@ class BaseState extends ChangeNotifier{
   ViewState _secondPaginatedState = ViewState.idle ;
   ViewState get secondPaginatedState => _secondPaginatedState ;
 
+  ViewState _restPasswordState = ViewState.idle ;
+  ViewState get restPasswordState => _restPasswordState ;
+
+  ViewState _generalState = ViewState.idle ;
+  ViewState get generalState => _generalState ;
+
   void setState(ViewState viewState, {bool notifyListener = true}){
     _state = viewState ;
     if(notifyListener){
@@ -47,4 +53,13 @@ class BaseState extends ChangeNotifier{
     notifyListeners() ;
   }
 
+  void setResetPasswordState(ViewState viewState){
+    _restPasswordState = viewState ;
+    notifyListeners() ;
+  }
+
+  void setGeneralState(ViewState viewState){
+    _generalState = viewState ;
+    notifyListeners() ;
+  }
 }
