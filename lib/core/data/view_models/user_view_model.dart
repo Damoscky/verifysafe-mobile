@@ -16,6 +16,11 @@ class UserViewModel extends UserState {
 
   User? _userData;
   User? get userData => _userData;
+
+  String? get avatar => _userData?.avatar;
+  String get firstName => _userData?.name?.split(' ').first ?? '';
+  String get lastName => _userData?.name?.split(' ').last ?? '';
+
   set userData(User? user) {
     _userData = user;
     notifyListeners();

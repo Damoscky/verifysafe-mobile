@@ -6,11 +6,13 @@ import 'package:verifysafe/core/constants/named_routes.dart';
 import 'package:verifysafe/core/data/enum/password_type.dart';
 import 'package:verifysafe/core/data/enum/user_type.dart';
 import 'package:verifysafe/core/data/enum/view_state.dart';
+import 'package:verifysafe/core/data/view_models/authentication_vms/authentication_view_model.dart';
 import 'package:verifysafe/core/data/view_models/authentication_vms/onboarding_vms/onboarding_vm.dart';
 import 'package:verifysafe/core/data/view_models/authentication_vms/password_vm.dart';
 import 'package:verifysafe/core/utilities/navigator.dart';
 import 'package:verifysafe/ui/pages/authentication/onboarding/agency/agency_info.dart';
 import 'package:verifysafe/ui/pages/authentication/onboarding/employer/employer_info.dart';
+import 'package:verifysafe/ui/pages/bottom_nav.dart';
 import 'package:verifysafe/ui/widgets/bottom_sheets/action_completed.dart';
 import 'package:verifysafe/ui/widgets/authentication/password_requirement.dart';
 import 'package:verifysafe/ui/widgets/authentication/terms.dart';
@@ -54,6 +56,8 @@ class _CreatePasswordState extends ConsumerState<CreatePassword> {
   Widget build(BuildContext context) {
     final vm = ref.watch(passwordViewModel);
     final onboardingVm = ref.watch(onboardingViewModel);
+    final authVm = ref.watch(authenticationViewModel);
+
     return BusyOverlay(
       show:
           vm.restPasswordState == ViewState.busy ||
@@ -243,6 +247,9 @@ class _CreatePasswordState extends ConsumerState<CreatePassword> {
                                   onPressed: () {
                                     if (onboardingVm.currentUserType ==
                                         UserType.agency) {
+                                      //LOGIN USER
+                                      authVm.authorizationResponse =
+                                          onboardingVm.authorizationResponse;
                                       pushNavigation(
                                         context: context,
                                         widget: const AgencyInfo(),
@@ -252,6 +259,9 @@ class _CreatePasswordState extends ConsumerState<CreatePassword> {
                                     }
                                     if (onboardingVm.currentUserType ==
                                         UserType.employer) {
+                                      //LOGIN USER
+                                      authVm.authorizationResponse =
+                                          onboardingVm.authorizationResponse;
                                       pushNavigation(
                                         context: context,
                                         widget: const EmployerInfo(),
@@ -259,9 +269,17 @@ class _CreatePasswordState extends ConsumerState<CreatePassword> {
                                       );
                                       return;
                                     }
-                                    popUntilNavigation(
+                                    //LOGIN USER
+                                    authVm.authorizationResponse =
+                                        onboardingVm.authorizationResponse;
+                                    pushAndClearAllNavigation(
                                       context: context,
-                                      route: NamedRoutes.login,
+                                      widget: BottomNav(
+                                        userData: onboardingVm
+                                            .authorizationResponse
+                                            ?.user,
+                                      ),
+                                      routeName: NamedRoutes.bottomNav,
                                     );
                                   },
                                 ),

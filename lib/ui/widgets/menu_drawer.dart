@@ -48,11 +48,10 @@ class MenuDrawer extends ConsumerWidget {
                       children: [
                         DisplayImage(
                           // image: null,
-                          image:
-                              "https://mir-s3-cdn-cf.behance.net/user/276/888fd91082619909.61d2827bbd7a2.jpg",
-                          firstName: "AB",
+                          image: vm.avatar,
+                          firstName: vm.firstName,
                           size: 72,
-                          lastName: "CD",
+                          lastName: vm.lastName,
                           borderWidth: 2.w,
                           borderColor: ColorPath.persianGreen,
                         ),
@@ -61,8 +60,8 @@ class MenuDrawer extends ConsumerWidget {
                           vm.userData?.name ?? '',
                           style: textTheme.titleMedium,
                         ),
-                        SizedBox(height: 4.h),
-                        Text("@sadeoni"),
+                        // SizedBox(height: 4.h),
+                        // Text("@sadeoni"),
                         SizedBox(height: 16.h),
                       ],
                     ),

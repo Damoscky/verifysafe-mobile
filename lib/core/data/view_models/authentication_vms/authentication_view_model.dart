@@ -17,6 +17,17 @@ class AuthenticationViewModel extends BaseState {
 
   AuthorizationResponse? _authorizationResponse;
   AuthorizationResponse? get authorizationResponse => _authorizationResponse;
+  /// updates [AuthorizationResponse] when user onbards and access dashboard directly without login in.
+  set authorizationResponse(AuthorizationResponse? res) {
+    _authorizationResponse = res;
+    notifyListeners();
+  }
+
+  /// updates [AuthorizationResponse] onboarding data
+ updateOnboarding(AuthorizationResponse? res){
+  _authorizationResponse?.onboarding = res?.onboarding;
+    notifyListeners();
+ }
 
   String? get currentStep => _authorizationResponse?.onboarding?.currentStep;
 

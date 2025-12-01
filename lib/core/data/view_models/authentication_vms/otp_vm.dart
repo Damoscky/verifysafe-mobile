@@ -114,10 +114,10 @@ class OtpViewModel extends BaseState {
   }) async {
     switch (otpType) {
       case OtpType.forgotPassword:
-        await verifyForgetPasswordOTP(otp: otp, token: token!);
+        await verifyForgetPasswordOTP(otp: otp, token: _resendOtpData == null ? token! : _resendOtpData?.verificationToken ?? '');
         break;
       case OtpType.verifyEmail:
-        await verifyOnboardingEmail(otp: otp, token: token!);
+        await verifyOnboardingEmail(otp: otp, token: _resendOtpData == null ? token! : _resendOtpData?.verificationToken ?? '');
         break;
       default:
     }

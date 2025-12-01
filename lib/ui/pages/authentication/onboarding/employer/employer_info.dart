@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:verifysafe/core/constants/app_theme/custom_color_scheme.dart';
 import 'package:verifysafe/core/constants/color_path.dart';
 import 'package:verifysafe/core/data/enum/view_state.dart';
+import 'package:verifysafe/core/data/view_models/authentication_vms/authentication_view_model.dart';
 import 'package:verifysafe/core/data/view_models/authentication_vms/onboarding_vms/onboarding_vm.dart';
 import 'package:verifysafe/core/data/view_models/general_data_view_model.dart';
 import 'package:verifysafe/ui/pages/bottom_nav.dart';
@@ -61,6 +62,7 @@ class _EmployerInfoState extends ConsumerState<EmployerInfo> {
   Widget build(BuildContext context) {
     final generalVm = ref.watch(generalDataViewModel);
     final onboardingVm = ref.watch(onboardingViewModel);
+    final authVm = ref.watch(authenticationViewModel);
 
     return BusyOverlay(
       show: onboardingVm.state == ViewState.busy,
@@ -390,9 +392,16 @@ class _EmployerInfoState extends ConsumerState<EmployerInfo> {
                           );
 
                           if (onboardingVm.state == ViewState.retrieved) {
-                            replaceNavigation(
+                              //LOGIN USER
+                                      authVm.authorizationResponse =
+                                          onboardingVm.authorizationResponse;
+                            pushAndClearAllNavigation(
                               context: context,
-                              widget: BottomNav(),
+                              widget: BottomNav(
+                                 userData: onboardingVm
+                                            .authorizationResponse
+                                            ?.user,
+                              ),
                               routeName: NamedRoutes.bottomNav,
                             );
                           } else {

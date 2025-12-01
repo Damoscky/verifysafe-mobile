@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:verifysafe/core/data/enum/view_state.dart';
+import 'package:verifysafe/core/data/view_models/authentication_vms/authentication_view_model.dart';
 import 'package:verifysafe/core/data/view_models/authentication_vms/onboarding_vms/onboarding_vm.dart';
 import 'package:verifysafe/core/data/view_models/general_data_view_model.dart';
 import 'package:verifysafe/ui/pages/bottom_nav.dart';
@@ -12,7 +13,6 @@ import 'package:verifysafe/ui/widgets/show_flush_bar.dart';
 
 import '../../../../../core/constants/app_dimension.dart';
 import '../../../../../core/constants/named_routes.dart';
-import '../../../../../core/data/enum/otp_type.dart';
 import '../../../../../core/utilities/input_formatters/nigerian_phone_number_formatter.dart';
 import '../../../../../core/utilities/navigator.dart';
 import '../../../../../core/utilities/validator.dart';
@@ -21,7 +21,6 @@ import '../../../../widgets/custom_button.dart';
 import '../../../../widgets/custom_drop_down.dart';
 import '../../../../widgets/custom_text_field.dart';
 import '../../../../widgets/screen_title.dart';
-import '../../otp.dart';
 
 class AgencyInfo extends ConsumerStatefulWidget {
   const AgencyInfo({super.key});
@@ -57,6 +56,7 @@ class _AgencyInfoState extends ConsumerState<AgencyInfo> {
   Widget build(BuildContext context) {
     final generalVm = ref.watch(generalDataViewModel);
     final onboardingVm = ref.watch(onboardingViewModel);
+    final authVm = ref.watch(authenticationViewModel);
 
     return BusyOverlay(
       show: onboardingVm.state == ViewState.busy,
@@ -239,9 +239,15 @@ class _AgencyInfoState extends ConsumerState<AgencyInfo> {
                           );
 
                           if (onboardingVm.state == ViewState.retrieved) {
-                            replaceNavigation(
+                            //LOGIN USER
+                            authVm.authorizationResponse =
+                                onboardingVm.authorizationResponse;
+                            pushAndClearAllNavigation(
                               context: context,
-                              widget: BottomNav(),
+                              widget: BottomNav(
+                                userData:
+                                    onboardingVm.authorizationResponse?.user,
+                              ),
                               routeName: NamedRoutes.bottomNav,
                             );
                           } else {
