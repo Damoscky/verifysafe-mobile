@@ -2,13 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:verifysafe/core/constants/app_theme/custom_color_scheme.dart';
 import 'package:verifysafe/core/constants/color_path.dart';
+import 'package:verifysafe/core/data/models/responses/response_data/worker_dashboard_response.dart';
 import 'package:verifysafe/core/utilities/date_utilitites.dart';
 import 'package:verifysafe/ui/widgets/clickable.dart';
 import 'package:verifysafe/ui/widgets/verifysafe_container.dart';
 
 class WorkHistoryItem extends StatelessWidget {
   final void Function()? onPressed;
-  const WorkHistoryItem({super.key,this.onPressed});
+  final EmploymentData employmentData;
+
+  const WorkHistoryItem({
+    super.key,
+    this.onPressed,
+    required this.employmentData,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -23,11 +30,11 @@ class WorkHistoryItem extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              "Jideson & Co.",
+              employmentData.employer?.name ?? "",
               style: textTheme.bodyLarge?.copyWith(fontWeight: FontWeight.w700),
             ),
             Text(
-              "Domestic Worker",
+              employmentData.category ?? "",
               style: textTheme.bodySmall?.copyWith(color: colorScheme.text4),
             ),
             SizedBox(height: 12.h),
@@ -46,7 +53,8 @@ class WorkHistoryItem extends StatelessWidget {
                           children: [
                             TextSpan(
                               text: DateUtilities.monthDayYear(
-                                date: DateTime.now(),
+                                date:
+                                    employmentData.startDate ?? DateTime.now(),
                               ),
                               style: textTheme.bodySmall?.copyWith(
                                 color: colorScheme.blackText,
@@ -62,12 +70,23 @@ class WorkHistoryItem extends StatelessWidget {
                             color: colorScheme.text4,
                           ),
                           children: [
-                            TextSpan(
-                              text: "Present",
-                              style: textTheme.bodySmall?.copyWith(
-                                color: ColorPath.niagaraGreen,
-                              ),
-                            ),
+                            employmentData.endDate != null
+                                ? TextSpan(
+                                    text: DateUtilities.monthDayYear(
+                                      date:
+                                          employmentData.endDate ??
+                                          DateTime.now(),
+                                    ),
+                                    style: textTheme.bodySmall?.copyWith(
+                                      color: colorScheme.blackText,
+                                    ),
+                                  )
+                                : TextSpan(
+                                    text: "Present",
+                                    style: textTheme.bodySmall?.copyWith(
+                                      color: ColorPath.niagaraGreen,
+                                    ),
+                                  ),
                           ],
                         ),
                       ),
@@ -79,17 +98,17 @@ class WorkHistoryItem extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       Text(
-                        "Plumber",
-                        style: textTheme.bodySmall?.copyWith(
-                          color: colorScheme.blackText,
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
-                      Text(
-                        "Blue Collar",
+                        "Job Role",
                         style: textTheme.bodySmall?.copyWith(
                           color: colorScheme.blackText,
                           fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      Text(
+                        employmentData.jobRole ?? "",
+                        style: textTheme.bodySmall?.copyWith(
+                          color: colorScheme.blackText,
+                          fontWeight: FontWeight.w700,
                         ),
                       ),
                     ],

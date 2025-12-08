@@ -13,7 +13,6 @@ import 'package:verifysafe/ui/widgets/custom_button.dart';
 import 'package:verifysafe/ui/widgets/custom_painter/custom_progress_bar.dart';
 import 'package:verifysafe/ui/widgets/custom_svg.dart';
 
-//TODO: HANDLE TEXT CONTEXT FOR USERTYPE
 class CompleteProfileSetup extends ConsumerWidget {
   const CompleteProfileSetup({super.key});
 
@@ -59,7 +58,11 @@ class CompleteProfileSetup extends ConsumerWidget {
               ),
               SizedBox(height: 4.h),
               Text(
-                "Complete your profile to be a verified worker on VERIFYSAFE",
+                "Complete your profile to be a verified ${authVm.authorizationResponse?.user?.userEnumType == UserType.worker
+                    ? "Worker"
+                    : authVm.authorizationResponse?.user?.userEnumType == UserType.agency
+                    ? "Agency"
+                    : "Employer"} on VERIFYSAFE",
                 style: textTheme.bodyLarge?.copyWith(color: colorScheme.text4),
               ),
               SizedBox(height: 24.h),
@@ -99,14 +102,24 @@ class CompleteProfileSetup extends ConsumerWidget {
               ),
               SizedBox(height: 24.h),
               Text(
-                "Becoming a Verified Worker on VERIFYSAFE helps you build trust and stand out to employers.\n\nComplete your profile by uploading your details, documents, and guarantor information so that employers, agencies, and families can confidently hire you.\n",
+                "Becoming a Verified ${authVm.authorizationResponse?.user?.userEnumType == UserType.worker
+                    ? "Worker"
+                    : authVm.authorizationResponse?.user?.userEnumType == UserType.agency
+                    ? "Agency"
+                    : "Employer"} on VERIFYSAFE helps you build trust and stand out to ${authVm.authorizationResponse?.user?.userEnumType == UserType.worker
+                    ? "Employers and Agencies"
+                    : authVm.authorizationResponse?.user?.userEnumType == UserType.agency
+                    ? "Workers and Employers"
+                    : "Workers and Agency"}.\n\nComplete your profile by uploading your details, documents, and guarantor information so that clients can confidently connect with you.\n",
                 style: textTheme.bodyLarge?.copyWith(color: colorScheme.text4),
               ),
-              IconText(
-                text: "Verified workers are prioritized in job searches.",
-              ),
+              if (authVm.authorizationResponse?.user?.userEnumType ==
+                  UserType.worker)
+                IconText(
+                  text: "Verified workers are prioritized in job searches.",
+                ),
               SizedBox(height: 12.h),
-              IconText(text: "Employers trust verified profiles more."),
+              IconText(text: "Users trust verified profiles more."),
               SizedBox(height: 12.h),
               IconText(
                 text:
@@ -118,20 +131,24 @@ class CompleteProfileSetup extends ConsumerWidget {
                 style: textTheme.bodyLarge?.copyWith(color: colorScheme.text4),
               ),
               SizedBox(height: 32.h),
-              CustomButton(
-                onPressed: () {
-                  onboardingVm.handleOnboardingNavigation(
-                    context: context,
-                    userType:
-                        authVm.authorizationResponse?.user?.userEnumType ??
-                        UserType.worker,
-                    currentStep:
-                        authVm.authorizationResponse?.onboarding?.currentStep ??
-                        '',
-                  );
-                },
-                buttonText: "Complete Profile",
-              ),
+              if (authVm.authorizationResponse?.onboarding?.isComplete == false)
+                CustomButton(
+                  onPressed: () {
+                    onboardingVm.handleOnboardingNavigation(
+                      context: context,
+                      userType:
+                          authVm.authorizationResponse?.user?.userEnumType ??
+                          UserType.worker,
+                      currentStep:
+                          authVm
+                              .authorizationResponse
+                              ?.onboarding
+                              ?.currentStep ??
+                          '',
+                    );
+                  },
+                  buttonText: "Complete Profile",
+                ),
             ],
           ),
         ),

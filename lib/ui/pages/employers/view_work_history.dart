@@ -4,6 +4,7 @@ import 'package:verifysafe/core/constants/app_dimension.dart';
 import 'package:verifysafe/core/constants/app_theme/custom_color_scheme.dart';
 import 'package:verifysafe/core/constants/color_path.dart';
 import 'package:verifysafe/core/constants/named_routes.dart';
+import 'package:verifysafe/core/data/models/responses/response_data/worker_dashboard_response.dart';
 import 'package:verifysafe/core/utilities/date_utilitites.dart';
 import 'package:verifysafe/core/utilities/navigator.dart';
 import 'package:verifysafe/ui/pages/employers/view_contact_person.dart';
@@ -15,7 +16,8 @@ import 'package:verifysafe/ui/widgets/custom_divider.dart';
 import 'package:verifysafe/ui/widgets/verifysafe_container.dart';
 
 class ViewWorkHistory extends StatelessWidget {
-  const ViewWorkHistory({super.key});
+  final EmploymentData employmentData;
+  const ViewWorkHistory({super.key, required this.employmentData});
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +26,7 @@ class ViewWorkHistory extends StatelessWidget {
     return Scaffold(
       appBar: customAppBar(
         context: context,
-        title: "Jideson & Co.",
+        title: employmentData.employer?.name ?? "",
         showBottom: true,
       ),
       body: ListView(
@@ -56,7 +58,7 @@ class ViewWorkHistory extends StatelessWidget {
                             ),
                           ),
                           Text(
-                            "Cook",
+                            employmentData.jobRole ?? "",
                             style: textTheme.bodySmall?.copyWith(
                               color: colorScheme.blackText,
                               fontWeight: FontWeight.w500,
@@ -77,7 +79,7 @@ class ViewWorkHistory extends StatelessWidget {
                             ),
                           ),
                           Text(
-                            "Full time",
+                            employmentData.employmentType ?? "",
                             style: textTheme.bodySmall?.copyWith(
                               color: colorScheme.blackText,
                               fontWeight: FontWeight.w500,
@@ -103,7 +105,7 @@ class ViewWorkHistory extends StatelessWidget {
                             ),
                           ),
                           Text(
-                            "jideson@yahoo.com",
+                            employmentData.employee?.email ?? "",
                             style: textTheme.bodySmall?.copyWith(
                               color: colorScheme.blackText,
                               fontWeight: FontWeight.w500,
@@ -127,7 +129,9 @@ class ViewWorkHistory extends StatelessWidget {
                               children: [
                                 TextSpan(
                                   text: DateUtilities.monthDayYear(
-                                    date: DateTime.now(),
+                                    date:
+                                        employmentData.startDate ??
+                                        DateTime.now(),
                                   ),
                                   style: textTheme.bodySmall?.copyWith(
                                     color: colorScheme.blackText,
@@ -143,12 +147,23 @@ class ViewWorkHistory extends StatelessWidget {
                                 color: colorScheme.text4,
                               ),
                               children: [
-                                TextSpan(
-                                  text: "Present",
-                                  style: textTheme.bodySmall?.copyWith(
-                                    color: ColorPath.niagaraGreen,
-                                  ),
-                                ),
+                                employmentData.endDate != null
+                                    ? TextSpan(
+                                        text: DateUtilities.monthDayYear(
+                                          date:
+                                              employmentData.endDate ??
+                                              DateTime.now(),
+                                        ),
+                                        style: textTheme.bodySmall?.copyWith(
+                                          color: colorScheme.blackText,
+                                        ),
+                                      )
+                                    : TextSpan(
+                                        text: "Present",
+                                        style: textTheme.bodySmall?.copyWith(
+                                          color: ColorPath.niagaraGreen,
+                                        ),
+                                      ),
                               ],
                             ),
                           ),

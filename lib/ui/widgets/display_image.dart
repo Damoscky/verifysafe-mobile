@@ -85,7 +85,7 @@ class _DisplayImageState extends State<DisplayImage> {
         height: widget.size.h,
         decoration: BoxDecoration(
           color: widget.errorWidget == null && _imageProvider == null
-              ? ColorPath.athensGrey
+              ? ColorPath.mischkaGrey
               : Colors.transparent,
           shape: BoxShape.circle,
         ),

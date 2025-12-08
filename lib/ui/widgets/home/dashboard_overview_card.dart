@@ -4,6 +4,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:verifysafe/core/constants/app_asset.dart';
 import 'package:verifysafe/core/constants/color_path.dart';
 import 'package:verifysafe/core/data/enum/user_type.dart';
+import 'package:verifysafe/core/data/view_models/agency_view_model.dart';
+import 'package:verifysafe/core/data/view_models/employer_view_model.dart';
+import 'package:verifysafe/core/data/view_models/worker_view_model.dart';
 import 'package:verifysafe/ui/widgets/custom_svg.dart';
 import 'package:verifysafe/ui/widgets/verifysafe_container.dart';
 
@@ -54,7 +57,7 @@ class _DashboardOverviewCardState extends ConsumerState<DashboardOverviewCard> {
                     SizedBox(height: 4.h),
                     FittedBox(
                       child: Text(
-                        "0",
+                        first(),
                         style: textTheme.titleMedium?.copyWith(
                           color: Colors.white,
                           fontWeight: FontWeight.w700,
@@ -74,7 +77,7 @@ class _DashboardOverviewCardState extends ConsumerState<DashboardOverviewCard> {
               Expanded(
                 child: OverviewInfoCard(
                   title: overviewTexts().first,
-                  data: "0",
+                  data: second(),
                   asset: overviewAssets().first,
                   color: overviewColors().first,
                 ),
@@ -83,7 +86,7 @@ class _DashboardOverviewCardState extends ConsumerState<DashboardOverviewCard> {
               Expanded(
                 child: OverviewInfoCard(
                   title: overviewTexts().last,
-                  data: "0",
+                  data: third(),
                   color: overviewColors().last,
                   asset: overviewAssets().last,
                 ),
@@ -93,6 +96,51 @@ class _DashboardOverviewCardState extends ConsumerState<DashboardOverviewCard> {
         ],
       ),
     );
+  }
+
+  String first() {
+    final workerVm = ref.read(workerViewModel);
+    final employerVm = ref.read(employerViewModel);
+    final agencyVm = ref.read(agencyViewModel);
+
+    switch (widget.userType) {
+      case UserType.worker:
+        return workerVm.dashboardStats?.total?.toString() ?? "0";
+      case UserType.employer:
+        return employerVm.employerStats?.total?.toString() ?? "0";
+      case UserType.agency:
+        return agencyVm.totalRegistration;
+    }
+  }
+
+  String second() {
+    final workerVm = ref.read(workerViewModel);
+    final employerVm = ref.read(employerViewModel);
+    final agencyVm = ref.read(agencyViewModel);
+
+    switch (widget.userType) {
+      case UserType.worker:
+        return workerVm.dashboardStats?.previous?.toString() ?? "0";
+      case UserType.employer:
+        return employerVm.employerStats?.active?.toString() ?? "0";
+      case UserType.agency:
+        return agencyVm.registeredEmployers;
+    }
+  }
+
+  String third() {
+    final workerVm = ref.read(workerViewModel);
+    final employerVm = ref.read(employerViewModel);
+    final agencyVm = ref.read(agencyViewModel);
+
+    switch (widget.userType) {
+      case UserType.worker:
+        return workerVm.dashboardStats?.current?.toString() ?? "0";
+      case UserType.employer:
+        return employerVm.employerStats?.past?.toString() ?? "0";
+      case UserType.agency:
+        return agencyVm.registeredWorkers;
+    }
   }
 
   String overviewText() {

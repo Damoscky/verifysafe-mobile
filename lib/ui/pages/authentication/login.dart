@@ -53,6 +53,20 @@ class _LoginState extends ConsumerState<Login> {
     });
   }
 
+  isDashboardRoute() =>
+      ref.read(authenticationViewModel).currentStep ==
+          OnboardingSteps.identitiVerification ||
+      ref.read(authenticationViewModel).currentStep ==
+          OnboardingSteps.workHistory ||
+      ref.read(authenticationViewModel).currentStep ==
+          OnboardingSteps.employmentInformation ||
+      ref.read(authenticationViewModel).currentStep ==
+          OnboardingSteps.references ||
+      ref.read(authenticationViewModel).currentStep ==
+          OnboardingSteps.contactPerson ||
+      ref.read(authenticationViewModel).currentStep ==
+          OnboardingSteps.serviceSpecialization;
+
   @override
   Widget build(BuildContext context) {
     final vm = ref.watch(authenticationViewModel);
@@ -158,8 +172,7 @@ class _LoginState extends ConsumerState<Login> {
                                   );
 
                                   if (vm.state == ViewState.retrieved) {
-                                    if (vm.currentStep ==
-                                        OnboardingSteps.identitiVerification) {
+                                    if (isDashboardRoute()) {
                                       replaceNavigation(
                                         context: context,
                                         widget: BottomNav(

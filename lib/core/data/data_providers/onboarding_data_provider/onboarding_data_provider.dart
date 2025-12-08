@@ -108,7 +108,7 @@ class OnboardingDataProvider {
     return completer.future;
   }
 
-    /// - Creates Agency Info
+  /// - Creates Agency Info
   Future<ApiResponse<AuthorizationResponse>> createEmployerInfo({
     required Map<String, dynamic> details,
   }) async {
@@ -118,6 +118,150 @@ class OnboardingDataProvider {
           .networkRequestManager(
             RequestType.post,
             ApiRoutes.createEmployer,
+            useAuth: true,
+            body: jsonEncode(details),
+          );
+      var result = ApiResponse<AuthorizationResponse>.fromJson(
+        response,
+        (data) => AuthorizationResponse.fromJson(data as Map<String, dynamic>),
+      );
+      completer.complete(result);
+    } catch (e) {
+      completer.completeError(e);
+    }
+    return completer.future;
+  }
+
+  /// - Creates [UserType] identity
+  Future<ApiResponse<AuthorizationResponse>> createIdentity({
+    required Map<String, dynamic> details,
+  }) async {
+    var completer = Completer<ApiResponse<AuthorizationResponse>>();
+    try {
+      Map<String, dynamic> response = await NetworkManager()
+          .networkRequestManager(
+            RequestType.post,
+            ApiRoutes.createIdentity,
+            useAuth: true,
+            body: jsonEncode(details),
+          );
+      var result = ApiResponse<AuthorizationResponse>.fromJson(
+        response,
+        (data) => AuthorizationResponse.fromJson(data as Map<String, dynamic>),
+      );
+      completer.complete(result);
+    } catch (e) {
+      completer.completeError(e);
+    }
+    return completer.future;
+  }
+
+  /// - Creates [UserType] identity
+  Future<ApiResponse<AuthorizationResponse>> createEmploymentInfo({
+    required Map<String, dynamic> details,
+  }) async {
+    var completer = Completer<ApiResponse<AuthorizationResponse>>();
+    try {
+      Map<String, dynamic> response = await NetworkManager()
+          .networkRequestManager(
+            RequestType.post,
+            ApiRoutes.createEmploymentInfo,
+            useAuth: true,
+            body: jsonEncode(details),
+          );
+      var result = ApiResponse<AuthorizationResponse>.fromJson(
+        response,
+        (data) => AuthorizationResponse.fromJson(data as Map<String, dynamic>),
+      );
+      completer.complete(result);
+    } catch (e) {
+      completer.completeError(e);
+    }
+    return completer.future;
+  }
+
+  /// - Creates [UserType.worker] work history
+  Future<ApiResponse<AuthorizationResponse>> createWorkHistory({
+    required Map<String, dynamic> details,
+  }) async {
+    var completer = Completer<ApiResponse<AuthorizationResponse>>();
+    try {
+      Map<String, dynamic> response = await NetworkManager()
+          .networkRequestManager(
+            RequestType.post,
+            ApiRoutes.createWorkHistory,
+            useAuth: true,
+            body: jsonEncode(details),
+          );
+      var result = ApiResponse<AuthorizationResponse>.fromJson(
+        response,
+        (data) => AuthorizationResponse.fromJson(data as Map<String, dynamic>),
+      );
+      completer.complete(result);
+    } catch (e) {
+      completer.completeError(e);
+    }
+    return completer.future;
+  }
+
+  /// - Creates [UserType] guarantors Records
+  Future<ApiResponse<AuthorizationResponse>> createReference({
+    required Map<String, dynamic> details,
+  }) async {
+    var completer = Completer<ApiResponse<AuthorizationResponse>>();
+    try {
+      Map<String, dynamic> response = await NetworkManager()
+          .networkRequestManager(
+            RequestType.post,
+            ApiRoutes.createReference,
+            useAuth: true,
+            body: jsonEncode(details),
+          );
+      var result = ApiResponse<AuthorizationResponse>.fromJson(
+        response,
+        (data) => AuthorizationResponse.fromJson(data as Map<String, dynamic>),
+      );
+      completer.complete(result);
+    } catch (e) {
+      completer.completeError(e);
+    }
+    return completer.future;
+  }
+
+  /// - Creates [UserType.employer] contact person
+  Future<ApiResponse<AuthorizationResponse>> createContactPerson({
+    required Map<String, dynamic> details,
+  }) async {
+    var completer = Completer<ApiResponse<AuthorizationResponse>>();
+    try {
+      Map<String, dynamic> response = await NetworkManager()
+          .networkRequestManager(
+            RequestType.post,
+            ApiRoutes.createContactPerson,
+            useAuth: true,
+            body: jsonEncode(details),
+          );
+      var result = ApiResponse<AuthorizationResponse>.fromJson(
+        response,
+        (data) => AuthorizationResponse.fromJson(data as Map<String, dynamic>),
+      );
+      completer.complete(result);
+    } catch (e) {
+      completer.completeError(e);
+    }
+    return completer.future;
+  }
+
+  /// - Creates [UserType.employer] services and spacialization
+  Future<ApiResponse<AuthorizationResponse>> createServices({
+    required Map<String, dynamic> details,
+  }) async {
+    var completer = Completer<ApiResponse<AuthorizationResponse>>();
+    try {
+      Map<String, dynamic> response = await NetworkManager()
+          .networkRequestManager(
+            RequestType.post,
+            ApiRoutes.createServices,
             useAuth: true,
             body: jsonEncode(details),
           );

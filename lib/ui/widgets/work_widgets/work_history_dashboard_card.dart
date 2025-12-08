@@ -1,17 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:verifysafe/core/constants/app_asset.dart';
 import 'package:verifysafe/core/constants/app_theme/custom_color_scheme.dart';
+import 'package:verifysafe/core/data/view_models/worker_view_model.dart';
 import 'package:verifysafe/ui/widgets/custom_svg.dart';
 import 'package:verifysafe/ui/widgets/verifysafe_container.dart';
 
-class WorkHistoryDashboardCard extends StatelessWidget {
+class WorkHistoryDashboardCard extends ConsumerWidget {
   const WorkHistoryDashboardCard({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context,WidgetRef ref) {
     final colorScheme = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
+    final vm = ref.watch(workerViewModel);
     return VerifySafeContainer(
       bgColor: colorScheme.brandColor,
       padding: EdgeInsets.all(16.w),
@@ -35,7 +38,7 @@ class WorkHistoryDashboardCard extends StatelessWidget {
                     ),
                     SizedBox(width: 16.w),
                     Text(
-                      '0',
+                      vm.dashboardStats?.total?.toString() ?? "0",
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: textTheme.titleSmall?.copyWith(
@@ -59,7 +62,7 @@ class WorkHistoryDashboardCard extends StatelessWidget {
                     ),
                     SizedBox(width: 16.w),
                     Text(
-                      '0',
+                         vm.dashboardStats?.current?.toString() ?? "0",
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: textTheme.titleSmall?.copyWith(

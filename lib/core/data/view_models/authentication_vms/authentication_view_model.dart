@@ -24,10 +24,14 @@ class AuthenticationViewModel extends BaseState {
   }
 
   /// updates [AuthorizationResponse] onboarding data
- updateOnboarding(AuthorizationResponse? res){
-  _authorizationResponse?.onboarding = res?.onboarding;
-    notifyListeners();
- }
+//  updateOnboarding(AuthorizationResponse? res){
+//   _authorizationResponse?.onboarding = res?.onboarding;
+//     notifyListeners();
+//  }
+
+updateUI(){
+  notifyListeners();
+}
 
   String? get currentStep => _authorizationResponse?.onboarding?.currentStep;
 

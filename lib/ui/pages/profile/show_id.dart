@@ -4,13 +4,15 @@ import 'package:verifysafe/core/constants/app_asset.dart';
 import 'package:verifysafe/core/constants/app_dimension.dart';
 import 'package:verifysafe/core/constants/app_theme/custom_color_scheme.dart';
 import 'package:verifysafe/core/constants/color_path.dart';
+import 'package:verifysafe/core/data/models/user.dart';
 import 'package:verifysafe/ui/widgets/custom_appbar.dart';
 import 'package:verifysafe/ui/widgets/custom_button.dart';
 import 'package:verifysafe/ui/widgets/custom_svg.dart';
 import 'package:verifysafe/ui/widgets/verifysafe_container.dart';
 
 class ShowId extends StatelessWidget {
-  const ShowId({super.key});
+  final User userData;
+  const ShowId({super.key, required this.userData});
 
   @override
   Widget build(BuildContext context) {
@@ -42,13 +44,13 @@ class ShowId extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "Folashade \nOnifade",
+                          "${userData.name?.split(" ").first} \n${userData.name?.split(" ").last}",
                           style: textTheme.titleLarge?.copyWith(
                             fontSize: 28.sp,
                           ),
                         ),
                         Text(
-                          "Fashion design",
+                          userData.employer?.jobRole ?? "",
                           style: textTheme.titleSmall?.copyWith(
                             fontSize: 18.sp,
                             color: colorScheme.text5,
@@ -59,7 +61,7 @@ class ShowId extends StatelessWidget {
                     RotatedBox(
                       quarterTurns: 3, // 1=90°, 2=180°, 3=270°
                       child: Text(
-                        "NGN • FEMALE",
+                        "NGN • ${userData.workerInfo?.gender?.toUpperCase() ?? ""}",
                         style: textTheme.bodyLarge?.copyWith(
                           fontWeight: FontWeight.w700,
                           color: colorScheme.text5,
@@ -82,7 +84,10 @@ class ShowId extends StatelessWidget {
                   ),
                 ),
                 SizedBox(height: 24.h),
-                Text("ID: 0003928-VS25", style: textTheme.titleMedium),
+                Text(
+                  "ID: ${userData.workerId ?? ""}",
+                  style: textTheme.titleMedium,
+                ),
                 // SizedBox(height: 6.h),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,

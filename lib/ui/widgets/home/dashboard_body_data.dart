@@ -1,9 +1,11 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:verifysafe/core/constants/app_asset.dart';
 import 'package:verifysafe/core/constants/color_path.dart';
 import 'package:verifysafe/core/constants/named_routes.dart';
 import 'package:verifysafe/core/data/enum/user_type.dart';
+import 'package:verifysafe/core/data/view_models/worker_view_model.dart';
 import 'package:verifysafe/core/utilities/navigator.dart';
 import 'package:verifysafe/ui/pages/authentication/onboarding/employer/employer_info.dart';
 import 'package:verifysafe/ui/pages/authentication/onboarding/worker/basic_info.dart';
@@ -17,17 +19,18 @@ import 'package:verifysafe/ui/widgets/home/workers_data.dart';
 import 'package:verifysafe/ui/widgets/screen_title.dart';
 import 'package:verifysafe/ui/widgets/verifysafe_container.dart';
 
-class DashboardBodyData extends StatefulWidget {
+class DashboardBodyData extends ConsumerStatefulWidget {
   final UserType userType;
   const DashboardBodyData({super.key, this.userType = UserType.worker});
 
   @override
-  State<DashboardBodyData> createState() => _DashboardBodyDataState();
+  ConsumerState<DashboardBodyData> createState() => _DashboardBodyDataState();
 }
 
-class _DashboardBodyDataState extends State<DashboardBodyData> {
+class _DashboardBodyDataState extends ConsumerState<DashboardBodyData> {
   @override
   Widget build(BuildContext context) {
+    final workerVm = ref.watch(workerViewModel);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -94,7 +97,7 @@ class _DashboardBodyDataState extends State<DashboardBodyData> {
                     child: Clickable(
                       onPressed: () {
                         //todo::: handle route to add employer
-                         pushNavigation(
+                        pushNavigation(
                           context: context,
                           widget: EmployerInfo(),
                           routeName: NamedRoutes.employerInfo,
@@ -131,6 +134,7 @@ class _DashboardBodyDataState extends State<DashboardBodyData> {
               DashboardReportCard(userType: widget.userType),
             ],
           ),
+
         Padding(
           padding: EdgeInsets.only(left: 24.w, right: 24.w),
           child: ScreenTitle(
@@ -139,7 +143,7 @@ class _DashboardBodyDataState extends State<DashboardBodyData> {
           ),
         ),
         if (widget.userType == UserType.worker)
-          WorkHistoriesData()
+          WorkHistoriesData(workHistories: workerVm.recentWorkHistory)
         else
           WorkersData(),
       ],

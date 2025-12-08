@@ -33,7 +33,7 @@ class _ViewWorkerWorkHistoryState extends State<ViewWorkerWorkHistory> {
             ),
           ),
           SizedBox(height: 16.h),
-          WorkHistoriesData(),
+          WorkHistoriesData(workHistories: [],),
         ],
       ),
     );

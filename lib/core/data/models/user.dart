@@ -90,7 +90,7 @@ class User {
       location: json['location'] != null
           ? Location.fromJson(json['location'])
           : null,
-          
+
       employer: json['employer'] != null
           ? Employer.fromJson(json['employer'])
           : null,
@@ -285,19 +285,53 @@ class WorkerInfo {
   }
 }
 
-// TODO::: PRoVIDE WORK HISTORY VARIABLES
 class WorkHistory {
   // Add fields based on your work history structure
   // Since the array is empty in the JSON, you'll need to add fields when you have a sample
+  final String? id;
+  final String? employerName;
+  final String? category;
+  final String? jobRole;
+  final String? employmentType;
+  final DateTime? startDate;
+  final DateTime? endDate;
 
-  WorkHistory();
+  WorkHistory({
+    this.id,
+    this.employerName,
+    this.category,
+    this.jobRole,
+    this.employmentType,
+    this.startDate,
+    this.endDate,
+  });
 
   factory WorkHistory.fromJson(Map<String, dynamic> json) {
-    return WorkHistory();
+    return WorkHistory(
+      id: json['id'],
+      employerName: json['employer_name'],
+      category: json['category'],
+      jobRole: json['job_role'],
+      employmentType: json['employment_type'],
+      startDate: json['start_date'] != null
+          ? DateTime.parse(json['start_date'])
+          : null,
+      endDate: json['end_date'] != null
+          ? DateTime.parse(json['end_date'])
+          : null,
+    );
   }
 
   Map<String, dynamic> toJson() {
-    return {};
+    return {
+      'id': id,
+      'employer_name': employerName,
+      'category': category,
+      'job_role': jobRole,
+      'employment_type': employmentType,
+      'start_date': startDate?.toIso8601String(),
+      'end_date': endDate?.toIso8601String(),
+    };
   }
 }
 
@@ -346,6 +380,12 @@ class Employer {
   String? website;
   String? employerId;
   String? createdAt;
+  //worker
+  String? employerName;
+  String? category;
+  String? jobRole;
+  DateTime? startDate;
+  DateTime? endDate;
 
   Employer({
     this.identifier,
@@ -359,6 +399,12 @@ class Employer {
     this.website,
     this.employerId,
     this.createdAt,
+    //worker
+    this.employerName,
+    this.category,
+    this.jobRole,
+    this.startDate,
+    this.endDate,
   });
 
   factory Employer.fromJson(Map<String, dynamic> json) {
@@ -374,6 +420,16 @@ class Employer {
       website: json['website'] as String?,
       employerId: json['employerID'] as String?,
       createdAt: json['created_at'] as String?,
+      //worker
+      employerName: json["employer_name"],
+      category: json["category"],
+      jobRole: json["job_role"],
+      startDate: json["start_date"] != null
+          ? DateTime.parse(json["start_date"])
+          : null,
+      endDate: json["end_date"] != null
+          ? DateTime.parse(json["end_date"])
+          : null,
     );
   }
 
@@ -390,6 +446,12 @@ class Employer {
       'website': website,
       'employerID': employerId,
       'created_at': createdAt,
+      //worker,
+      "employer_name": employerName,
+      "category": category,
+      "job_role": jobRole,
+      "start_date": startDate,
+      "end_date": endDate,
     };
   }
 }

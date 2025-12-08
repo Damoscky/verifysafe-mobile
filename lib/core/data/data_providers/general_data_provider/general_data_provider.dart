@@ -1,10 +1,11 @@
 import 'dart:async';
-
+import 'package:dio/dio.dart';
 import 'package:verifysafe/core/constants/api_routes.dart';
 import 'package:verifysafe/core/data/enum/request_type.dart';
 import 'package:verifysafe/core/data/models/responses/api_response.dart';
 import 'package:verifysafe/core/data/models/responses/response_data/demographic_responses_data.dart';
 import 'package:verifysafe/core/data/models/responses/response_data/dropdown_response.dart';
+import 'package:verifysafe/core/data/models/responses/response_data/file_upload_response.dart';
 import 'package:verifysafe/core/data/network_manager/network_manager.dart';
 
 class GeneralDataProvider {
@@ -63,17 +64,13 @@ class GeneralDataProvider {
     return completer.future;
   }
 
-
   /// - fetches available [City] lists
   Future<ApiResponse<List<City>>> getCitys({
     int? stateId,
     int? isNigerian,
   }) async {
     var completer = Completer<ApiResponse<List<City>>>();
-    final queryParameters = {
-      "state_id": stateId,
-      "is_nigerian": isNigerian,
-    };
+    final queryParameters = {"state_id": stateId, "is_nigerian": isNigerian};
     try {
       Map<String, dynamic> response = await NetworkManager()
           .networkRequestManager(
@@ -95,7 +92,7 @@ class GeneralDataProvider {
     return completer.future;
   }
 
-    /// - fetches available [DropdownResponse] lists
+  /// - fetches available [DropdownResponse] lists
   Future<ApiResponse<DropdownResponse>> getDropdownData() async {
     var completer = Completer<ApiResponse<DropdownResponse>>();
 
@@ -108,8 +105,30 @@ class GeneralDataProvider {
           );
       var result = ApiResponse<DropdownResponse>.fromJson(
         response,
-        (data) => DropdownResponse.fromJson(data as Map<String,dynamic>),
+        (data) => DropdownResponse.fromJson(data as Map<String, dynamic>),
       );
+      completer.complete(result);
+    } catch (e) {
+      completer.completeError(e);
+    }
+    return completer.future;
+  }
+
+  /// - uploads List of files and return List of [FileUploadResponse]
+  Future<List<FileUploadResponse>> uploadFile(
+    FormData details,
+  ) async {
+    var completer = Completer<List<FileUploadResponse>>();
+
+    try {
+      dynamic response = await NetworkManager()
+          .networkRequestManager(
+            RequestType.multiPartPost, // Use multiPartPost instead of post
+            ApiRoutes.uploadFiles,
+            useAuth: true,
+            body: details, 
+          );
+      var result = List.from(response).map((data) => FileUploadResponse.fromJson(data)).toList();
       completer.complete(result);
     } catch (e) {
       completer.completeError(e);

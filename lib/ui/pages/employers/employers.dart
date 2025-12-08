@@ -107,7 +107,7 @@ class _EmployersState extends ConsumerState<Employers> {
             ),
           ),
 
-          WorkHistoriesData(),
+          WorkHistoriesData(workHistories: []),
         ],
       ),
     );

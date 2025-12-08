@@ -71,6 +71,7 @@ dependencies:
   geolocator_android: ^5.0.2
   image_gallery_saver_plus: ^4.0.1
   flutter_rating_bar: ^4.0.1
+  http_parser: ^4.1.2
 
 dev_dependencies:
   flutter_test:

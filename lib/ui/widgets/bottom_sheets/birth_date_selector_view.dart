@@ -53,8 +53,8 @@ class _BirthdaySelectorViewState extends State<BirthdaySelectorView> {
               String day = dateTime.day.toString().padLeft(2, '0');
               String month = dateTime.month.toString().padLeft(2, '0');
               String year = dateTime.year.toString();
-              //_selectedDate = "$year-$month-$day";
-              _selectedDate = "$day-$month-$year";
+              _selectedDate = "$year-$month-$day";
+              // _selectedDate = "$day-$month-$year";
             },
 
 
@@ -71,19 +71,19 @@ class _BirthdaySelectorViewState extends State<BirthdaySelectorView> {
                 String day = _initialDate.day.toString().padLeft(2, '0');
                 String month = _initialDate.month.toString().padLeft(2, '0');
                 String year = _initialDate.year.toString();
-                //_selectedDate = "$year-$month-$day";
-                _selectedDate = "$day-$month-$year";
+                _selectedDate = "$year-$month-$day";
+                // _selectedDate = "$day-$month-$year";
               }
 
 
-              if(_dateSelected.isAfter(_eighteenYearsAgo)){
-                showFlushBar(
-                    context: context,
-                    message: 'You must be at least 18 years to proceed',
-                    success: false
-                );
-                return;
-              }
+              // if(_dateSelected.isAfter(_eighteenYearsAgo)){
+              //   showFlushBar(
+              //       context: context,
+              //       message: 'You must be at least 18 years to proceed',
+              //       success: false
+              //   );
+              //   return;
+              // }
               widget.returningValue(_selectedDate);
               popNavigation(context: context);
             },

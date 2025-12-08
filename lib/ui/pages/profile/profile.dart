@@ -5,6 +5,8 @@ import 'package:verifysafe/core/constants/app_asset.dart';
 import 'package:verifysafe/core/constants/app_dimension.dart';
 import 'package:verifysafe/core/constants/app_theme/custom_color_scheme.dart';
 import 'package:verifysafe/core/constants/named_routes.dart';
+import 'package:verifysafe/core/data/enum/user_type.dart';
+import 'package:verifysafe/core/data/view_models/user_view_model.dart';
 import 'package:verifysafe/core/utilities/navigator.dart';
 import 'package:verifysafe/ui/pages/authentication/login.dart';
 import 'package:verifysafe/ui/pages/profile/settings/notification_settings.dart';
@@ -32,6 +34,7 @@ class _ProfileState extends ConsumerState<Profile> {
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
     final colorScheme = Theme.of(context).colorScheme;
+    final userVm = ref.watch(userViewModel);
 
     return Scaffold(
       appBar: customAppBar(
@@ -46,7 +49,9 @@ class _ProfileState extends ConsumerState<Profile> {
           vertical: 16.h,
         ),
         children: [
-          ProfileInfoCard(showIdButton: true),
+          ProfileInfoCard(
+            showIdButton: userVm.userData?.userEnumType == UserType.worker,
+          ),
           SizedBox(height: 32.h),
           Text(
             "Personal Information",
@@ -56,10 +61,10 @@ class _ProfileState extends ConsumerState<Profile> {
           ),
           SizedBox(height: 16.h),
           ProfileActionTile(
-            title: 1 + 1 == 3
+            title: userVm.userData?.userEnumType == UserType.worker
                 ? "Personal Information"
-                : "Agency Information", //todo show [Personal info] for worker [Agency info] for employer and Agency
-            subTitle: 1 + 1 == 3
+                : "Agency Information",
+            subTitle: userVm.userData?.userEnumType == UserType.worker
                 ? "View and update personal data"
                 : "View and update data",
             asset: AppAsset.profilePersonal,
@@ -98,7 +103,7 @@ class _ProfileState extends ConsumerState<Profile> {
               );
             },
           ),
-          if (1 + 1 == 3) //todo show for worker
+          if (userVm.userData?.userEnumType == UserType.worker)
             Column(
               children: [
                 CustomDivider(),

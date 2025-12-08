@@ -1,9 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:verifysafe/core/constants/app_theme/custom_color_scheme.dart';
 import 'package:verifysafe/core/data/enum/user_type.dart';
+import 'package:verifysafe/core/data/enum/view_state.dart';
+import 'package:verifysafe/core/data/view_models/authentication_vms/authentication_view_model.dart';
+import 'package:verifysafe/core/data/view_models/authentication_vms/onboarding_vms/onboarding_vm.dart';
+import 'package:verifysafe/core/data/view_models/general_data_view_model.dart';
+import 'package:verifysafe/core/data/view_models/user_view_model.dart';
+import 'package:verifysafe/core/utilities/image_and_doc_utils.dart';
 import 'package:verifysafe/core/utilities/validator.dart';
+import 'package:verifysafe/ui/widgets/busy_overlay.dart';
+import 'package:verifysafe/ui/widgets/show_flush_bar.dart';
 
 import '../../../../core/constants/app_asset.dart';
 import '../../../../core/constants/app_dimension.dart';
@@ -18,125 +27,233 @@ import '../../../widgets/custom_text_field.dart';
 import '../../../widgets/screen_title.dart';
 import '../../../widgets/upload_attachment.dart';
 
-class IdentityVerification extends StatefulWidget {
+class IdentityVerification extends ConsumerStatefulWidget {
   final UserType userType;
-  const IdentityVerification({super.key,required this.userType});
+  const IdentityVerification({super.key, required this.userType});
 
   @override
-  State<IdentityVerification> createState() => _IdentityVerificationState();
+  ConsumerState<IdentityVerification> createState() =>
+      _IdentityVerificationState();
 }
 
-class _IdentityVerificationState extends State<IdentityVerification> {
+class _IdentityVerificationState extends ConsumerState<IdentityVerification> {
   final _date = TextEditingController();
+  final _identityNumber = TextEditingController();
+  String photoUrl = '';
+  String fileUrl = '';
+
+  int? isRegisteredBusiness;
+
+  bool showNINForm() =>
+      widget.userType == UserType.worker ||
+      (widget.userType == UserType.employer && isRegisteredBusiness == 1);
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: customAppBar(
+    final authVm = ref.watch(authenticationViewModel);
+    final onboardingVm = ref.watch(onboardingViewModel);
+    final generalVm = ref.watch(generalDataViewModel);
+    final userVm = ref.watch(userViewModel);
+
+    return BusyOverlay(
+      show: onboardingVm.state == ViewState.busy,
+      child: Scaffold(
+        appBar: customAppBar(
           context: context,
           showBottom: true,
           appbarBottomPadding: 10.h,
-      ),
-      body: SingleChildScrollView(
-        padding: EdgeInsets.only(left: AppDimension.paddingLeft, right: AppDimension.paddingRight, bottom: 40.h, top: 20.h),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            ScreenTitle(
-              headerText: 'Identity Verification',
-              secondSub: 'Please enter details below.',
-            ),
-            SizedBox(height: 16.h,),
-            UploadAttachment(
-              showPrefixIcon: false,
-              title: 'Upload Photo',
-              subtitle: 'PNG, JPG , JPEG',
-              buttonText: 'Upload Photo',
-              onPressed: (){},
-            ),
-            businessType(),
-            SizedBox(height: 24.h,),
-            if(1 + 1 == 3)CustomTextField(
-              hintText: 'Enter NIN',
-              label: 'National Identification Number (NIN)',
-              keyboardType: TextInputType.number,
-              //controller: _email,
-              validator: FieldValidator.validate,
-              suffixIcon: Padding(
-                padding: EdgeInsets.only(right: 16.w, left: 16.w),
-                child: CustomAssetViewer(
-                  asset: AppAsset.check2,
-                  height: 16.h,
-                  width: 16.w,
+        ),
+        body: SingleChildScrollView(
+          padding: EdgeInsets.only(
+            left: AppDimension.paddingLeft,
+            right: AppDimension.paddingRight,
+            bottom: 40.h,
+            top: 20.h,
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              ScreenTitle(
+                headerText: 'Identity Verification',
+                secondSub: 'Please enter details below.',
+              ),
+              SizedBox(height: 16.h),
+              UploadAttachment(
+                showPrefixIcon: false,
+                title: 'Upload Photo',
+                subtitle: 'PNG, JPG , JPEG',
+                buttonText: generalVm.generalState != ViewState.retrieved
+                    ? 'Upload Photo'
+                    : generalVm.fileUploadsResponse.first.url,
+                onPressed: () async {
+                  //TODO::: handle uploaded state and loading state
+                  /// - use generalVM to upload image here.
+                  final base64String = await ImageAndDocUtils.pickAndCropImage(
+                    context: context,
+                  );
+                  if (base64String != null) {
+                    await generalVm.uploadImage(base64String: base64String);
+
+                    if (generalVm.generalState == ViewState.retrieved) {
+                      final details = {
+                        "avatar": generalVm.fileUploadsResponse.first.url,
+                      };
+                      await userVm.updateUserData(details: details);
+                    } else {
+                      showFlushBar(
+                        context: context,
+                        message: generalVm.message,
+                        success: false,
+                      );
+                    }
+                  }
+                },
+              ),
+              if (widget.userType == UserType.employer) businessType(),
+              SizedBox(height: 24.h),
+              if (showNINForm())
+                CustomTextField(
+                  hintText: 'Enter NIN',
+                  label: 'National Identification Number (NIN)',
+                  keyboardType: TextInputType.number,
+                  controller: _identityNumber,
+                  validator: FieldValidator.validate,
+                  // suffixIcon: Padding(
+                  //   padding: EdgeInsets.only(right: 16.w, left: 16.w),
+                  //   child: CustomAssetViewer(
+                  //     asset: AppAsset.check2,
+                  //     height: 16.h,
+                  //     width: 16.w,
+                  //   ),
+                  // ),
                 )
-              ),
-            )
-            else CustomTextField(
-              hintText: 'Enter RC Number',
-              label: 'RC Number',
-              keyboardType: TextInputType.number,
-              //controller: _email,
-              validator: FieldValidator.validate,
-              suffixIcon: Padding(
-                  padding: EdgeInsets.only(right: 16.w, left: 16.w),
-                  child: CustomAssetViewer(
-                    asset: AppAsset.check2,
-                    height: 16.h,
-                    width: 16.w,
-                  )
-              ),
-            ),
-            SizedBox(height: 24.h,),
-            Clickable(
-              onPressed: (){
-                baseBottomSheet(
+              else
+                CustomTextField(
+                  hintText: 'Enter RC Number',
+                  label: 'RC Number',
+                  keyboardType: TextInputType.number,
+                  controller: _identityNumber,
+                  validator: FieldValidator.validate,
+                  // suffixIcon: Padding(
+                  //   padding: EdgeInsets.only(right: 16.w, left: 16.w),
+                  //   child: CustomAssetViewer(
+                  //     asset: AppAsset.check2,
+                  //     height: 16.h,
+                  //     width: 16.w,
+                  //   ),
+                  // ),
+                ),
+              SizedBox(height: 24.h),
+              Clickable(
+                onPressed: () {
+                  baseBottomSheet(
                     context: context,
                     content: BirthdaySelectorView(
-                        initialDate: DateFormat("dd-MM-yyyy").tryParse(_date.text),
-                        returningValue: (value){
-                          setState(() {
-                            //set birthdate text controller
-                            _date.text = value;
-                          });
-                        })
-                );
-              },
-              child: CustomTextField(
-                label: 1 + 1 == 3 ? 'Date of Birth':'Incorporation Date',
-                hintText: 1 + 1 == 3 ? 'Select D.O.B':'Select Incorporation Date',
-                enabled: false,
-                controller: _date,
-                keyboardType: TextInputType.text,
-                suffixIcon: Padding(
-                  padding: EdgeInsets.only(right: 16.w, left: 16.w),
-                  child: const CustomSvg(
-                      asset:AppAsset.calendar),
+                      initialDate: DateFormat(
+                        "yyyy-MM-dd",
+                      ).tryParse(_date.text),
+                      returningValue: (value) {
+                        setState(() {
+                          //set birthdate text controller
+                          _date.text = value;
+                        });
+                      },
+                    ),
+                  );
+                },
+                child: CustomTextField(
+                  label: showNINForm() ? 'Date of Birth' : 'Incorporation Date',
+                  hintText: showNINForm()
+                      ? 'Select D.O.B'
+                      : 'Select Incorporation Date',
+                  enabled: false,
+                  controller: _date,
+                  keyboardType: TextInputType.text,
+                  suffixIcon: Padding(
+                    padding: EdgeInsets.only(right: 16.w, left: 16.w),
+                    child: const CustomSvg(asset: AppAsset.calendar),
+                  ),
+                  //validator: FieldValidator.validate,
                 ),
-                //validator: FieldValidator.validate,
               ),
-            ),
-            SizedBox(height: 20.h,),
-            UploadAttachment(
-              title: 1 + 1 == 3 ? 'Upload (NIN)':'Upload  CAC Certificate',
-              onPressed: (){},
-            ),
-            SizedBox(height: 16.h,),
-            CustomButton(
+              SizedBox(height: 20.h),
+              UploadAttachment(
+                title: showNINForm()
+                    ? 'Upload (NIN)'
+                    : 'Upload  CAC Certificate',
+                onPressed: () async {
+                  //TODO::: handle uploaded state and loading state
+                  /// - use generalVM to upload image here.
+                  final data = await ImageAndDocUtils.pickDocument();
+                  await generalVm.uploadImage(base64String: data);
+
+                  if (generalVm.generalState == ViewState.retrieved) {
+                    fileUrl = generalVm.fileUploadsResponse.first.url ?? "";
+                  } else {
+                    showFlushBar(
+                      context: context,
+                      message: generalVm.message,
+                      success: false,
+                    );
+                  }
+                },
+              ),
+              SizedBox(height: 16.h),
+              CustomButton(
                 buttonText: 'Continue',
-                onPressed: (){
-
-                }
-            )
-
-
-          ],
+                onPressed: () async {
+                  //validations:::
+                  if (_identityNumber.text.isEmpty) {
+                    return showFlushBar(
+                      context: context,
+                      message: "Enter ${showNINForm() ? "NIN" : "RC"} number",
+                      success: false,
+                    );
+                  }
+                  if (_date.text.isEmpty) {
+                    return showFlushBar(
+                      context: context,
+                      message:
+                          "Select ${showNINForm() ? "Date of Birth" : "Date of Incorporation"} number",
+                      success: false,
+                    );
+                  }
+                  await onboardingVm.verifyIdentity(
+                    identityName: showNINForm() ? "nin" : "cac",
+                    identityNumber: _identityNumber.text.trim(),
+                    fileUrl: fileUrl,
+                    associatedDate: _date.text,
+                    userType: widget.userType,
+                  );
+                  if (onboardingVm.state == ViewState.retrieved) {
+                    //update user onboarding data
+                    authVm.authorizationResponse?.onboarding =
+                        onboardingVm.userOnboardingData;
+                    authVm.updateUI();
+                    onboardingVm.handleOnboardingNavigation(
+                      context: context,
+                      userType: widget.userType,
+                      currentStep:
+                          onboardingVm.userOnboardingData?.currentStep ?? '',
+                    );
+                  } else {
+                    showFlushBar(
+                      context: context,
+                      message: onboardingVm.message,
+                      success: false,
+                    );
+                  }
+                },
+              ),
+            ],
+          ),
         ),
       ),
     );
   }
 
   //for employer
-  businessType(){
+  businessType() {
     return Padding(
       padding: EdgeInsets.only(top: 24.h),
       child: Column(
@@ -145,43 +262,52 @@ class _IdentityVerificationState extends State<IdentityVerification> {
           Row(
             children: [
               CustomRadioButton(
-
+                onchanged: (value) {
+                  if (value) {
+                    setState(() {
+                      isRegisteredBusiness = 0;
+                    });
+                  }
+                },
+                value: isRegisteredBusiness == 0,
               ),
-              SizedBox(width: 12.w,),
+              SizedBox(width: 12.w),
               Expanded(
-                child:  Text(
+                child: Text(
                   'I have a registered business',
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyMedium
-                      ?.copyWith(
-                      fontWeight: FontWeight.w500,
-                      color: Theme.of(context).colorScheme.textPrimary
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    fontWeight: FontWeight.w500,
+                    color: Theme.of(context).colorScheme.textPrimary,
                   ),
                 ),
-              )
+              ),
             ],
           ),
-          SizedBox(height: 16.h,),
+          SizedBox(height: 16.h),
           Row(
             children: [
-              CustomRadioButton(), //todo: hide rc number and incorporation date sections
-              SizedBox(width: 12.w,),
+              CustomRadioButton(
+                onchanged: (value) {
+                  if (value) {
+                    setState(() {
+                      isRegisteredBusiness = 1;
+                    });
+                  }
+                },
+                value: isRegisteredBusiness == 1,
+              ),
+              SizedBox(width: 12.w),
               Expanded(
-                child:  Text(
+                child: Text(
                   'I don’t have a registered business',
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyMedium
-                      ?.copyWith(
-                      fontWeight: FontWeight.w500,
-                      color: Theme.of(context).colorScheme.textPrimary
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    fontWeight: FontWeight.w500,
+                    color: Theme.of(context).colorScheme.textPrimary,
                   ),
                 ),
-              )
+              ),
             ],
           ),
-
         ],
       ),
     );

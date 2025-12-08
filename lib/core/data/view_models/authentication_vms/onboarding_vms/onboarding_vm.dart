@@ -9,8 +9,11 @@ import 'package:verifysafe/core/constants/onboarding_steps.dart';
 import 'package:verifysafe/core/data/data_providers/onboarding_data_provider/onboarding_data_provider.dart';
 import 'package:verifysafe/core/data/enum/user_type.dart';
 import 'package:verifysafe/core/data/enum/view_state.dart';
+import 'package:verifysafe/core/data/models/onboarding.dart';
+import 'package:verifysafe/core/data/models/reference_model.dart';
 import 'package:verifysafe/core/data/models/responses/response_data/authorization_response.dart';
 import 'package:verifysafe/core/data/models/responses/response_data/basic_info_respnse_data.dart';
+import 'package:verifysafe/core/data/models/work_history.dart';
 import 'package:verifysafe/core/data/states/base_state.dart';
 import 'package:verifysafe/core/utilities/navigator.dart';
 import 'package:verifysafe/core/utilities/secure_storage/secure_storage_utils.dart';
@@ -22,6 +25,7 @@ import 'package:verifysafe/ui/pages/authentication/onboarding/employer/employer_
 import 'package:verifysafe/ui/pages/authentication/onboarding/employer/services_and_specializations.dart';
 import 'package:verifysafe/ui/pages/authentication/onboarding/guarantor_details.dart';
 import 'package:verifysafe/ui/pages/authentication/onboarding/identity_verification.dart';
+import 'package:verifysafe/ui/pages/authentication/onboarding/worker/add_work_history.dart';
 import 'package:verifysafe/ui/pages/authentication/onboarding/worker/basic_info.dart';
 import 'package:verifysafe/ui/pages/authentication/onboarding/worker/employment_details.dart';
 
@@ -35,6 +39,9 @@ class OnboardingVm extends BaseState {
 
   AuthorizationResponse? _authorizationResponse;
   AuthorizationResponse? get authorizationResponse => _authorizationResponse;
+
+  Onboarding? _userOnboardingData;
+  Onboarding? get userOnboardingData => _userOnboardingData;
 
   List<String> assets = [AppAsset.worker, AppAsset.agency, AppAsset.employer];
 
@@ -133,8 +140,6 @@ class OnboardingVm extends BaseState {
       "onboarding_id": onboardingId,
     };
 
-    log(details.toString());
-
     await _onboardingDp
         .setupPassword(details: details)
         .then(
@@ -182,8 +187,6 @@ class OnboardingVm extends BaseState {
       "state_id": stateId?.toString(),
       "city_id": cityId?.toString(),
     };
-
-    log(details.toString());
 
     await _onboardingDp
         .createAgencyInfo(details: details)
@@ -235,8 +238,6 @@ class OnboardingVm extends BaseState {
       "city_id": cityId?.toString(),
     };
 
-    log(details.toString());
-
     await _onboardingDp
         .createEmployerInfo(details: details)
         .then(
@@ -246,6 +247,255 @@ class OnboardingVm extends BaseState {
             await SecureStorageUtils.saveToken(
               token: _authorizationResponse?.accessToken ?? '',
             );
+            setState(ViewState.retrieved);
+          },
+          onError: (error) {
+            _message = Utilities.formatMessage(
+              error.toString(),
+              isSuccess: false,
+            );
+            setState(ViewState.error);
+          },
+        );
+  }
+
+  /// Creates [UserType] identity data
+  verifyIdentity({
+    required String identityName,
+    required String identityNumber,
+    required String fileUrl,
+    required String associatedDate,
+    required UserType userType,
+  }) async {
+    setState(ViewState.busy);
+    String stakeholderType = "worker";
+    switch (userType) {
+      case UserType.worker:
+        stakeholderType = "worker";
+        break;
+      case UserType.employer:
+        stakeholderType = "employer";
+        break;
+      case UserType.agency:
+        stakeholderType = "agency";
+        break;
+    }
+    final details = {
+      "identity_name": identityName, //nin,cac
+      "identity_number": identityNumber,
+      "identity_file_url": fileUrl,
+      "associated_date": associatedDate,
+      "stakeholder_type": stakeholderType,
+    };
+
+    log(details.toString());
+
+    await _onboardingDp
+        .createIdentity(details: details)
+        .then(
+          (response) async {
+            _message = response.message ?? defaultSuccessMessage;
+            _authorizationResponse = response.data;
+            _userOnboardingData = _authorizationResponse?.onboarding;
+            setState(ViewState.retrieved);
+          },
+          onError: (error) {
+            _message = Utilities.formatMessage(
+              error.toString(),
+              isSuccess: false,
+            );
+            setState(ViewState.error);
+          },
+        );
+  }
+
+  /// Creates [UserType.worker] employment information
+  createEmploymentInfo({
+    required String category,
+    required String jobrole,
+    required String experience,
+    required String language,
+    required String relocatable,
+    String? resumeUrl
+  }) async {
+    setState(ViewState.busy);
+
+    final details = {
+      "category": category,
+      "job_role": jobrole,
+      "experience": experience,
+      "language": language,
+      "relocatable": relocatable,
+      "resume_url": resumeUrl
+    };
+
+    log(details.toString());
+
+    await _onboardingDp
+        .createEmploymentInfo(details: details)
+        .then(
+          (response) async {
+            _message = response.message ?? defaultSuccessMessage;
+            _authorizationResponse = response.data;
+            _userOnboardingData = _authorizationResponse?.onboarding;
+            setState(ViewState.retrieved);
+          },
+          onError: (error) {
+            _message = Utilities.formatMessage(
+              error.toString(),
+              isSuccess: false,
+            );
+            setState(ViewState.error);
+          },
+        );
+  }
+
+  List<WorkHistoryModel> workHistory = [];
+
+  /// Creates [UserType.worker] work history information
+  createWorkHistory() async {
+    setState(ViewState.busy);
+
+    final details = {
+      "worker_histories": workHistory.map((e) => e.toJson()).toList(),
+    };
+
+    await _onboardingDp
+        .createWorkHistory(details: details)
+        .then(
+          (response) async {
+            _message = response.message ?? defaultSuccessMessage;
+            _authorizationResponse = response.data;
+            _userOnboardingData = _authorizationResponse?.onboarding;
+            workHistory.clear();
+            setState(ViewState.retrieved);
+          },
+          onError: (error) {
+            _message = Utilities.formatMessage(
+              error.toString(),
+              isSuccess: false,
+            );
+            setState(ViewState.error);
+          },
+        );
+  }
+
+  List<ReferenceModel> references = [];
+
+  // Method to update reference at index
+  void updateReference(int index, ReferenceModel guarantor) {
+    if (index >= references.length) {
+      references.add(guarantor);
+    } else {
+      references[index] = guarantor;
+    }
+    notifyListeners();
+  }
+
+  /// Creates [UserType] guarantor information
+  createReference() async {
+    setState(ViewState.busy);
+
+    final details = {
+      "guarantor_redirect_url":
+          "https://verify-safe.netlify.app/guarantor-attestatiion", //todo::: update with [https://verify-safe.netlify.app] with web [BASEURL]
+      "references": references.map((e) => e.toJson()).toList(),
+    };
+
+    log(details.toString());
+
+    await _onboardingDp
+        .createReference(details: details)
+        .then(
+          (response) async {
+            _message = response.message ?? defaultSuccessMessage;
+            _authorizationResponse = response.data;
+            _userOnboardingData = _authorizationResponse?.onboarding;
+            references.clear();
+            setState(ViewState.retrieved);
+          },
+          onError: (error) {
+            _message = Utilities.formatMessage(
+              error.toString(),
+              isSuccess: false,
+            );
+            setState(ViewState.error);
+          },
+        );
+  }
+
+  /// Creates [UserType.employer] contact person
+  createContactPerson({
+    String? name,
+    String? email,
+    String? phone,
+    String? role,
+    String? stateId,
+    String? cityId,
+    String? address,
+    String? relationship,
+  }) async {
+    setState(ViewState.busy);
+
+    final details = {
+      "state_id": stateId,
+      "city_id": cityId,
+      "address": address,
+      "relationship": relationship,
+      "contact_person": {
+        "name": name,
+        "email": email,
+        "phone": phone,
+        "role": role,
+      },
+    };
+
+    log(details.toString());
+
+    await _onboardingDp
+        .createContactPerson(details: details)
+        .then(
+          (response) async {
+            _message = response.message ?? defaultSuccessMessage;
+            _authorizationResponse = response.data;
+            _userOnboardingData = _authorizationResponse?.onboarding;
+            setState(ViewState.retrieved);
+          },
+          onError: (error) {
+            _message = Utilities.formatMessage(
+              error.toString(),
+              isSuccess: false,
+            );
+            setState(ViewState.error);
+          },
+        );
+  }
+
+  /// Creates [UserType.employer] service specilization
+  createServices({
+    String? activeWorkersCount,
+    bool? trainingServiceProvided,
+    String? placementRegion,
+    String? averagePlcementTime,
+  }) async {
+    setState(ViewState.busy);
+
+    final details = {
+      "active_workers_count": activeWorkersCount,
+      "training_service_provided": trainingServiceProvided,
+      "placement_region": placementRegion,
+      "average_placement_time": averagePlcementTime,
+    };
+
+    log(details.toString());
+
+    await _onboardingDp
+        .createServices(details: details)
+        .then(
+          (response) async {
+            _message = response.message ?? defaultSuccessMessage;
+            _authorizationResponse = response.data;
+            _userOnboardingData = _authorizationResponse?.onboarding;
             setState(ViewState.retrieved);
           },
           onError: (error) {
@@ -280,15 +530,21 @@ class OnboardingVm extends BaseState {
             routeName: NamedRoutes.identityVerification,
           );
         }
-        if (currentStep == OnboardingSteps.workHistory) {
-          //todo::: confirm difference between work history and employment details
+        if (currentStep == OnboardingSteps.employerInformation) {
           return replaceNavigation(
             context: context,
             widget: EmploymentDetails(),
             routeName: NamedRoutes.employmentDetails,
           );
         }
-        if (currentStep == OnboardingSteps.contactPerson) {
+        if (currentStep == OnboardingSteps.workHistory) {
+          return replaceNavigation(
+            context: context,
+            widget: AddWorkHistory(),
+            routeName: NamedRoutes.addWorkHistory,
+          );
+        }
+        if (currentStep == OnboardingSteps.references) {
           return replaceNavigation(
             context: context,
             widget: GuarantorDetails(),
@@ -319,7 +575,7 @@ class OnboardingVm extends BaseState {
             routeName: NamedRoutes.identityVerification,
           );
         }
-        if (currentStep == OnboardingSteps.contactPerson) {
+        if (currentStep == OnboardingSteps.references) {
           return replaceNavigation(
             context: context,
             widget: GuarantorDetails(),
@@ -351,7 +607,6 @@ class OnboardingVm extends BaseState {
           );
         }
         if (currentStep == OnboardingSteps.contactPerson) {
-          //todo:::
           return replaceNavigation(
             context: context,
             widget: ContactPerson(),
@@ -365,8 +620,7 @@ class OnboardingVm extends BaseState {
             routeName: NamedRoutes.servicesAndSpecializations,
           );
         }
-        if (currentStep == OnboardingSteps.contactPerson) {
-          //todo:::
+        if (currentStep == OnboardingSteps.references) {
           return replaceNavigation(
             context: context,
             widget: GuarantorDetails(),
@@ -419,6 +673,10 @@ class OnboardingVm extends BaseState {
       default:
         return 0;
     }
+  }
+
+  updateUI() {
+    notifyListeners();
   }
 }
 

@@ -13,7 +13,6 @@ import '../../utilities/utilities.dart';
 import '../enum/request_type.dart';
 import '../services/navigation_service.dart';
 
-
 /////A WORK IN PROGRESS //////////
 
 class NetworkManager {
@@ -24,8 +23,9 @@ class NetworkManager {
     receiveTimeout: const Duration(minutes: 5),
     headers: {
       HttpHeaders.acceptHeader: 'application/json',
-      HttpHeaders.contentTypeHeader: 'application/json',
-      'Platform': 'mobile'
+      // Remove this - let individual requests set their own content-type
+      // HttpHeaders.contentTypeHeader: 'application/json',
+      'Platform': 'mobile',
     },
   );
 
@@ -66,9 +66,11 @@ class NetworkManager {
           final useAuth = requestOptions.extra["useAuth"] ?? true;
 
           if (useAuth && response?.statusCode == 401) {
-            if (!requestOptions.path.contains('/auth/refresh')) { //todo: update route
+            if (!requestOptions.path.contains('/auth/refresh')) {
+              //todo: update route
               try {
-                final refreshToken = await SecureStorageUtils.retrieveRefreshToken();
+                final refreshToken =
+                    await SecureStorageUtils.retrieveRefreshToken();
                 final refreshResponse = await client.post(
                   '${AppConfig.baseUrl}/auth/refresh',
                   data: {"refresh_token": refreshToken},
@@ -77,7 +79,8 @@ class NetworkManager {
                 final newAccessToken = refreshResponse.data['access_token'];
                 await SecureStorageUtils.saveToken(token: newAccessToken);
 
-                final newRequestOptions = requestOptions..headers["Authorization"] = "Bearer $newAccessToken";
+                final newRequestOptions = requestOptions
+                  ..headers["Authorization"] = "Bearer $newAccessToken";
                 final clonedResponse = await client.fetch(newRequestOptions);
                 return handler.resolve(clonedResponse);
               } catch (_) {
@@ -94,18 +97,18 @@ class NetworkManager {
     );
   }
 
-  Future<Map<String, dynamic>> networkRequestManager(
-      RequestType requestType,
-      String requestUrl, {
-        dynamic body,
-        queryParameters,
-        bool useAuth = true,
-        bool useGuestToken = false,
-        File? backFile,
-        bool retrieveResponse = false,
-        bool retrieveUnauthorizedResponse = false,
-      }) async {
-    Map<String, dynamic> apiResponse;
+  Future<dynamic> networkRequestManager(
+    RequestType requestType,
+    String requestUrl, {
+    dynamic body,
+    queryParameters,
+    bool useAuth = true,
+    bool useGuestToken = false,
+    File? backFile,
+    bool retrieveResponse = false,
+    bool retrieveUnauthorizedResponse = false,
+  }) async {
+    dynamic apiResponse;
     final baseUrl = AppConfig.baseUrl;
     final url = '$baseUrl$requestUrl';
 
@@ -113,28 +116,62 @@ class NetworkManager {
 
     try {
       Response response;
-      final options = Options(extra: {"useAuth": useAuth, "useGuestToken": useGuestToken});
+      final options = Options(
+        extra: {"useAuth": useAuth, "useGuestToken": useGuestToken},
+        // Don't set content-type for FormData - Dio handles it automatically
+        contentType: body is FormData ? null : 'application/json',
+      );
 
       switch (requestType) {
         case RequestType.get:
-          response = await client.get(url, queryParameters: queryParameters, options: options);
+          response = await client.get(
+            url,
+            queryParameters: queryParameters,
+            options: options,
+          );
           break;
         case RequestType.post:
-          response = await client.post(url, data: body, queryParameters: queryParameters, options: options);
+          response = await client.post(
+            url,
+            data: body,
+            queryParameters: queryParameters,
+            options: options,
+          );
           break;
         case RequestType.multiPartPost:
-          response = await client.post(url, data: body, queryParameters: queryParameters, options: options);
+          // For multipart, let Dio handle the content-type automatically
+          response = await client.post(
+            url,
+            data: body,
+            queryParameters: queryParameters,
+            options: options,
+          );
           break;
         case RequestType.put:
-          response = await client.put(url, data: body, queryParameters: queryParameters, options: options);
+          response = await client.put(
+            url,
+            data: body,
+            queryParameters: queryParameters,
+            options: options,
+          );
           break;
         case RequestType.patch:
-          response = await client.patch(url, data: body, queryParameters: queryParameters, options: options);
+          response = await client.patch(
+            url,
+            data: body,
+            queryParameters: queryParameters,
+            options: options,
+          );
           break;
         case RequestType.delete:
-          response = await client.delete(url, data: body, queryParameters: queryParameters, options: options);
+          response = await client.delete(
+            url,
+            data: body,
+            queryParameters: queryParameters,
+            options: options,
+          );
           break;
-        }
+      }
 
       apiResponse = response.data;
       log("${requestType.name} response: $apiResponse");
@@ -173,7 +210,8 @@ class NetworkManager {
           if (statusCode == 502) {
             throw ("We are unable to process request at this time, please try again later");
           }
-          throw (responseData['message'] ?? "Server error, please try again later");
+          throw (responseData['message'] ??
+              "Server error, please try again later");
         } else {
           throw ("Unable to process request, ${responseData['message'] ?? 'Unknown error'}");
         }
@@ -181,6 +219,7 @@ class NetworkManager {
         throw ("An unexpected error occurred");
       }
     } catch (e) {
+      log("CATCHED ::: ${e.toString()}");
       throw ("An error occurred while processing this request");
     }
   }
@@ -190,7 +229,7 @@ sessionExpired() {
   Utilities.unauthorizedFlag = true;
   NavigationService navigationService = locator<NavigationService>();
   navigationService.pushAndClearRoutes(
-   routeName: NamedRoutes.login,
-   clearRoute: NamedRoutes.landing
+    routeName: NamedRoutes.login,
+    clearRoute: NamedRoutes.landing,
   );
 }
