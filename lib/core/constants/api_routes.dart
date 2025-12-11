@@ -44,6 +44,11 @@ class ApiRoutes {
   static var agencyDashboardStats = "${dotenv.env['V1']}/dashboard/agency-stats";
 
   //guarantor
-  static var fetchGuarantors = "${dotenv.env['V1']}/worker-references/?paginate=1";
+  static fetchGuarantors({required String? filterOptions}) =>
+  filterOptions == null ?
+      "${dotenv.env['V1']}/worker-references?paginate=1"
+        :"${dotenv.env['V1']}/worker-references?paginate=1&$filterOptions";
   static var createGuarantor = "${dotenv.env['V1']}/worker-references";
+  static toggleStatus({required String? id}) =>
+      "${dotenv.env['V1']}/worker-references/$id";
 }

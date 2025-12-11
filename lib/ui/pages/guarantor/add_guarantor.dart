@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:verifysafe/core/constants/app_asset.dart';
-import 'package:verifysafe/core/data/view_models/guarantor_view_model.dart';
+import 'package:verifysafe/core/data/view_models/guarantor_view_models/guarantor_view_model.dart';
 import 'package:verifysafe/core/utilities/navigator.dart';
 import 'package:verifysafe/ui/widgets/busy_overlay.dart';
 
@@ -145,7 +145,7 @@ class _AddGuarantorState extends ConsumerState<AddGuarantor> {
                   },
                   items: generalVm.cities.map((e) => e.name ?? '').toList(),
                 ),
-                SizedBox(height: 16.h,),
+                SizedBox(height: 32.h,),
                 CustomButton(
                     buttonText: 'Save',
                     onPressed: (){
@@ -204,7 +204,7 @@ class _AddGuarantorState extends ConsumerState<AddGuarantor> {
                               showFlushBar(
                                   context: context,
                                   message: vm.message,
-                                success: false
+                                success: vm.secondState == ViewState.retrieved
                               );
 
 

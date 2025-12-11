@@ -9,7 +9,7 @@ class Guarantor {
   final dynamic city;
   final String? address;
   final String? status;
-  final int? isActive;
+  final bool? isActive;
   final DateTime? requestedAt;
   final DateTime? approvedAt;
   final bool? canNudge;

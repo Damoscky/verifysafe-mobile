@@ -27,6 +27,7 @@ class ColorPath {
   static const athensGrey3 = Color(0xffEAECF0);
   static const athensGrey4 = Color(0xffE6E8ED);
   static const athensGrey5 = Color(0xffF9FAFB);
+  static const athensGrey6 = Color(0xffEDEFF2);
   static const clearGreen = Color(0xffEBFFFA);
   static const shamrockGreen = Color(0xff30B895);
   static const niagaraGreen = Color(0xff06A77D);
@@ -56,6 +57,7 @@ class ColorPath {
   static const fiordGrey = Color(0xff475467);
   static const fairPink = Color(0xffFFEEEC);
   static const nevadaGrey = Color(0xff666E7A);
+
 
 
 

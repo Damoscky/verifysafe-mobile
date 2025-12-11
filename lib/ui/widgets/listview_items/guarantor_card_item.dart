@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:verifysafe/core/constants/app_theme/custom_color_scheme.dart';
-import 'package:verifysafe/core/data/view_models/guarantor_view_model.dart';
+import 'package:verifysafe/core/data/view_models/guarantor_view_models/guarantor_view_model.dart';
 import 'package:verifysafe/core/utilities/date_utilitites.dart';
 import 'package:verifysafe/ui/widgets/clickable.dart';
 import 'package:verifysafe/ui/widgets/verifysafe_container.dart';
@@ -28,6 +28,7 @@ class GuarantorCardItem extends StatelessWidget {
     final email = guarantor.email ?? 'N/A';
     final address = guarantor.address ?? 'N/A';
     final status = guarantor.status ?? '';
+
     return Clickable(
       onPressed: onPressed ?? (){
         final container =

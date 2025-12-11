@@ -9,13 +9,13 @@ import '../../network_manager/network_manager.dart';
 
 class GuarantorDataProvider{
 
-  Future<ApiResponse<GuarantorData>> fetchGuarantors() async {
+  Future<ApiResponse<GuarantorData>> fetchGuarantors({String? filterOptions}) async {
     var completer = Completer<ApiResponse<GuarantorData>>();
     try {
       Map<String, dynamic> response = await NetworkManager()
           .networkRequestManager(
         RequestType.get,
-        ApiRoutes.fetchGuarantors,
+        ApiRoutes.fetchGuarantors(filterOptions: filterOptions),
       );
       var result = ApiResponse<GuarantorData>.fromJson(
         response,
@@ -37,6 +37,26 @@ class GuarantorDataProvider{
         RequestType.post,
         ApiRoutes.createGuarantor,
         body: jsonEncode(details)
+      );
+      var result = ApiResponse<Guarantor>.fromJson(
+        response,
+            (data) => Guarantor.fromJson(data as Map<String, dynamic>),
+      );
+      completer.complete(result);
+    } catch (e) {
+      completer.completeError(e);
+    }
+    return completer.future;
+  }
+
+  //deactivate guarantor
+  Future<ApiResponse<Guarantor>> deactivateGuarantor({required String? id}) async {
+    var completer = Completer<ApiResponse<Guarantor>>();
+    try {
+      Map<String, dynamic> response = await NetworkManager()
+          .networkRequestManager(
+          RequestType.put,
+          ApiRoutes.toggleStatus(id: id),
       );
       var result = ApiResponse<Guarantor>.fromJson(
         response,

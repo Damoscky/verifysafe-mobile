@@ -10,7 +10,8 @@ import 'package:verifysafe/core/data/states/employer_state.dart';
 import 'package:verifysafe/core/utilities/utilities.dart';
 import 'package:verifysafe/locator.dart';
 
-import '../../utilities/date_utilitites.dart';
+import '../../../utilities/date_sorter.dart';
+import '../../../utilities/date_utilitites.dart';
 
 class GuarantorViewModel extends BaseState {
   final GuarantorDataProvider _guarantorDp = locator<GuarantorDataProvider>();
@@ -26,8 +27,22 @@ class GuarantorViewModel extends BaseState {
   List<Guarantor> _guarantors = [];
   List<Guarantor> get guarantors => _guarantors;
 
+  //list of guarantors(sorted)
+  List<Guarantor> _sortedGuarantors = [];
+  List<Guarantor> get sortedGuarantors => _sortedGuarantors;
+
+  String? selectedSortOption;
+
   //selected guarantor
   Guarantor? selectedGuarantor;
+
+  List<String> statusType = [
+    'Pending',
+    'Approved',
+    'Declined'
+  ];
+
+  Map<String, dynamic> selectedFilterOptions = {};
 
   String get name => selectedGuarantor?.name ?? 'N/A';
   String get date => DateUtilities.abbrevMonthDayYear(selectedGuarantor?.requestedAt?.toString() ?? DateTime.now().toString());
@@ -41,6 +56,9 @@ class GuarantorViewModel extends BaseState {
   String get country => selectedGuarantor?.country ?? 'N/A';
   String get stateOfResidence => selectedGuarantor?.state ?? 'N/A';
   String get lga => selectedGuarantor?.city ?? 'N/A';
+  bool get isPending => status.toLowerCase() == 'pending';
+  bool get isDeclined => status.toLowerCase() == 'declined';
+  bool get isActive => selectedGuarantor?.isActive ?? false;
 
 
   int get accepted => _guarantorStats?.approved ?? 0;
@@ -49,13 +67,21 @@ class GuarantorViewModel extends BaseState {
   int get total => _guarantorStats?.total ?? 0;
 
 
-  fetchGuarantors() async{
+  fetchGuarantors({bool withFilters = false}) async{
     setState(ViewState.busy);
-    await _guarantorDp.fetchGuarantors().then(
+    await _guarantorDp.fetchGuarantors(
+      filterOptions: Utilities.returnQueryString(
+          params: selectedFilterOptions,
+          omitKeys: {'start_date', 'end_date'} //filter out this key so its not sent to backend to filter games
+      )
+    ).then(
           (response) {
         _message = response.message ?? defaultSuccessMessage;
         _guarantorStats = response.data?.stats;
-        _guarantors = response.data?.data ?? [];
+        if(!withFilters){
+          _guarantors = response.data?.data ?? [];
+        }
+        _sortedGuarantors = List.from(response.data?.data ?? []);
         setState(ViewState.retrieved);
       },
       onError: (error) {
@@ -80,15 +106,15 @@ class GuarantorViewModel extends BaseState {
       'email':email,
       'phone':Utilities.cleanPhoneNumber(phoneNumber: phone),
       'relationship': relationship,
-      'state_id':stateId,
-      'city_id':cityId,
+      'state_id':stateId.toString(),
+      'city_id':cityId.toString(),
       'address': address,
       'type': 'guarantor',
     };
     await _guarantorDp.addGuarantor(details: details).then(
           (response) {
         _message = response.message ?? defaultSuccessMessage;
-        _guarantors.add(response.data ?? Guarantor());
+        fetchGuarantors();
         setSecondState(ViewState.retrieved);
       },
       onError: (error) {
@@ -97,8 +123,76 @@ class GuarantorViewModel extends BaseState {
       },
     );
   }
+
+  deactivateGuarantor() async{
+    setThirdState(ViewState.busy);
+    await _guarantorDp.deactivateGuarantor(id: selectedGuarantor?.id).then(
+          (response) {
+        _message = response.message ?? defaultSuccessMessage;
+        final pos = _guarantors.indexWhere((guarantor)=>guarantor.id == selectedGuarantor?.id);
+        if(pos>=0){
+          _sortedGuarantors[pos] = response.data ?? Guarantor();
+          selectedGuarantor = response.data ?? Guarantor();
+        }
+        setThirdState(ViewState.retrieved);
+      },
+      onError: (error) {
+        _message = Utilities.formatMessage(error.toString(), isSuccess: false);
+        setThirdState(ViewState.error);
+      },
+    );
+  }
+
+  sortGuarantorList(String? sortOption){
+    selectedSortOption = sortOption;
+
+    if(selectedSortOption == null){
+      _sortedGuarantors = _guarantors;
+      notifyListeners();
+      return;
+    }
+
+    final sorter = DateSorter<Guarantor>(
+      list: _sortedGuarantors,
+      getDate: (guarantor) => guarantor.requestedAt,
+    );
+
+    switch(selectedSortOption?.toLowerCase()){
+      case 'ascending':
+        _sortedGuarantors = sorter.sort(ascending: true);
+      case 'descending':
+        _sortedGuarantors = sorter.sort(ascending: false);
+    }
+
+    notifyListeners();
+  }
+
+  setFilterOptions({String? status, String? startDate, String? endDate})async{
+
+    print('status:::$status>>>');
+
+    if(status != null){
+      print('here>>>');
+      selectedFilterOptions['status'] = status.toLowerCase();
+      print('here>>>${selectedFilterOptions['status']}.......status:::$status');
+    }
+
+    if(startDate != null && endDate != null){
+      selectedFilterOptions['start_date'] = startDate;
+      selectedFilterOptions['end_date'] = endDate;
+      selectedFilterOptions['date_filter'] = "$startDate|$endDate";
+    }
+
+    print('filter options:::${selectedFilterOptions.toString()}>>>>');
+  }
+
+  clearFilters(){
+    selectedFilterOptions = {};
+    _sortedGuarantors = _guarantors;
+    notifyListeners();
+  }
 }
 
-final guarantorViewModel = ChangeNotifierProvider<GuarantorViewModel>((ref) {
+final guarantorViewModel = ChangeNotifierProvider.autoDispose<GuarantorViewModel>((ref) {
   return GuarantorViewModel();
 });

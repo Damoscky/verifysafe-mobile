@@ -6,11 +6,12 @@ import 'package:verifysafe/core/constants/app_asset.dart';
 import 'package:verifysafe/core/constants/app_dimension.dart';
 import 'package:verifysafe/core/constants/app_theme/custom_color_scheme.dart';
 import 'package:verifysafe/core/constants/named_routes.dart';
-import 'package:verifysafe/core/data/view_models/guarantor_view_model.dart';
+import 'package:verifysafe/core/data/view_models/guarantor_view_models/guarantor_view_model.dart';
 import 'package:verifysafe/core/utilities/navigator.dart';
 import 'package:verifysafe/ui/pages/guarantor/add_guarantor.dart';
 import 'package:verifysafe/ui/pages/guarantor/view_guarantor_details.dart';
 import 'package:verifysafe/ui/widgets/app_loader.dart';
+import 'package:verifysafe/ui/widgets/bottom_sheets/filters/guarantor_filter_options.dart';
 import 'package:verifysafe/ui/widgets/bottom_sheets/sort_options.dart';
 import 'package:verifysafe/ui/widgets/clickable.dart';
 import 'package:verifysafe/ui/widgets/custom_svg.dart';
@@ -22,6 +23,7 @@ import '../../../core/constants/color_path.dart';
 import '../../../core/data/enum/view_state.dart';
 import '../../widgets/bottom_sheets/base_bottom_sheet.dart';
 import '../../widgets/custom_appbar.dart';
+import '../../widgets/empty_state.dart';
 import '../../widgets/screen_title.dart';
 
 class ManageGuarantor extends ConsumerStatefulWidget {
@@ -257,28 +259,42 @@ class _ManageGuarantorState extends ConsumerState<ManageGuarantor> {
                         baseBottomSheet(
                           context: context,
                           content: SortOptions(
+                            initialValue: vm.selectedSortOption,
                             filterOptions: [
-                              'Date',
                               'Ascending',
                               'Descending'
                             ],
                             onSelected: (value){
-                              //todo: perform action
+                             vm.sortGuarantorList(value);
                             },
                           ),
                         );
                       },
                       filterOnPressed: (){
-                        //todo: open filter options bottom-sheet
+                        baseBottomSheet(
+                          context: context,
+                          content: GuarantorFilterOptions(
+
+                          ),
+                        );
                       }),
                   SizedBox(height: 16.h,),
-                  ListView.separated(
-                    itemCount: vm.guarantors.length,
+                  if(vm.sortedGuarantors.isEmpty)
+                    EmptyState(
+                      asset: AppAsset.empty,
+                      useBgCard: false,
+                      assetHeight: 200.h,
+                      title: "No Guarantor yet",
+                      subtitle: "",
+                      showCtaButton: false,
+                    )
+                    else ListView.separated(
+                    itemCount: vm.sortedGuarantors.length,
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
                     padding: EdgeInsets.zero,
                     itemBuilder: (BuildContext context, int index) {
-                      final guarantor = vm.guarantors[index];
+                      final guarantor = vm.sortedGuarantors[index];
                       return GuarantorCardItem(
                         guarantor: guarantor,
                       );
