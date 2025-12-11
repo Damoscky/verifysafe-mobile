@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:verifysafe/core/constants/app_constants.dart';
-import 'package:verifysafe/core/data/data_providers/guarantor_data_provider/guaranto_data_provider.dart';
+import 'package:verifysafe/core/data/data_providers/guarantor_data_provider/guarantor_data_provider.dart';
 import 'package:verifysafe/core/data/data_providers/users_data_providers/employer_data_provider.dart';
 import 'package:verifysafe/core/data/enum/view_state.dart';
 import 'package:verifysafe/core/data/models/guarantor.dart';
@@ -49,9 +49,9 @@ class GuarantorViewModel extends BaseState {
   int get total => _guarantorStats?.total ?? 0;
 
 
-  fetchGuarantors() {
+  fetchGuarantors() async{
     setState(ViewState.busy);
-    _guarantorDp.fetchGuarantors().then(
+    await _guarantorDp.fetchGuarantors().then(
           (response) {
         _message = response.message ?? defaultSuccessMessage;
         _guarantorStats = response.data?.stats;
@@ -61,6 +61,39 @@ class GuarantorViewModel extends BaseState {
       onError: (error) {
         _message = Utilities.formatMessage(error.toString(), isSuccess: false);
         setState(ViewState.error);
+      },
+    );
+  }
+
+  addGuarantor({
+    required String name,
+    required String? relationship,
+    required String email,
+    required String phone,
+    required int? stateId,
+    required int? cityId,
+    required String address
+  }) async{
+    setSecondState(ViewState.busy);
+    final details = {
+      'name':name,
+      'email':email,
+      'phone':Utilities.cleanPhoneNumber(phoneNumber: phone),
+      'relationship': relationship,
+      'state_id':stateId,
+      'city_id':cityId,
+      'address': address,
+      'type': 'guarantor',
+    };
+    await _guarantorDp.addGuarantor(details: details).then(
+          (response) {
+        _message = response.message ?? defaultSuccessMessage;
+        _guarantors.add(response.data ?? Guarantor());
+        setSecondState(ViewState.retrieved);
+      },
+      onError: (error) {
+        _message = Utilities.formatMessage(error.toString(), isSuccess: false);
+        setSecondState(ViewState.error);
       },
     );
   }

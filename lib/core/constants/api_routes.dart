@@ -45,4 +45,5 @@ class ApiRoutes {
 
   //guarantor
   static var fetchGuarantors = "${dotenv.env['V1']}/worker-references/?paginate=1";
+  static var createGuarantor = "${dotenv.env['V1']}/worker-references";
 }

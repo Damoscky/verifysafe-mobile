@@ -1,7 +1,7 @@
 import 'package:get_it/get_it.dart';
 import 'package:verifysafe/core/data/data_providers/auth_data_provider/auth_data_provider.dart';
 import 'package:verifysafe/core/data/data_providers/general_data_provider/general_data_provider.dart';
-import 'package:verifysafe/core/data/data_providers/guarantor_data_provider/guaranto_data_provider.dart';
+import 'package:verifysafe/core/data/data_providers/guarantor_data_provider/guarantor_data_provider.dart';
 import 'package:verifysafe/core/data/data_providers/onboarding_data_provider/onboarding_data_provider.dart';
 import 'package:verifysafe/core/data/data_providers/users_data_providers/agency_data_provider.dart';
 import 'package:verifysafe/core/data/data_providers/users_data_providers/employer_data_provider.dart';
