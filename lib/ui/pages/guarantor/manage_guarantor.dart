@@ -9,7 +9,6 @@ import 'package:verifysafe/core/constants/named_routes.dart';
 import 'package:verifysafe/core/data/view_models/guarantor_view_models/guarantor_view_model.dart';
 import 'package:verifysafe/core/utilities/navigator.dart';
 import 'package:verifysafe/ui/pages/guarantor/add_guarantor.dart';
-import 'package:verifysafe/ui/pages/guarantor/view_guarantor_details.dart';
 import 'package:verifysafe/ui/widgets/app_loader.dart';
 import 'package:verifysafe/ui/widgets/bottom_sheets/filters/guarantor_filter_options.dart';
 import 'package:verifysafe/ui/widgets/bottom_sheets/sort_options.dart';

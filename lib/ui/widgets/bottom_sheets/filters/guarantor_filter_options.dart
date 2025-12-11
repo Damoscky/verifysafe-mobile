@@ -32,18 +32,16 @@ class _GuarantorFilterOptionsState extends ConsumerState<GuarantorFilterOptions>
   @override
   void initState() {
     final vm = ref.read(guarantorViewModel);
-    if(vm.selectedFilterOptions != null){
-      if(vm.selectedFilterOptions!.containsKey('date_filter')){
-        _startDate = vm.selectedFilterOptions?['start_date'];
-      }
-      if(vm.selectedFilterOptions!.containsKey('end_date')){
-        _endDate = vm.selectedFilterOptions?['end_date'];
-      }
-      if(vm.selectedFilterOptions!.containsKey('status')){
-        _status = vm.selectedFilterOptions?['status'];
-      }
+    if(vm.selectedFilterOptions.containsKey('date_filter')){
+      _startDate = vm.selectedFilterOptions['start_date'];
     }
-    super.initState();
+    if(vm.selectedFilterOptions.containsKey('end_date')){
+      _endDate = vm.selectedFilterOptions['end_date'];
+    }
+    if(vm.selectedFilterOptions.containsKey('status')){
+      _status = vm.selectedFilterOptions['status'];
+    }
+      super.initState();
   }
 
   @override

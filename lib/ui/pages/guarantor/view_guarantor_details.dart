@@ -8,14 +8,11 @@ import 'package:verifysafe/ui/widgets/details.dart';
 import 'package:verifysafe/ui/widgets/show_flush_bar.dart';
 import 'package:verifysafe/ui/widgets/verifysafe_container.dart';
 import 'package:verifysafe/ui/widgets/verifysafe_tag.dart';
-
 import '../../../core/constants/app_asset.dart';
 import '../../../core/constants/app_dimension.dart';
 import '../../../core/constants/color_path.dart';
 import '../../../core/data/enum/view_state.dart';
-import '../../../core/data/models/guarantor.dart';
 import '../../../core/utilities/navigator.dart';
-import '../../../core/utilities/utilities.dart';
 import '../../widgets/bottom_sheets/action_completed.dart';
 import '../../widgets/bottom_sheets/base_bottom_sheet.dart';
 import '../../widgets/clickable.dart';

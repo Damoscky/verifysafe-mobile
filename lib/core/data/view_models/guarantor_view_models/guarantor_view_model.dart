@@ -1,12 +1,10 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:verifysafe/core/constants/app_constants.dart';
 import 'package:verifysafe/core/data/data_providers/guarantor_data_provider/guarantor_data_provider.dart';
-import 'package:verifysafe/core/data/data_providers/users_data_providers/employer_data_provider.dart';
 import 'package:verifysafe/core/data/enum/view_state.dart';
 import 'package:verifysafe/core/data/models/guarantor.dart';
 import 'package:verifysafe/core/data/models/responses/response_data/stats.dart';
 import 'package:verifysafe/core/data/states/base_state.dart';
-import 'package:verifysafe/core/data/states/employer_state.dart';
 import 'package:verifysafe/core/utilities/utilities.dart';
 import 'package:verifysafe/locator.dart';
 

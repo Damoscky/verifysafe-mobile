@@ -3,8 +3,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:verifysafe/core/constants/app_theme/custom_color_scheme.dart';
 import 'package:verifysafe/core/utilities/navigator.dart';
 import 'package:verifysafe/ui/widgets/clickable.dart';
-import 'package:verifysafe/ui/widgets/show_flush_bar.dart';
-
 import '../../../core/constants/app_dimension.dart';
 import '../../../core/constants/color_path.dart';
 import '../custom_button.dart';

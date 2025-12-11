@@ -30,7 +30,7 @@ class AddGuarantor extends ConsumerStatefulWidget {
 class _AddGuarantorState extends ConsumerState<AddGuarantor> {
 
   final _formKey = GlobalKey<FormState>();
-  String? _relationship, _lga, _state, _relationship2;
+  String? _relationship, _lga, _state;
   final _guarantorName = TextEditingController();
   final _guarantorPhone = TextEditingController();
   final _guarantorEmail = TextEditingController();
