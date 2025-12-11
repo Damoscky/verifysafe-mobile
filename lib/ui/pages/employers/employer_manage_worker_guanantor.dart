@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:verifysafe/core/constants/app_dimension.dart';
 import 'package:verifysafe/core/constants/named_routes.dart';
+import 'package:verifysafe/core/data/models/guarantor.dart';
 import 'package:verifysafe/core/utilities/navigator.dart';
 import 'package:verifysafe/ui/pages/guarantor/view_guarantor_details.dart';
 import 'package:verifysafe/ui/widgets/custom_appbar.dart';
@@ -34,10 +35,11 @@ class _EmployerManageWorkerGuanantorState
             padding: EdgeInsets.zero,
             itemBuilder: (BuildContext context, int index) {
               return GuarantorCardItem(
+                guarantor: Guarantor(),
                 onPressed: () {
                   pushNavigation(
                     context: context,
-                    widget: const ViewGuarantorDetails(),
+                    widget: ViewGuarantorDetails(),
                     routeName: NamedRoutes.viewGuarantorDetails,
                   );
                 },

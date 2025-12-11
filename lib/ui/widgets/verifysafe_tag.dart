@@ -38,6 +38,7 @@ class VerifySafeTag extends StatelessWidget {
       case 'accepted':
       case 'completed':
       case 'verified':
+      case 'approved':
         return ColorPath.foamGreen;
       case 'pending':
       case 'in-progress':
@@ -56,6 +57,7 @@ class VerifySafeTag extends StatelessWidget {
       case 'accepted':
       case 'completed':
       case 'verified':
+      case 'approved':
         return ColorPath.funGreen;
       case 'pending':
       case 'in-progress':
