@@ -2,11 +2,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:verifysafe/core/constants/app_constants.dart';
 import 'package:verifysafe/core/data/data_providers/users_data_providers/employer_data_provider.dart';
 import 'package:verifysafe/core/data/enum/view_state.dart';
-import 'package:verifysafe/core/data/models/employer/employer.dart';
 import 'package:verifysafe/core/data/models/responses/response_data/stats.dart';
 import 'package:verifysafe/core/data/states/employer_state.dart';
 import 'package:verifysafe/core/utilities/utilities.dart';
 import 'package:verifysafe/locator.dart';
+
+import '../models/user.dart';
 
 class EmployerViewModel extends EmployerState {
   final EmployerDataProvider _employerDp = locator<EmployerDataProvider>();
@@ -19,11 +20,11 @@ class EmployerViewModel extends EmployerState {
   String get employersMessage => _employersMessage;
 
   //list of employers
-  List<Employer> _employers = [];
-  List<Employer> get employers => _employers;
+  List<User> _employers = [];
+  List<User> get employers => _employers;
 
   //selected employer
-  Employer? selectedEmployer;
+  User? selectedEmployer;
 
   Stats? _employerStats;
   Stats? get employerStats => _employerStats;

@@ -3,17 +3,14 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:verifysafe/core/constants/app_dimension.dart';
 import 'package:verifysafe/core/constants/app_theme/custom_color_scheme.dart';
-import 'package:verifysafe/core/data/view_models/employer_view_model.dart';
 import 'package:verifysafe/core/data/view_models/worker_view_model.dart';
 import 'package:verifysafe/core/utilities/navigator.dart';
 import 'package:verifysafe/ui/widgets/app_loader.dart';
 import 'package:verifysafe/ui/widgets/clickable.dart';
 import 'package:verifysafe/ui/widgets/error_state.dart';
 import 'package:verifysafe/ui/widgets/verifysafe_container.dart';
-
 import '../../../core/constants/color_path.dart';
 import '../../../core/data/enum/view_state.dart';
-import '../../../core/data/models/employer/employer.dart';
 import '../../../core/data/models/worker/worker.dart';
 import '../../../core/utilities/debouncer.dart';
 import '../../../core/utilities/utilities.dart';
@@ -148,7 +145,6 @@ class _SelectWorkerState extends ConsumerState<SelectWorker> {
                     return ListView.separated(
                       itemCount: vm.workers.length,
                       shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
                       padding: EdgeInsets.zero,
                       itemBuilder: (BuildContext context, int index) {
                         final worker = vm.workers[index];

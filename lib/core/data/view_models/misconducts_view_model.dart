@@ -109,6 +109,56 @@ class MisconductsViewModel extends BaseState {
   }
 
 
+  //submit report
+  submitReport({
+    required String? reporteeId,
+    required String? reporteeType,
+    required String? reportType,
+    required String comment,
+    required String? attachment,
+  }) async{
+
+    setSecondState(ViewState.busy);
+    final details = {
+      'reportee_id':reporteeId,
+      'reportee_type':reporteeType,
+      'type':reportType,
+      'comment': comment,
+    };
+
+    if(attachment != null){
+      details['attachment'] = attachment;
+    }
+    await _misconductsDp.submitReport(details: details).then(
+          (response) {
+        _message = response.message ?? defaultSuccessMessage;
+        fetchReports();
+        setSecondState(ViewState.retrieved);
+      },
+      onError: (error) {
+        _message = Utilities.formatMessage(error.toString(), isSuccess: false);
+        setSecondState(ViewState.error);
+      },
+    );
+  }
+
+  //delete report
+  deleteReport() async{
+    setThirdState(ViewState.busy);
+    await _misconductsDp.deleteReport(id: selectedReport?.id).then(
+          (response) {
+        _message = response.message ?? defaultSuccessMessage;
+        fetchReports();
+        setThirdState(ViewState.retrieved);
+      },
+      onError: (error) {
+        _message = Utilities.formatMessage(error.toString(), isSuccess: false);
+        setThirdState(ViewState.error);
+      },
+    );
+  }
+
+
 
 
 

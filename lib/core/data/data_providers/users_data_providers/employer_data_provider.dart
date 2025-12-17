@@ -2,10 +2,11 @@ import 'dart:async';
 
 import 'package:verifysafe/core/constants/api_routes.dart';
 import 'package:verifysafe/core/data/enum/request_type.dart';
-import 'package:verifysafe/core/data/models/employer/employer.dart';
 import 'package:verifysafe/core/data/models/responses/api_response.dart';
 import 'package:verifysafe/core/data/models/responses/response_data/stats.dart';
 import 'package:verifysafe/core/data/network_manager/network_manager.dart';
+
+import '../../models/user.dart';
 
 class EmployerDataProvider {
   /// Fetch [UserType.employer] Dashboard stat
@@ -30,10 +31,10 @@ class EmployerDataProvider {
   }
 
   /// Fetch employers
-  Future<ApiResponse<List<Employer>>> fetchEmployers({
+  Future<ApiResponse<List<User>>> fetchEmployers({
     required String? keyword
   }) async {
-    var completer = Completer<ApiResponse<List<Employer>>>();
+    var completer = Completer<ApiResponse<List<User>>>();
     try {
       Map<String, dynamic> response = await NetworkManager()
           .networkRequestManager(
@@ -41,11 +42,11 @@ class EmployerDataProvider {
         ApiRoutes.fetchEmployers(keyword: keyword),
         useAuth: true,
       );
-      var result = ApiResponse<List<Employer>>.fromJson(
+      var result = ApiResponse<List<User>>.fromJson(
         response,
             (data) => List.from(
           data,
-        ).map((e) => Employer.fromJson(e as Map<String, dynamic>)).toList(),
+        ).map((e) => User.fromJson(e as Map<String, dynamic>)).toList(),
       );
       completer.complete(result);
     } catch (e) {

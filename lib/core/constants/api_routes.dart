@@ -62,4 +62,6 @@ class ApiRoutes {
       "${dotenv.env['V1']}/misconducts?paginate=1"
           :"${dotenv.env['V1']}/misconducts?paginate=1&$filterOptions";
   static var createMisconductReport = "${dotenv.env['V1']}/misconducts";
+  static deleteReport({required String? id}) =>
+      "${dotenv.env['V1']}/misconducts/$id";
 }

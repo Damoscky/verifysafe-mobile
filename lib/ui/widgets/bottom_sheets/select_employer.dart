@@ -12,14 +12,14 @@ import 'package:verifysafe/ui/widgets/verifysafe_container.dart';
 
 import '../../../core/constants/color_path.dart';
 import '../../../core/data/enum/view_state.dart';
-import '../../../core/data/models/employer/employer.dart';
+import '../../../core/data/models/user.dart';
 import '../../../core/utilities/debouncer.dart';
 import '../../../core/utilities/utilities.dart';
 import '../show_flush_bar.dart';
 
 class SelectEmployer extends ConsumerStatefulWidget {
   final String searchHintText;
-  final ValueChanged<Employer> onDone;
+  final ValueChanged<User> onDone;
   const SelectEmployer({super.key, required this.searchHintText, required this.onDone});
 
   @override
@@ -146,7 +146,6 @@ class _SelectEmployerState extends ConsumerState<SelectEmployer> {
                   return ListView.separated(
                     itemCount: vm.employers.length,
                     shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
                     padding: EdgeInsets.zero,
                     itemBuilder: (BuildContext context, int index) {
                       final employer = vm.employers[index];
