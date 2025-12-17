@@ -4,6 +4,7 @@ import 'package:verifysafe/core/data/data_providers/users_data_providers/worker_
 import 'package:verifysafe/core/data/enum/view_state.dart';
 import 'package:verifysafe/core/data/models/responses/response_data/stats.dart';
 import 'package:verifysafe/core/data/models/responses/response_data/worker_dashboard_response.dart';
+import 'package:verifysafe/core/data/models/worker/worker.dart';
 import 'package:verifysafe/core/data/states/worker_state.dart';
 import 'package:verifysafe/core/utilities/utilities.dart';
 import 'package:verifysafe/locator.dart';
@@ -14,6 +15,16 @@ class WorkerViewModel extends WorkerState {
   //message
   String _message = '';
   String get message => _message;
+
+  String _workerMessage = '';
+  String get workerMessage => _workerMessage;
+
+  //list of workers
+  List<Worker> _workers = [];
+  List<Worker> get workers => _workers;
+
+  //selected worker
+  Worker? selectedWorker;
 
   WorkerDashboardResponse? _dashboardData;
 
@@ -35,6 +46,27 @@ class WorkerViewModel extends WorkerState {
         setState(ViewState.error);
       },
     );
+  }
+
+  /// fetch employers
+  fetchWorkers({required String? keyword}) async{
+    setSecondState(ViewState.busy);
+    await _workerDataProvider.fetchWorkers(keyword: keyword).then(
+          (response) {
+        _workerMessage = response.message ?? defaultSuccessMessage;
+        _workers = response.data ?? [];
+        setSecondState(ViewState.retrieved);
+      },
+      onError: (error) {
+        _workerMessage = Utilities.formatMessage(error.toString(), isSuccess: false);
+        setSecondState(ViewState.error);
+      },
+    );
+  }
+
+  reset(){
+    setSecondState(ViewState.idle, refreshUi: false);
+    _workers.clear();
   }
 }
 

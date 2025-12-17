@@ -255,6 +255,12 @@ class WorkerInfo {
   String? dateOfBirth;
   String? residentialAddress;
   String? createdAt;
+  final String? jobCategory;
+  final String? jobRole;
+  final String? experience;
+  final String? language;
+  final int? relocatable;
+  final String? resumeUrl;
 
   WorkerInfo({
     this.gender,
@@ -262,6 +268,12 @@ class WorkerInfo {
     this.dateOfBirth,
     this.residentialAddress,
     this.createdAt,
+    this.jobCategory,
+    this.jobRole,
+    this.experience,
+    this.language,
+    this.relocatable,
+    this.resumeUrl,
   });
 
   factory WorkerInfo.fromJson(Map<String, dynamic> json) {
@@ -271,6 +283,12 @@ class WorkerInfo {
       dateOfBirth: json['date_of_birth'] as String?,
       residentialAddress: json['residential_address'] as String?,
       createdAt: json['created_at'] as String?,
+      jobCategory: json["job_category"],
+      jobRole: json["job_role"],
+      experience: json["experience"],
+      language: json["language"],
+      relocatable: json["relocatable"],
+      resumeUrl: json["resume_url"],
     );
   }
 
@@ -281,6 +299,12 @@ class WorkerInfo {
       'date_of_birth': dateOfBirth,
       'residential_address': residentialAddress,
       'created_at': createdAt,
+      "job_category": jobCategory,
+      "job_role": jobRole,
+      "experience": experience,
+      "language": language,
+      "relocatable": relocatable,
+      "resume_url": resumeUrl,
     };
   }
 }

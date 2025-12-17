@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:verifysafe/core/constants/app_theme/custom_color_scheme.dart';
+import 'package:verifysafe/core/data/view_models/misconducts_view_model.dart';
 import 'package:verifysafe/ui/widgets/verifysafe_container.dart';
 import '../../../core/constants/app_asset.dart';
 import '../../../core/constants/app_dimension.dart';
@@ -13,16 +15,17 @@ import '../../widgets/custom_appbar.dart';
 import '../../widgets/custom_painter/dotted_border.dart';
 import '../../widgets/custom_svg.dart';
 
-class ViewReport extends StatefulWidget {
+class ViewReport extends ConsumerStatefulWidget {
   const ViewReport({super.key});
 
   @override
-  State<ViewReport> createState() => _ViewReportState();
+  ConsumerState<ViewReport> createState() => _ViewReportState();
 }
 
-class _ViewReportState extends State<ViewReport> {
+class _ViewReportState extends ConsumerState<ViewReport> {
   @override
   Widget build(BuildContext context) {
+    final vm = ref.watch(misconductsViewModel);
     return Scaffold(
       appBar: customAppBar(
           context: context,
@@ -30,7 +33,7 @@ class _ViewReportState extends State<ViewReport> {
           showBottom: true,
           appbarBottomPadding: 10.h,
           actions:[
-            Padding(
+            if((!vm.isPending || !vm.isDeclined) && vm.isActive)Padding(
               padding: EdgeInsets.only(right: AppDimension.paddingRight),
               child: Clickable(
                 onPressed: (){
@@ -75,7 +78,7 @@ class _ViewReportState extends State<ViewReport> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Jideson & Co.',
+                        vm.name,
                         style: Theme.of(context)
                             .textTheme
                             .titleMedium
@@ -84,17 +87,17 @@ class _ViewReportState extends State<ViewReport> {
                             color: Theme.of(context).colorScheme.textPrimary
                         ),
                       ),
-                      SizedBox(height: 4.h,),
-                      Text(
-                        'Domestic Worker',
-                        style: Theme.of(context)
-                            .textTheme
-                            .bodyLarge
-                            ?.copyWith(
-                            fontWeight: FontWeight.w400,
-                            color: Theme.of(context).colorScheme.text4
-                        ),
-                      ),
+                      // SizedBox(height: 4.h,),
+                      // Text(
+                      //   'Domestic Worker',
+                      //   style: Theme.of(context)
+                      //       .textTheme
+                      //       .bodyLarge
+                      //       ?.copyWith(
+                      //       fontWeight: FontWeight.w400,
+                      //       color: Theme.of(context).colorScheme.text4
+                      //   ),
+                      // ),
                     ],
                   ),
                 ),
@@ -123,7 +126,7 @@ class _ViewReportState extends State<ViewReport> {
                       ),
                       SizedBox(height: 4.h,),
                       Text(
-                        'Dec 19, 2013',
+                        vm.date,
                         style: Theme.of(context)
                             .textTheme
                             .bodyMedium
@@ -152,7 +155,7 @@ class _ViewReportState extends State<ViewReport> {
                       ),
                       SizedBox(height: 4.h,),
                       Text(
-                        'Underpayment',
+                        vm.reportType,
                         style: Theme.of(context)
                             .textTheme
                             .bodyMedium
@@ -168,7 +171,7 @@ class _ViewReportState extends State<ViewReport> {
             ),
             SizedBox(height: 16.h,),
             Text(
-              'New to the field but very interested in design and eager to learn. New to the field but very interested in design and eager to learn. New to the field but very interested in design and eager to learn.New to the field but very interested in design and eager to learn.New to the field but very interested in design and eager to learn. New to the field but very interested in design and eager to learn.New to the field but very interested in design and eager to learn.',
+              vm.comment,
               style: Theme.of(context)
                   .textTheme
                   .bodyMedium

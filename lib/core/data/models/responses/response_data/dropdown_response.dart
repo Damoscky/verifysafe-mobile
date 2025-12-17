@@ -5,6 +5,7 @@ class DropdownResponse {
   List<String>? placementRegion;
   List<String>? averagePlacementTime;
   List<String>? relationships;
+  List<String>? misconductTypes;
 
   DropdownResponse({
     this.businessType,
@@ -13,6 +14,7 @@ class DropdownResponse {
     this.placementRegion,
     this.averagePlacementTime,
     this.relationships,
+    this.misconductTypes
   });
 
   factory DropdownResponse.fromJson(Map<String, dynamic> json) {
@@ -35,6 +37,9 @@ class DropdownResponse {
       relationships: json['relationships'] != null
           ? List<String>.from(json['relationships'])
           : null,
+      misconductTypes: json['misconduct_types'] != null
+          ? List<String>.from(json['misconduct_types'])
+          : null,
     );
   }
 
@@ -46,6 +51,7 @@ class DropdownResponse {
       'placement_region': placementRegion,
       'average_placement_time': averagePlacementTime,
       'relationships': relationships,
+      'misconduct_types': misconductTypes,
     };
   }
 }

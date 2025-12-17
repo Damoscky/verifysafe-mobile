@@ -15,6 +15,9 @@ class Stats {
   final int? approved;
   final int? pending;
   final int? declined;
+  //misconducts
+  final int? resolved;
+  final int? suspended;
 
   Stats({
     this.total,
@@ -29,6 +32,8 @@ class Stats {
     this.approved,
     this.pending,
     this.declined,
+    this.resolved,
+    this.suspended
   });
 
   factory Stats.fromJson(Map<String, dynamic> json) {
@@ -45,6 +50,8 @@ class Stats {
       approved: json["approved"],
       pending: json["pending"],
       declined: json["declined"],
+      resolved: json["resolved"],
+      suspended: json["suspended"],
     );
   }
 
@@ -62,6 +69,8 @@ class Stats {
       "approved": approved,
       "pending": pending,
       "declined": declined,
+      "resolved": resolved,
+      "suspended": suspended,
     };
   }
 }

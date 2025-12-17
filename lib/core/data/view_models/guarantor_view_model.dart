@@ -8,8 +8,8 @@ import 'package:verifysafe/core/data/states/base_state.dart';
 import 'package:verifysafe/core/utilities/utilities.dart';
 import 'package:verifysafe/locator.dart';
 
-import '../../../utilities/date_sorter.dart';
-import '../../../utilities/date_utilitites.dart';
+import '../../utilities/date_sorter.dart';
+import '../../utilities/date_utilitites.dart';
 
 class GuarantorViewModel extends BaseState {
   final GuarantorDataProvider _guarantorDp = locator<GuarantorDataProvider>();
@@ -167,12 +167,8 @@ class GuarantorViewModel extends BaseState {
 
   setFilterOptions({String? status, String? startDate, String? endDate})async{
 
-    print('status:::$status>>>');
-
     if(status != null){
-      print('here>>>');
       selectedFilterOptions['status'] = status.toLowerCase();
-      print('here>>>${selectedFilterOptions['status']}.......status:::$status');
     }
 
     if(startDate != null && endDate != null){
@@ -181,7 +177,6 @@ class GuarantorViewModel extends BaseState {
       selectedFilterOptions['date_filter'] = "$startDate|$endDate";
     }
 
-    print('filter options:::${selectedFilterOptions.toString()}>>>>');
   }
 
   clearFilters(){

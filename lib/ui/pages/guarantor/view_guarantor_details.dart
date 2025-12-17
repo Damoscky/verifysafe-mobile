@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:verifysafe/core/constants/app_theme/custom_color_scheme.dart';
-import 'package:verifysafe/core/data/view_models/guarantor_view_models/guarantor_view_model.dart';
+import 'package:verifysafe/core/data/view_models/guarantor_view_model.dart';
 import 'package:verifysafe/ui/widgets/busy_overlay.dart';
 import 'package:verifysafe/ui/widgets/details.dart';
 import 'package:verifysafe/ui/widgets/show_flush_bar.dart';

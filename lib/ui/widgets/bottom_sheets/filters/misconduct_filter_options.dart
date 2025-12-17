@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:verifysafe/core/constants/app_theme/custom_color_scheme.dart';
 import 'package:verifysafe/core/data/view_models/guarantor_view_model.dart';
+import 'package:verifysafe/core/data/view_models/misconducts_view_model.dart';
 import 'package:verifysafe/core/utilities/extensions/color_extensions.dart';
 import 'package:verifysafe/core/utilities/navigator.dart';
 import 'package:verifysafe/ui/widgets/alert_dialogs/base_dialog.dart';
@@ -17,17 +18,17 @@ import '../../alert_dialogs/select_date.dart';
 import '../../clickable.dart';
 import '../../custom_button.dart';
 
-class GuarantorFilterOptions extends ConsumerStatefulWidget {
+class MisconductFilterOptions extends ConsumerStatefulWidget {
   final Map<String, dynamic>? initialValues;
-  const GuarantorFilterOptions({super.key, this.initialValues});
+  const MisconductFilterOptions({super.key, this.initialValues});
 
   @override
-  ConsumerState<GuarantorFilterOptions> createState() => _GuarantorFilterOptionsState();
+  ConsumerState<MisconductFilterOptions> createState() => _MisconductFilterOptionsState();
 }
 
-class _GuarantorFilterOptionsState extends ConsumerState<GuarantorFilterOptions> {
+class _MisconductFilterOptionsState extends ConsumerState<MisconductFilterOptions> {
 
-  String? _startDate, _endDate, _status;
+  String? _startDate, _endDate;
 
   @override
   void initState() {
@@ -36,17 +37,14 @@ class _GuarantorFilterOptionsState extends ConsumerState<GuarantorFilterOptions>
       _startDate = vm.selectedFilterOptions['start_date'];
       _endDate = vm.selectedFilterOptions['end_date'];
     }
-    if(vm.selectedFilterOptions.containsKey('status')){
-      _status = vm.selectedFilterOptions['status'];
-    }
-      super.initState();
+    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
     final colorScheme = Theme.of(context).colorScheme;
-    final vm = ref.watch(guarantorViewModel);
+    final vm = ref.watch(misconductsViewModel);
     return Padding(
       padding: EdgeInsets.only(left: AppDimension.bottomSheetPaddingLeft, right: AppDimension.bottomSheetPaddingRight, top: 45.h, bottom: 31.h),
       child: IgnorePointer(
@@ -70,7 +68,6 @@ class _GuarantorFilterOptionsState extends ConsumerState<GuarantorFilterOptions>
                 Clickable(
                   onPressed: (){
                     setState(() {
-                      _status = null;
                       _startDate = null;
                       _endDate = null;
                     });
@@ -88,47 +85,6 @@ class _GuarantorFilterOptionsState extends ConsumerState<GuarantorFilterOptions>
                   ),
                 ),
               ],
-            ),
-            SizedBox(height: 16.h,),
-            Text(
-              'Status Type:',
-              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  fontWeight: FontWeight.w500,
-                  color: Theme.of(context).colorScheme.textPrimary
-              ),
-            ),
-            SizedBox(height: 16.h,),
-            Wrap(
-                alignment: WrapAlignment.start,
-                spacing: 12.w,
-                runSpacing: 16.h,
-                children: List.generate(vm.statusType.length, (index){
-                  final status = vm.statusType[index];
-                  final isSelected = _status?.toLowerCase() == status.toLowerCase();
-                  return Clickable(
-                    onPressed: (){
-                      setState(() {
-                        _status = status;
-                      });
-                    },
-                    child: Container(
-                      padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 10.h),
-                      decoration: BoxDecoration(
-                          color: isSelected ? ColorPath.aquaGreen:ColorPath.athensGrey6.withCustomOpacity(0.5),
-                          border: Border.all(color: isSelected ? ColorPath.gloryGreen:ColorPath.mysticGrey, width: 1.w),
-                          borderRadius: BorderRadius.all(Radius.circular(8.r))
-                      ),
-                      child:Text(
-                        status,
-                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                            fontWeight: FontWeight.w400,
-                            color: Theme.of(context).colorScheme.textPrimary
-                        ),
-                      ),
-                    ),
-                  );
-                }
-                )
             ),
             SizedBox(height: 16.h,),
             Text(
@@ -204,7 +160,7 @@ class _GuarantorFilterOptionsState extends ConsumerState<GuarantorFilterOptions>
                       width: 124.w,
                       padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 10.h),
                       decoration: BoxDecoration(
-                        color: ColorPath.athensGrey6.withCustomOpacity(0.5),
+                          color: ColorPath.athensGrey6.withCustomOpacity(0.5),
                           border: Border.all(color: ColorPath.mysticGrey, width: 1.w),
                           borderRadius: BorderRadius.all(Radius.circular(8.r))
                       ),
@@ -235,11 +191,11 @@ class _GuarantorFilterOptionsState extends ConsumerState<GuarantorFilterOptions>
                 showLoader: vm.state == ViewState.busy,
                 onPressed: ()async{
 
-                  if(_status == null && (_startDate == null && _endDate == null)){
+                  if(_startDate == null && _endDate == null){
                     showFlushBar(
                         context: context,
                         message: 'Select a filter option to proceed',
-                      success: false
+                        success: false
                     );
                     return;
                   }
@@ -287,12 +243,11 @@ class _GuarantorFilterOptionsState extends ConsumerState<GuarantorFilterOptions>
                   }
 
                   await vm.setFilterOptions(
-                    status: _status,
-                    startDate: _startDate,
-                    endDate: _endDate
+                      startDate: _startDate,
+                      endDate: _endDate
                   );
 
-                  await vm.fetchGuarantors(withFilters: true);
+                  await vm.fetchReports(withFilters: true);
                   if(vm.state == ViewState.retrieved){
                     popNavigation(context: context);
                   }
@@ -300,7 +255,7 @@ class _GuarantorFilterOptionsState extends ConsumerState<GuarantorFilterOptions>
                   showFlushBar(
                       context: context,
                       message: vm.message,
-                    success: vm.state == ViewState.retrieved
+                      success: vm.state == ViewState.retrieved
                   );
 
                 }

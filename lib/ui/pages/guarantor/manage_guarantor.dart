@@ -6,7 +6,7 @@ import 'package:verifysafe/core/constants/app_asset.dart';
 import 'package:verifysafe/core/constants/app_dimension.dart';
 import 'package:verifysafe/core/constants/app_theme/custom_color_scheme.dart';
 import 'package:verifysafe/core/constants/named_routes.dart';
-import 'package:verifysafe/core/data/view_models/guarantor_view_models/guarantor_view_model.dart';
+import 'package:verifysafe/core/data/view_models/guarantor_view_model.dart';
 import 'package:verifysafe/core/utilities/navigator.dart';
 import 'package:verifysafe/ui/pages/guarantor/add_guarantor.dart';
 import 'package:verifysafe/ui/widgets/app_loader.dart';
