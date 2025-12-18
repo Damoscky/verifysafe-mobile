@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:verifysafe/core/constants/app_constants.dart';
 import 'package:verifysafe/core/data/data_providers/users_data_providers/user_data_provider.dart';
+import 'package:verifysafe/core/data/enum/user_type.dart';
 import 'package:verifysafe/core/data/enum/view_state.dart';
 import 'package:verifysafe/core/data/models/user.dart';
 import 'package:verifysafe/core/data/states/user_state.dart';
@@ -22,6 +23,10 @@ class UserViewModel extends UserState {
   String? get avatar => _userData?.avatar;
   String get firstName => _userData?.name?.split(' ').first ?? '';
   String get lastName => _userData?.name?.split(' ').last ?? '';
+
+  bool get isWorker =>  userData?.userEnumType == UserType.worker;
+  bool get isEmployer =>  userData?.userEnumType == UserType.employer;
+  bool get isAgency =>  userData?.userEnumType == UserType.agency;
 
   set userData(User? user) {
     _userData = user;

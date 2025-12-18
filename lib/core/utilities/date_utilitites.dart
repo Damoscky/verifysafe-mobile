@@ -148,8 +148,7 @@ ${getDayOfMonthSuffix(DateFormat('yyyy-MM-dd').parse(date))} ${DateFormat.MMM().
   static String abbrevMonthDayYear(String date) {
     final String month =
         DateFormat.MMM().format(DateFormat('yyyy-MM-dd').parse(date));
-    return '''
-  ${month.toUpperCase()} ${DateFormat.d().format(DateFormat('yyyy-MM-dd').parse(date))} ${DateFormat.y().format(DateFormat('yyyy-MM-dd').parse(date))}''';
+    return '''${month.toUpperCase()} ${DateFormat.d().format(DateFormat('yyyy-MM-dd').parse(date))} ${DateFormat.y().format(DateFormat('yyyy-MM-dd').parse(date))}''';
   }
 
   static String abbreviateDayAndMonth(DateTime date) {
@@ -222,7 +221,7 @@ ${DateFormat.yMMMd().format(date)} ${DateFormat.jms().format(date)}''';
   ///converts time in am/pm
   static String formatTimeAMPM({required DateTime dateTime}) {
     final DateFormat formatter = DateFormat.jm();
-    return formatter.format(dateTime).toLowerCase();
+    return formatter.format(dateTime);
   }
 
   ///compares two date time

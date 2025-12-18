@@ -8,6 +8,8 @@ import 'package:verifysafe/core/data/models/responses/response_data/stats.dart';
 import 'package:verifysafe/core/data/models/user.dart';
 import 'package:verifysafe/core/data/network_manager/network_manager.dart';
 
+import '../../models/user.dart';
+
 class EmployerDataProvider {
   /// Fetch [UserType.employer] Dashboard stat
   Future<ApiResponse<Stats>> fetchDashboardStats() async {
@@ -33,6 +35,7 @@ class EmployerDataProvider {
   /// Fetch [UserType.employer] attached to Agency
   Future<ApiResponse<PaginationData>> fetchEmployers({
     String? query,
+     String? keyword,
     int? limit,
     int? pageNumber,
   }) async {
@@ -47,7 +50,7 @@ class EmployerDataProvider {
               "paginate": "1",
               "limit": limit,
               "page": pageNumber,
-              "q": query,
+              "q": query ?? keyword,
             },
           );
       var result = ApiResponse<PaginationData>.fromJson(

@@ -31,6 +31,7 @@ class GeneralDataViewModel extends BaseState {
   List<String> get averagePlacementTIme =>
       _dropdownResponse?.averagePlacementTime ?? [];
   List<String> get relationships => _dropdownResponse?.relationships ?? [];
+  List<String> get misconductTypes => _dropdownResponse?.misconductTypes ?? [];
 
   /// fetches Dropdown Data
   fetchDropdownOptions() async {

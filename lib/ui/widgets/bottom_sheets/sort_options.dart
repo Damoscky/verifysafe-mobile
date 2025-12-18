@@ -3,14 +3,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:verifysafe/core/constants/app_theme/custom_color_scheme.dart';
 import 'package:verifysafe/core/utilities/navigator.dart';
 import 'package:verifysafe/ui/widgets/clickable.dart';
-import 'package:verifysafe/ui/widgets/show_flush_bar.dart';
-
 import '../../../core/constants/app_dimension.dart';
 import '../../../core/constants/color_path.dart';
 import '../custom_button.dart';
 
 class SortOptions extends StatefulWidget {
-  final ValueChanged<String> onSelected;
+  final ValueChanged<String?> onSelected;
   final List<String> filterOptions;
   final String? initialValue;
   const SortOptions({super.key, required this.onSelected, this.initialValue, required this.filterOptions});
@@ -128,16 +126,7 @@ class _SortOptionsState extends State<SortOptions> {
           CustomButton(
               buttonText: 'Done',
               onPressed: (){
-                if(_selected == null){
-                  showFlushBar(
-                      context: context,
-                      message: 'Kindly select a sort option to proceed',
-                    success: false
-                  );
-                  return;
-                }
-
-                  widget.onSelected(_selected!);
+                widget.onSelected(_selected);
                 popNavigation(context: context);
               }
           ),

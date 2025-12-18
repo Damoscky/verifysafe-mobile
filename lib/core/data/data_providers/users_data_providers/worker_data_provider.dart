@@ -54,6 +54,7 @@ class WorkerDataProvider {
   /// Fetch [UserType.worker] attached to Agency/Employer
   Future<ApiResponse<PaginationData>> fetchWorkers({
     String? query,
+    String? keyword,
     int? limit,
     int? pageNumber,
   }) async {
@@ -68,7 +69,7 @@ class WorkerDataProvider {
               "paginate": "1",
               "limit": limit,
               "page": pageNumber,
-              "q": query,
+              "q": query ?? keyword,
             },
           );
       var result = ApiResponse<PaginationData>.fromJson(

@@ -11,6 +11,13 @@ class Stats {
   final int? acceptedCount;
   final int? pendingCount;
   final num? percentageChange;
+  //guarantor stats
+  final int? approved;
+  final int? pending;
+  final int? declined;
+  //misconducts
+  final int? resolved;
+  final int? suspended;
 
   Stats({
     this.total,
@@ -22,6 +29,11 @@ class Stats {
     this.acceptedCount,
     this.pendingCount,
     this.percentageChange,
+    this.approved,
+    this.pending,
+    this.declined,
+    this.resolved,
+    this.suspended
   });
 
   factory Stats.fromJson(Map<String, dynamic> json) {
@@ -35,6 +47,11 @@ class Stats {
       acceptedCount: json['accepted_count'],
       pendingCount: json['pending_count'],
       percentageChange: json['percentage_change'],
+      approved: json["approved"],
+      pending: json["pending"],
+      declined: json["declined"],
+      resolved: json["resolved"],
+      suspended: json["suspended"],
     );
   }
 
@@ -49,6 +66,11 @@ class Stats {
       'accepted_count': acceptedCount,
       'pending_count': pendingCount,
       'percentage_change': percentageChange,
+      "approved": approved,
+      "pending": pending,
+      "declined": declined,
+      "resolved": resolved,
+      "suspended": suspended,
     };
   }
 }

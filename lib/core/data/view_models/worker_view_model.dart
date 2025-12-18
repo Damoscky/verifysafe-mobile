@@ -5,6 +5,7 @@ import 'package:verifysafe/core/data/enum/view_state.dart';
 import 'package:verifysafe/core/data/models/responses/response_data/stats.dart';
 import 'package:verifysafe/core/data/models/responses/response_data/worker_dashboard_response.dart';
 import 'package:verifysafe/core/data/models/user.dart';
+import 'package:verifysafe/core/data/models/worker/worker.dart';
 import 'package:verifysafe/core/data/states/worker_state.dart';
 import 'package:verifysafe/core/utilities/utilities.dart';
 import 'package:verifysafe/locator.dart';
@@ -21,6 +22,16 @@ class WorkerViewModel extends WorkerState {
 
   //total records
   int totalRecords = 0;
+
+  String _workerMessage = '';
+  String get workerMessage => _workerMessage;
+
+  //list of workers
+  List<Worker> _workers = [];
+  List<Worker> get workers => _workers;
+
+  //selected worker
+  Worker? selectedWorker;
 
   WorkerDashboardResponse? _dashboardData;
 

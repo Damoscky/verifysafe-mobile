@@ -36,13 +36,35 @@ class ApiRoutes {
   //worker
   static var workHistoriesOverview = "${dotenv.env['V1']}/work-histories";
   static var workers = "${dotenv.env['V1']}/workers";
+  static fetchWorkers({required String? keyword}) =>
+      "${dotenv.env['V1']}/workers?q=$keyword&paginate=0";
 
 
   //employer
   static var employerDashboardStats = "${dotenv.env['V1']}/dashboard/employer-stats";
   static var employers = "${dotenv.env['V1']}/employers";
 
+  static fetchEmployers({required String? keyword}) =>
+      "${dotenv.env['V1']}/employers?q=$keyword&paginate=0";
 
     //agency
   static var agencyDashboardStats = "${dotenv.env['V1']}/dashboard/agency-stats";
+
+  //guarantor
+  static fetchGuarantors({required String? filterOptions}) =>
+  filterOptions == null ?
+      "${dotenv.env['V1']}/worker-references?paginate=1"
+        :"${dotenv.env['V1']}/worker-references?paginate=1&$filterOptions";
+  static var createGuarantor = "${dotenv.env['V1']}/worker-references";
+  static toggleStatus({required String? id}) =>
+      "${dotenv.env['V1']}/worker-references/$id";
+
+  //misconducts
+  static fetchMisconducts({required String? filterOptions}) =>
+      filterOptions == null ?
+      "${dotenv.env['V1']}/misconducts?paginate=1"
+          :"${dotenv.env['V1']}/misconducts?paginate=1&$filterOptions";
+  static var createMisconductReport = "${dotenv.env['V1']}/misconducts";
+  static deleteReport({required String? id}) =>
+      "${dotenv.env['V1']}/misconducts/$id";
 }

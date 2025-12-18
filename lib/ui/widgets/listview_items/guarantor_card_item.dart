@@ -1,19 +1,44 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:verifysafe/core/constants/app_theme/custom_color_scheme.dart';
+import 'package:verifysafe/core/data/view_models/guarantor_view_model.dart';
+import 'package:verifysafe/core/utilities/date_utilitites.dart';
 import 'package:verifysafe/ui/widgets/clickable.dart';
 import 'package:verifysafe/ui/widgets/verifysafe_container.dart';
 import 'package:verifysafe/ui/widgets/verifysafe_tag.dart';
 
+import '../../../core/constants/named_routes.dart';
+import '../../../core/data/models/guarantor.dart';
+import '../../../core/utilities/navigator.dart';
+import '../../pages/guarantor/view_guarantor_details.dart';
+
 class GuarantorCardItem extends StatelessWidget {
   final void Function()? onPressed;
+  final Guarantor guarantor;
 
-  const GuarantorCardItem({super.key, this.onPressed});
+  const GuarantorCardItem({super.key, this.onPressed, required this.guarantor});
 
   @override
   Widget build(BuildContext context) {
+    final name = guarantor.name ?? 'N/A';
+    final date = DateUtilities.abbrevMonthDayYear(guarantor.requestedAt?.toString() ?? DateTime.now().toString());
+    final time = DateUtilities.formatTimeAMPM(dateTime: guarantor.requestedAt ?? DateTime.now());
+    final relationship = guarantor.relationship ?? 'N/A';
+    final email = guarantor.email ?? 'N/A';
+    final address = guarantor.address ?? 'N/A';
+    final status = guarantor.status ?? '';
+
     return Clickable(
-      onPressed: onPressed,
+      onPressed: onPressed ?? (){
+        final container =
+        ProviderScope.containerOf(context);
+
+        final vm =
+        container.read(guarantorViewModel);
+        vm.selectedGuarantor = guarantor;
+        pushNavigation(context: context, widget: ViewGuarantorDetails(), routeName: NamedRoutes.viewGuarantorDetails);
+      },
       child: VerifySafeContainer(
         padding: EdgeInsets.symmetric(vertical: 16.h, horizontal: 16.w),
         borderRadius: BorderRadius.all(Radius.circular(16.r)),
@@ -29,7 +54,7 @@ class GuarantorCardItem extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Jideson & Co.',
+                        name,
                         style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                           fontWeight: FontWeight.w700,
                           color: Theme.of(context).colorScheme.textPrimary,
@@ -37,7 +62,7 @@ class GuarantorCardItem extends StatelessWidget {
                       ),
                       SizedBox(height: 4.h),
                       Text(
-                        'Dec 19, 2013 10:39 AM',
+                        '$date $time',
                         style: Theme.of(context).textTheme.bodySmall?.copyWith(
                           fontWeight: FontWeight.w400,
                           color: Theme.of(context).colorScheme.text4,
@@ -47,7 +72,7 @@ class GuarantorCardItem extends StatelessWidget {
                   ),
                 ),
                 SizedBox(width: 10.w),
-                VerifySafeTag(status: 'Accepted' ),
+                VerifySafeTag(status: status),
               ],
             ),
             SizedBox(height: 12.h),
@@ -68,7 +93,7 @@ class GuarantorCardItem extends StatelessWidget {
                       ),
                       SizedBox(height: 4.h),
                       Text(
-                        'jideson@yahoo.com',
+                        email,
                         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                           fontWeight: FontWeight.w400,
                           color: Theme.of(context).colorScheme.text5,
@@ -91,7 +116,7 @@ class GuarantorCardItem extends StatelessWidget {
                       ),
                       SizedBox(height: 4.h),
                       Text(
-                        'Brother',
+                        relationship,
                         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                           fontWeight: FontWeight.w400,
                           color: Theme.of(context).colorScheme.text5,
@@ -115,7 +140,7 @@ class GuarantorCardItem extends StatelessWidget {
                 ),
                 SizedBox(height: 4.h),
                 Text(
-                  '1901 Donovan Cir. Shiloh, Tokyo 86563',
+                  address,
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                     fontWeight: FontWeight.w400,
                     color: Theme.of(context).colorScheme.text5,

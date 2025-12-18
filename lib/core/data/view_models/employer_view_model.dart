@@ -8,6 +8,8 @@ import 'package:verifysafe/core/data/states/employer_state.dart';
 import 'package:verifysafe/core/utilities/utilities.dart';
 import 'package:verifysafe/locator.dart';
 
+import '../models/user.dart';
+
 class EmployerViewModel extends EmployerState {
   final EmployerDataProvider _employerDp = locator<EmployerDataProvider>();
 
@@ -20,6 +22,16 @@ class EmployerViewModel extends EmployerState {
 
   //total records
   int totalRecords = 0;
+
+  String _employersMessage = '';
+  String get employersMessage => _employersMessage;
+
+  //list of employers
+  List<User> _employers = [];
+  List<User> get employers => _employers;
+
+  //selected employer
+  User? selectedEmployer;
 
   Stats? _employerStats;
   Stats? get employerStats => _employerStats;
