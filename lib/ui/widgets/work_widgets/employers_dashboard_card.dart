@@ -6,7 +6,8 @@ import 'package:verifysafe/ui/widgets/custom_svg.dart';
 import 'package:verifysafe/ui/widgets/verifysafe_container.dart';
 
 class EmployersDashboardCard extends StatelessWidget {
-  const EmployersDashboardCard({super.key});
+  final String? totalEmployers;
+  const EmployersDashboardCard({super.key,this.totalEmployers});
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +36,7 @@ class EmployersDashboardCard extends StatelessWidget {
                     ),
                     SizedBox(width: 16.w),
                     Text(
-                      '0',
+                      totalEmployers ?? '0',
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: textTheme.titleSmall?.copyWith(

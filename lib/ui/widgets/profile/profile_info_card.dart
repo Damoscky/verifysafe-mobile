@@ -55,8 +55,8 @@ class ProfileInfoCard extends ConsumerWidget {
               if (generalVm.generalState == ViewState.busy ||
                   userVm.state == ViewState.busy)
                 Positioned(
-                  top: 15,
-                  right: 15,
+                  top: 12.5,
+                  right: 12.5,
                   child: CircularProgressIndicator(
                     color: ColorPath.congressBlue,
                   ),
@@ -153,12 +153,19 @@ class ProfileInfoCard extends ConsumerWidget {
                 CustomButton(
                   buttonWidth: null,
                   onPressed: () {
-                    //todo::: handle condition to view id,<given image upload is done>
-                    pushNavigation(
-                      context: context,
-                      widget: ShowId(userData: userVm.userData!),
-                      routeName: NamedRoutes.showId,
-                    );
+                    if (userVm.userData?.avatar != null) {
+                      pushNavigation(
+                        context: context,
+                        widget: ShowId(userData: userVm.userData!),
+                        routeName: NamedRoutes.showId,
+                      );
+                    } else {
+                      showFlushBar(
+                        context: context,
+                        message: "Kindly Upload Profile Image",
+                        success: false,
+                      );
+                    }
                   },
                   buttonText: "Show my ID",
                 ),

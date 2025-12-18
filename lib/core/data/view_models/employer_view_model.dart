@@ -3,6 +3,7 @@ import 'package:verifysafe/core/constants/app_constants.dart';
 import 'package:verifysafe/core/data/data_providers/users_data_providers/employer_data_provider.dart';
 import 'package:verifysafe/core/data/enum/view_state.dart';
 import 'package:verifysafe/core/data/models/responses/response_data/stats.dart';
+import 'package:verifysafe/core/data/models/user.dart';
 import 'package:verifysafe/core/data/states/employer_state.dart';
 import 'package:verifysafe/core/utilities/utilities.dart';
 import 'package:verifysafe/locator.dart';
@@ -14,9 +15,14 @@ class EmployerViewModel extends EmployerState {
   String _message = '';
   String get message => _message;
 
+  //page number
+  int pageNumber = 1;
+
+  //total records
+  int totalRecords = 0;
+
   Stats? _employerStats;
   Stats? get employerStats => _employerStats;
-
 
   /// employer dashboard stat
   fetchEmployerDashboardStats() {
@@ -33,6 +39,52 @@ class EmployerViewModel extends EmployerState {
         setState(ViewState.error);
       },
     );
+  }
+
+  List<User> _employers = [];
+  List<User> get employers => _employers;
+  List<User> get recentWorker =>
+      _employers.sublist(0, _employers.length < 3 ? _employers.length : 3);
+
+  /// employers attached to [UserType.agency]
+  fetchEmployersDetails({bool firstCall = true}) {
+    if (firstCall) {
+      pageNumber = 1;
+      setSecondState(ViewState.busy);
+    } else {
+      setPaginatedState(ViewState.busy);
+    }
+
+    _employerDp
+        .fetchEmployers(pageNumber: pageNumber, limit: 5)
+        .then(
+          (response) {
+            _message = response.message ?? defaultSuccessMessage;
+            totalRecords = response.data?.total ?? 0;
+            pageNumber++;
+
+            if (firstCall) {
+              //populate  list
+              _employers = List<User>.from(response.data?.data ?? []);
+              setSecondState(ViewState.retrieved);
+            } else {
+              //add to list
+              _employers.addAll(List<User>.from(response.data?.data ?? []));
+              setPaginatedState(ViewState.retrieved);
+            }
+          },
+          onError: (error) {
+            _message = Utilities.formatMessage(
+              error.toString(),
+              isSuccess: false,
+            );
+            if (firstCall) {
+              setSecondState(ViewState.error);
+            } else {
+              setPaginatedState(ViewState.error);
+            }
+          },
+        );
   }
 }
 

@@ -1,9 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:verifysafe/core/constants/app_theme/custom_color_scheme.dart';
 import 'package:verifysafe/core/constants/color_path.dart';
+import 'package:verifysafe/core/constants/named_routes.dart';
+import 'package:verifysafe/core/data/enum/view_state.dart';
+import 'package:verifysafe/core/data/view_models/worker_view_model.dart';
+import 'package:verifysafe/core/utilities/navigator.dart';
+import 'package:verifysafe/ui/pages/authentication/onboarding/worker/basic_info.dart';
+import 'package:verifysafe/ui/widgets/app_loader.dart';
 import 'package:verifysafe/ui/widgets/bottom_sheets/base_bottom_sheet.dart';
 import 'package:verifysafe/ui/widgets/bottom_sheets/sort_options.dart';
 import 'package:verifysafe/ui/widgets/clickable.dart';
@@ -21,10 +28,38 @@ class Workers extends ConsumerStatefulWidget {
 }
 
 class _WorkersState extends ConsumerState<Workers> {
+  final _scrollController = ScrollController();
+  @override
+  void initState() {
+    super.initState();
+    SchedulerBinding.instance.addPostFrameCallback((_) {
+      _scrollListener();
+    });
+  }
+
+  _scrollListener() {
+    final vm = ref.watch(workerViewModel);
+    _scrollController.addListener(() {
+      if (_scrollController.position.pixels ==
+          _scrollController.position.maxScrollExtent) {
+        //check paginated state
+        if (vm.paginatedState != ViewState.error) {
+          //check if data is not being currently fetched and also check total records
+          if (vm.paginatedState != ViewState.busy &&
+              vm.workers.length < vm.totalRecords) {
+            //fetch more
+            vm.fetchWorkersDetails(firstCall: false);
+          }
+        }
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
+    final vm = ref.watch(workerViewModel);
 
     return Scaffold(
       appBar: customAppBar(
@@ -36,7 +71,11 @@ class _WorkersState extends ConsumerState<Workers> {
             padding: EdgeInsets.only(right: 24.w),
             child: Clickable(
               onPressed: () {
-                //todo::: handle route here
+                pushNavigation(
+                  context: context,
+                  widget: BasicInfo(userRole: "worker"),
+                  routeName: NamedRoutes.basicInfo,
+                );
               },
               child: Row(
                 children: [
@@ -55,55 +94,69 @@ class _WorkersState extends ConsumerState<Workers> {
         ],
         showBottom: true,
       ),
-      body: ListView(
-        // padding: EdgeInsets.symmetric(horizontal: 24.h, vertical: 16.h),
-        children: [
-          WorkersDashboardCard(),
-          Padding(
-            padding: EdgeInsets.only(left: 24.w, right: 24.w),
-            child: CustomTextField(
-              hintText: "Search for Worker",
-              onChanged: (value) {
-                // todo::: handle route to search screen here
-              },
-              enabled: false,
-              borderColor: ColorPath.niagaraGreen,
-              prefixIcon: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Icon(CupertinoIcons.search),
+      body: RefreshIndicator(
+        onRefresh: () async {
+          vm.fetchWorkersDetails();
+        },
+        child: ListView(
+          // padding: EdgeInsets.symmetric(horizontal: 24.h, vertical: 16.h),
+          controller: _scrollController,
+          children: [
+            WorkersDashboardCard(total: vm.totalRecords.toString()),
+            Padding(
+              padding: EdgeInsets.only(left: 24.w, right: 24.w),
+              child: CustomTextField(
+                hintText: "Search for Worker",
+                onChanged: (value) {
+                  // todo::: handle route to search screen here
+                },
+                enabled: false,
+                borderColor: ColorPath.niagaraGreen,
+                prefixIcon: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Icon(CupertinoIcons.search),
+                ),
               ),
             ),
-          ),
-          SizedBox(height: 16.h),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 24.h),
+            SizedBox(height: 16.h),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 24.h),
 
-            child: SortAndFilterTab(
-              sortOnPressed: () {
-                baseBottomSheet(
-                  context: context,
-                  content: SortOptions(
-                    filterOptions: ['Date', 'Ascending', 'Descending'],
-                    onSelected: (value) {
-                      //todo: perform action
-                    },
-                  ),
-                );
-              },
-              filterOnPressed: () {},
+              child: SortAndFilterTab(
+                sortOnPressed: () {
+                  baseBottomSheet(
+                    context: context,
+                    content: SortOptions(
+                      filterOptions: ['Date', 'Ascending', 'Descending'],
+                      onSelected: (value) {
+                        //todo: perform action
+                      },
+                    ),
+                  );
+                },
+                filterOnPressed: () {},
+              ),
             ),
-          ),
-          SizedBox(height: 16.h),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 24.h),
-            child: Text(
-              "View workers data below",
-              style: textTheme.bodyMedium?.copyWith(color: colorScheme.text4),
+            SizedBox(height: 16.h),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 24.h),
+              child: Text(
+                "View workers data below",
+                style: textTheme.bodyMedium?.copyWith(color: colorScheme.text4),
+              ),
             ),
-          ),
 
-          WorkersData(),
-        ],
+            WorkersData(workers: vm.workers),
+            if (vm.paginatedState == ViewState.busy)
+              Column(
+                children: [
+                  SizedBox(height: 8.h),
+                  AppLoader(size: 30.h),
+                  SizedBox(height: 8.h),
+                ],
+              ),
+          ],
+        ),
       ),
     );
   }

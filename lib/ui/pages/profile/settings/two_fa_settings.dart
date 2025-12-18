@@ -70,7 +70,7 @@ class _TwoFaSettingsState extends State<TwoFaSettings> {
                   CupertinoSwitch(
                     activeTrackColor: ColorPath.meadowGreen,
                     value: isEnabled,
-                    onChanged: (value) {
+                    onChanged: (value) async {
                       setState(() {
                         isEnabled = !isEnabled;
                       });

@@ -10,8 +10,8 @@ import 'package:verifysafe/core/data/enum/user_type.dart';
 import 'package:verifysafe/core/data/enum/view_state.dart';
 import 'package:verifysafe/core/data/view_models/authentication_vms/authentication_view_model.dart';
 import 'package:verifysafe/core/data/view_models/authentication_vms/onboarding_vms/onboarding_vm.dart';
-import 'package:verifysafe/core/data/view_models/general_data_view_model.dart';
 import 'package:verifysafe/core/utilities/navigator.dart';
+import 'package:verifysafe/core/utilities/utilities.dart';
 import 'package:verifysafe/ui/pages/authentication/forgot_password.dart';
 import 'package:verifysafe/ui/pages/authentication/onboarding/select_user_type.dart';
 import 'package:verifysafe/ui/pages/authentication/onboarding/sign_up_successful.dart';
@@ -46,11 +46,7 @@ class _LoginState extends ConsumerState<Login> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      ref
-          .read(generalDataViewModel)
-          .fetchDropdownOptions(); //prefetches platform dropdown data
-    });
+
   }
 
   isDashboardRoute() =>
@@ -166,6 +162,7 @@ class _LoginState extends ConsumerState<Login> {
                                 final validate = _formKey.currentState!
                                     .validate();
                                 if (validate) {
+                                  Utilities.hideKeyboard(context);
                                   await vm.login(
                                     email: _email.text.trim(),
                                     password: _password.text,

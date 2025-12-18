@@ -134,11 +134,7 @@ class _EmploymentDetailsState extends ConsumerState<EmploymentDetails> {
                 CustomButton(
                   buttonText: 'Continue',
                   onPressed: () async {
-                    // return replaceNavigation(
-                    //   context: context,
-                    //   widget: WorkHistory(),
-                    //   routeName: NamedRoutes.addWorkHistory,
-                    // );
+
                     final validate = _formKey.currentState!.validate();
                     if (validate) {
                       if (_jobCategory == null) {

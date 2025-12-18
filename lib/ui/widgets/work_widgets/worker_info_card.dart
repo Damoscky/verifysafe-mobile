@@ -6,7 +6,14 @@ import 'package:verifysafe/ui/widgets/display_image.dart';
 import 'package:verifysafe/ui/widgets/verifysafe_container.dart';
 
 class WorkerInfoCard extends StatelessWidget {
-  const WorkerInfoCard({super.key});
+  final String? image;
+  final String? firstName;
+  final String? lastName;
+  final String? workerID;
+
+  
+
+  const WorkerInfoCard({super.key,this.image,this.firstName,this.lastName,this.workerID});
 
   @override
   Widget build(BuildContext context) {
@@ -17,11 +24,10 @@ class WorkerInfoCard extends StatelessWidget {
       child: Row(
         children: [
           DisplayImage(
-            // image: null,
             image:
-                "https://mir-s3-cdn-cf.behance.net/user/276/888fd91082619909.61d2827bbd7a2.jpg",
-            firstName: "AB",
-            lastName: "CD",
+                image,
+            firstName: firstName ?? "A",
+            lastName: lastName ?? "A",
             borderWidth: 2.w,
             size: 64.h,
             borderColor: ColorPath.persianGreen,
@@ -31,7 +37,7 @@ class WorkerInfoCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                "Folashade Onifade",
+                "$firstName $lastName",
                 style: textTheme.bodyLarge?.copyWith(
                   color: colorScheme.blackText,
                   fontWeight: FontWeight.w700,
@@ -49,7 +55,7 @@ class WorkerInfoCard extends StatelessWidget {
                       ),
                       children: [
                         TextSpan(
-                          text: "42802-VS25",
+                          text: workerID,
                           style: textTheme.bodyMedium?.copyWith(
                             color: colorScheme.text4,
                             fontWeight: FontWeight.w600,
@@ -58,23 +64,6 @@ class WorkerInfoCard extends StatelessWidget {
                       ],
                     ),
                   ),
-
-                  // Padding(
-                  //   padding: EdgeInsets.symmetric(horizontal: 4.w),
-                  //   child: Icon(
-                  //     Icons.circle,
-                  //     color: ColorPath.shamrockGreen,
-
-                  //     size: 6,
-                  //   ),
-                  // ),
-                  // Text(
-                  //   "Verified",
-                  //   style: textTheme.bodyMedium?.copyWith(
-                  //     color: ColorPath.shamrockGreen,
-                  //     fontWeight: FontWeight.w600,
-                  //   ),
-                  // ),
                 ],
               ),
             ],

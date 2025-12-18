@@ -6,15 +6,15 @@ import 'package:verifysafe/core/constants/named_routes.dart';
 import 'package:verifysafe/core/data/models/user.dart';
 import 'package:verifysafe/core/utilities/date_utilitites.dart';
 import 'package:verifysafe/core/utilities/navigator.dart';
-import 'package:verifysafe/ui/pages/workers/view_worker.dart';
+import 'package:verifysafe/ui/pages/employers/view_employer.dart';
 import 'package:verifysafe/ui/widgets/clickable.dart';
 import 'package:verifysafe/ui/widgets/display_image.dart';
 import 'package:verifysafe/ui/widgets/verifysafe_container.dart';
 import 'package:verifysafe/ui/widgets/verifysafe_tag.dart';
 
-class WorkerDataItem extends StatelessWidget {
-  final User workerData;
-  const WorkerDataItem({super.key, required this.workerData});
+class EmployerDataItem extends StatelessWidget {
+  final User data;
+  const EmployerDataItem({super.key, required this.data});
 
   @override
   Widget build(BuildContext context) {
@@ -22,11 +22,10 @@ class WorkerDataItem extends StatelessWidget {
     final textTheme = Theme.of(context).textTheme;
     return Clickable(
       onPressed: () {
-        //todo::: handle view employer info
         pushNavigation(
           context: context,
-          widget: ViewWorker(workerData: workerData,),
-          routeName: NamedRoutes.viewWorker,
+          widget: ViewEmployer(data: data),
+          routeName: NamedRoutes.viewEmployer,
         );
       },
       child: VerifySafeContainer(
@@ -43,7 +42,7 @@ class WorkerDataItem extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        workerData.name ?? "",
+                        data.name ?? "",
                         style: textTheme.bodyLarge?.copyWith(
                           fontWeight: FontWeight.w700,
                         ),
@@ -51,7 +50,7 @@ class WorkerDataItem extends StatelessWidget {
                       Row(
                         children: [
                           Text(
-                            "ID: ${workerData.workerId ?? workerData.employer?.employerId ?? "---"}",
+                            "ID: ${data.workerId ?? data.employer?.employerId ?? "---"}",
                             style: textTheme.bodySmall?.copyWith(
                               color: colorScheme.text4,
                               fontSize: 10.sp,
@@ -66,7 +65,7 @@ class WorkerDataItem extends StatelessWidget {
                             ),
                           ),
                           Text(
-                            "${DateUtilities.monthDayYear(date: workerData.workerInfo?.createdAt)} ${DateUtilities.time(date: DateTime.now().toUtc())}",
+                            "${DateUtilities.monthDayYear(date: data.workerInfo?.createdAt)} ${DateUtilities.time(date: DateTime.now().toUtc())}",
                             style: textTheme.bodySmall?.copyWith(
                               color: colorScheme.text4,
                               fontSize: 10.sp,
@@ -78,11 +77,11 @@ class WorkerDataItem extends StatelessWidget {
                   ),
                 ),
                 DisplayImage(
-                  image: workerData.avatar,
+                  image: data.avatar,
                   // image:
                   //     "https://mir-s3-cdn-cf.behance.net/user/276/888fd91082619909.61d2827bbd7a2.jpg",
-                  firstName: workerData.name?.split(" ").first ?? "",
-                  lastName: workerData.name?.split(" ").last ?? "",
+                  firstName: data.name?.split(" ").first ?? "",
+                  lastName: data.name?.split(" ").last ?? "",
                   borderWidth: 2.w,
                   borderColor: ColorPath.athensGrey4,
                 ),
@@ -103,7 +102,7 @@ class WorkerDataItem extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        workerData.workerInfo?.jobRole ?? "N/A",
+                        data.workerInfo?.jobRole ?? "N/A",
                         style: textTheme.bodySmall?.copyWith(
                           color: colorScheme.blackText,
                           fontWeight: FontWeight.w500,
@@ -123,7 +122,7 @@ class WorkerDataItem extends StatelessWidget {
                           color: colorScheme.text4,
                         ),
                       ),
-                      VerifySafeTag(status: workerData.workerStatus ?? "N/A"),
+                      VerifySafeTag(status: data.workerStatus ?? "N/A"),
                     ],
                   ),
                 ),
@@ -144,7 +143,7 @@ class WorkerDataItem extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        workerData.email?.toLowerCase() ?? "",
+                        data.email?.toLowerCase() ?? "",
                         style: textTheme.bodySmall?.copyWith(
                           color: colorScheme.blackText,
                           fontWeight: FontWeight.w500,
@@ -154,7 +153,7 @@ class WorkerDataItem extends StatelessWidget {
                   ),
                 ),
                 SizedBox(width: 12.w),
-                if (workerData.employer != null)
+                if (data.employer != null)
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -168,7 +167,7 @@ class WorkerDataItem extends StatelessWidget {
                             children: [
                               TextSpan(
                                 text: DateUtilities.monthDayYear(
-                                  date: workerData.employer?.startDate,
+                                  date: data.employer?.startDate,
                                 ),
                                 style: textTheme.bodySmall?.copyWith(
                                   color: colorScheme.blackText,
@@ -184,11 +183,11 @@ class WorkerDataItem extends StatelessWidget {
                               color: colorScheme.text4,
                             ),
                             children: [
-                              workerData.employer?.endDate != null
+                              data.employer?.endDate != null
                                   ? TextSpan(
                                       text: DateUtilities.monthDayYear(
                                         date:
-                                            workerData.employer?.endDate ??
+                                            data.employer?.endDate ??
                                             DateTime.now(),
                                       ),
                                       style: textTheme.bodySmall?.copyWith(

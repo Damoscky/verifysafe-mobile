@@ -17,7 +17,8 @@ class ActionConfirmation extends StatelessWidget {
   final String? proceedBtnText;
   final VoidCallback onPressed;
   final Color? proceedBtnColor;
-  const ActionConfirmation({super.key, this.proceedBtnColor, this.subtitle, required this.title, this.cancelBtnText, this.proceedBtnText, required this.onPressed});
+  final String? asset;
+  const ActionConfirmation({super.key, this.proceedBtnColor, this.subtitle, required this.title, this.cancelBtnText, this.proceedBtnText, required this.onPressed,this.asset});
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +30,7 @@ class ActionConfirmation extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          CustomAssetViewer(asset: '', height: 56.h, width: 56.w,
+          CustomAssetViewer(asset: asset ?? '', height: 56.h, width: 56.w,
               colorFilter: proceedBtnColor != null ? ColorFilter.mode(
                 proceedBtnColor!,
                 BlendMode.srcIn,

@@ -39,16 +39,19 @@ class _HomeState extends ConsumerState<Home> {
   loadDashboardData() async {
     switch (ref.read(userViewModel).userData?.userEnumType) {
       case UserType.worker:
-        await ref.read(workerViewModel).fetchWorkerDashboard();
+         ref.read(workerViewModel).fetchWorkerDashboard();
         break;
       case UserType.employer:
-        await ref.read(employerViewModel).fetchEmployerDashboardStats();
+         ref.read(employerViewModel).fetchEmployerDashboardStats();
+         ref.read(workerViewModel).fetchWorkersDetails();
         break;
       case UserType.agency:
-        await ref.read(agencyViewModel).fetchAgencyDashboardStats();
+         ref.read(agencyViewModel).fetchAgencyDashboardStats();
+         ref.read(workerViewModel).fetchWorkersDetails();
+         ref.read(employerViewModel).fetchEmployersDetails();
         break;
       default:
-        await ref.read(workerViewModel).fetchWorkerDashboard();
+         ref.read(workerViewModel).fetchWorkerDashboard();
     }
   }
 

@@ -8,12 +8,17 @@ import 'package:verifysafe/core/constants/named_routes.dart';
 import 'package:verifysafe/core/data/enum/user_type.dart';
 import 'package:verifysafe/core/data/view_models/user_view_model.dart';
 import 'package:verifysafe/core/utilities/navigator.dart';
+import 'package:verifysafe/core/utilities/utilities.dart';
 import 'package:verifysafe/ui/pages/authentication/login.dart';
+import 'package:verifysafe/ui/pages/employers/view_contact_person.dart';
 import 'package:verifysafe/ui/pages/profile/settings/notification_settings.dart';
 import 'package:verifysafe/ui/pages/profile/settings/settings.dart';
 import 'package:verifysafe/ui/pages/profile/verification_information.dart';
 import 'package:verifysafe/ui/pages/profile/view_employment_details.dart';
 import 'package:verifysafe/ui/pages/profile/view_user_information.dart';
+import 'package:verifysafe/ui/pages/profile/view_worker_agency.dart';
+import 'package:verifysafe/ui/widgets/bottom_sheets/action_confirmation.dart';
+import 'package:verifysafe/ui/widgets/bottom_sheets/base_bottom_sheet.dart';
 import 'package:verifysafe/ui/widgets/clickable.dart';
 import 'package:verifysafe/ui/widgets/custom_appbar.dart';
 import 'package:verifysafe/ui/widgets/custom_divider.dart';
@@ -63,7 +68,7 @@ class _ProfileState extends ConsumerState<Profile> {
           ProfileActionTile(
             title: userVm.userData?.userEnumType == UserType.worker
                 ? "Personal Information"
-                : "Agency Information",
+                : "${Utilities.capitalizeWord(userVm.userData?.userType ?? "")} Information",
             subTitle: userVm.userData?.userEnumType == UserType.worker
                 ? "View and update personal data"
                 : "View and update data",
@@ -80,7 +85,7 @@ class _ProfileState extends ConsumerState<Profile> {
           CustomDivider(),
           ProfileActionTile(
             title: "Verification Information",
-            subTitle: "Verify and update your data",
+            subTitle: "View verification information",
             asset: AppAsset.profileVerification,
             onPressed: () {
               pushNavigation(
@@ -90,20 +95,47 @@ class _ProfileState extends ConsumerState<Profile> {
               );
             },
           ),
-          CustomDivider(),
-          ProfileActionTile(
-            title: "Employment Details",
-            subTitle: "View and update employmet data",
-            asset: AppAsset.profileEmployment,
-            onPressed: () {
-              pushNavigation(
-                context: context,
-                widget: ViewEmploymentDetails(),
-                routeName: NamedRoutes.viewEmploymentDetails,
-              );
-            },
-          ),
+          //WORKERS EMPLOYMENT DETAILS
           if (userVm.userData?.userEnumType == UserType.worker)
+            Column(
+              children: [
+                CustomDivider(),
+                ProfileActionTile(
+                  title: "Employment Details",
+                  subTitle: "View and update employmet data",
+                  asset: AppAsset.profileEmployment,
+                  onPressed: () {
+                    pushNavigation(
+                      context: context,
+                      widget: ViewEmploymentDetails(data: userVm.userData!),
+                      routeName: NamedRoutes.viewEmploymentDetails,
+                    );
+                  },
+                ),
+              ],
+            ),
+          //EMPLOYER CONTACT PERSON DETAILS
+          if (userVm.userData?.userEnumType == UserType.employer)
+            Column(
+              children: [
+                CustomDivider(),
+                ProfileActionTile(
+                  title: "Contact Person Details",
+                  subTitle: "View and update Contact Person data",
+                  asset: AppAsset.profilePersonal,
+                  onPressed: () {
+                    pushNavigation(
+                      context: context,
+                      widget: ViewContactPerson( data: userVm.userData!,),
+                      routeName: NamedRoutes.viewEmploymentDetails,
+                    );
+                  },
+                ),
+              ],
+            ),
+          //WORKERS AGENCY DETAILS
+          if (userVm.userData?.userEnumType == UserType.worker &&
+              userVm.userData?.agency != null)
             Column(
               children: [
                 CustomDivider(),
@@ -111,7 +143,13 @@ class _ProfileState extends ConsumerState<Profile> {
                   title: "Agent/Agency",
                   subTitle: "View Agency infoemation",
                   asset: AppAsset.profileAgency,
-                  onPressed: () {},
+                  onPressed: () {
+                    pushNavigation(
+                      context: context,
+                      widget: ViewWorkerAgency(data: userVm.userData!),
+                      routeName: NamedRoutes.viewWorkerAgency,
+                    );
+                  },
                 ),
               ],
             ),
@@ -153,10 +191,20 @@ class _ProfileState extends ConsumerState<Profile> {
           SizedBox(height: 42.h),
           Clickable(
             onPressed: () {
-              pushAndClearAllNavigation(
+              baseBottomSheet(
                 context: context,
-                widget: Login(),
-                routeName: NamedRoutes.login,
+                content: ActionConfirmation(
+                  title: "Log Out",
+                  subtitle: "Are you sure you want to log out?",
+                  asset: AppAsset.logout,
+                  onPressed: () {
+                    pushAndClearAllNavigation(
+                      context: context,
+                      widget: Login(),
+                      routeName: NamedRoutes.login,
+                    );
+                  },
+                ),
               );
             },
             child: VerifySafeContainer(

@@ -5,8 +5,6 @@ import 'package:url_launcher/url_launcher.dart';
 import '../constants/app_constants.dart';
 import '../constants/color_path.dart';
 
-
-
 class Utilities {
   static const nairaSign = "\u{20A6} ";
   static const naira = "₦ ";
@@ -103,8 +101,7 @@ class Utilities {
 
   // Cleans phone number and add leading zero only if necessary
   static String cleanPhoneNumber({required String phoneNumber}) {
-
-    if(phoneNumber.isEmpty)return '';
+    if (phoneNumber.isEmpty) return '';
 
     // Remove white spaces
     String cleanedNumber = phoneNumber.replaceAll(' ', '');
@@ -133,24 +130,30 @@ class Utilities {
   }
 
   //mask characters in a string
-  static String maskCharacters(
-      {required String? subject,
-      required int startIndex,
-      required int endIndex}) {
+  static String maskCharacters({
+    required String? subject,
+    required int startIndex,
+    required int endIndex,
+  }) {
     if (subject != null) {
       if (subject.isEmpty) {
         return '********';
       }
       return subject.replaceRange(
-          startIndex, endIndex, "*" * (endIndex - startIndex));
+        startIndex,
+        endIndex,
+        "*" * (endIndex - startIndex),
+      );
     }
 
     return '';
   }
 
   //returns user's initials
-  static String getNameInitials(
-      {required String? firstName, required String? lastName}) {
+  static String getNameInitials({
+    required String? firstName,
+    required String? lastName,
+  }) {
     String firstInitial = '';
     String lastInitial = '';
     if (firstName != null && firstName.isNotEmpty) {
@@ -199,13 +202,30 @@ class Utilities {
     return '$part1 $part2 $part3'.trim();
   }
 
+  static String formatPhoneWithCode({required String phoneNumber}) {
+    // first 4 characters
+    String part1 = phoneNumber.substring(0, 4);
+    // next 3 characters
+    String part2 = phoneNumber.length > 7
+        ? phoneNumber.substring(4, 7)
+        : phoneNumber.substring(4);
+    // next 3 characters
+    String part3 = phoneNumber.length > 10
+        ? phoneNumber.substring(7, 10)
+        : phoneNumber.substring(7);
+    // remaining characters
+    String part4 = phoneNumber.length > 10 ? phoneNumber.substring(10) : '';
+
+    return '$part1 $part2 $part3 $part4'.trim();
+  }
+
   //capitalize and return first letter of a string
   static String capitalizeFirstLetter(String input) {
     if (input.isEmpty) return input;
     return input[0].toUpperCase();
   }
 
-    //capitalize word of a string
+  //capitalize word of a string
   static String capitalizeWord(String input) {
     if (input.isEmpty) return input;
     return "${capitalizeFirstLetter(input)}${input.substring(1)}";
@@ -213,7 +233,7 @@ class Utilities {
 
   //capitalize and return first letter of middle and last name
   static String middleAndLastNameInitials(String middleName, String lastName) {
-    if(middleName.isEmpty && lastName.isEmpty){
+    if (middleName.isEmpty && lastName.isEmpty) {
       return '';
     }
     if (middleName.isEmpty) {
@@ -252,8 +272,10 @@ class Utilities {
   }
 
   //returns date filter parameter
-  static String? returnDateFilter(
-      {required String? filterOption, bool isPriceSorting = false}) {
+  static String? returnDateFilter({
+    required String? filterOption,
+    bool isPriceSorting = false,
+  }) {
     if (filterOption == null) {
       return null;
     }
@@ -283,10 +305,11 @@ class Utilities {
   }
 
   //returns filter label
-  static String returnLabel(
-      {required String? dateFilter,
-      required String? startDate,
-      required String? endDate}) {
+  static String returnLabel({
+    required String? dateFilter,
+    required String? startDate,
+    required String? endDate,
+  }) {
     print('date filter:::$dateFilter>>>');
     print('staet:::$startDate>>>');
     print('end:::$endDate>>>');
@@ -303,10 +326,11 @@ class Utilities {
   }
 
   //returns filter value
-  static String? returnFilterOption(
-      {required String? label,
-      bool isDateRange = false,
-      bool isEndDate = false}) {
+  static String? returnFilterOption({
+    required String? label,
+    bool isDateRange = false,
+    bool isEndDate = false,
+  }) {
     if (label == null) {
       return null;
     }
@@ -337,21 +361,14 @@ class Utilities {
   ///url launcher
   static launchIt({String? url}) async {
     if (await canLaunchUrl(Uri.parse(url!))) {
-      await launchUrl(
-        Uri.parse(url),
-        mode: LaunchMode.externalApplication,
-      );
+      await launchUrl(Uri.parse(url), mode: LaunchMode.externalApplication);
     } else {
       throw 'Could not launch $url';
     }
   }
 
   //frequency type list
-  static List<String> frequencies = [
-    'Daily',
-    'Weekly',
-    'Monthly',
-  ];
+  static List<String> frequencies = ['Daily', 'Weekly', 'Monthly'];
 
   //days of the week list
   static List<String> daysOfTheWeek = [
@@ -364,7 +381,7 @@ class Utilities {
     'Saturday',
   ];
 
-//  temp -> from backend
+  //  temp -> from backend
   static List<String> loanCollectionReasons = [
     'Emergency Payment',
     'Accommodation',
@@ -404,8 +421,11 @@ class Utilities {
       String mask = email.substring(2, atIndex - 1);
 
       //Create the masked email by replacing characters with '*'
-      String maskedEmail =
-          email.replaceRange(2, atIndex - 1, '*' * mask.length);
+      String maskedEmail = email.replaceRange(
+        2,
+        atIndex - 1,
+        '*' * mask.length,
+      );
 
       return maskedEmail;
     }
@@ -413,13 +433,10 @@ class Utilities {
     return email;
   }
 
-
-
-
   static String statusText({required String? status}) {
     if (status == null) return '';
 
-    if(status == 'ended') return 'Game Closed';
+    if (status == 'ended') return 'Game Closed';
 
     return status.isEmpty ? 'N/A' : "$status Game";
     // switch (status.toLowerCase()) {
@@ -434,12 +451,18 @@ class Utilities {
 
   static List<String> sortOptions = [
     'Ascending Order (A-Z)',
-    'Descending order  (Z-A)'
+    'Descending order  (Z-A)',
   ];
 
   static List<String> electionStatus = ['New', 'Completed', 'Ongoing'];
   static List<String> eventType = ['Physical', 'Virtual'];
-  static List<String> eventStatus = ['New', 'Sold Out', 'Trending', 'Postponed', 'Cancelled'];
+  static List<String> eventStatus = [
+    'New',
+    'Sold Out',
+    'Trending',
+    'Postponed',
+    'Cancelled',
+  ];
 
   /// takes in start and end date and returns a [String] in format "Month day - Month day, Year"
   static String formatDateRange(DateTime startDate, DateTime endDate) {
@@ -456,7 +479,7 @@ class Utilities {
       'Sept',
       'Oct',
       'Nov',
-      'Dec'
+      'Dec',
     ];
 
     // Get month and day for both dates
@@ -527,7 +550,7 @@ class Utilities {
         return ColorPath.athensGrey2;
       case 'upcoming':
       case 'upcoming_game':
-        return ColorPath.athensGrey2;//dawnBrown
+        return ColorPath.athensGrey2; //dawnBrown
       case 'ended':
         return ColorPath.athensGrey2;
       default:
@@ -561,8 +584,10 @@ class Utilities {
     try {
       final queryString = params.entries
           .where((e) => omitKeys == null || !omitKeys.contains(e.key))
-          .map((e) =>
-      "${Uri.encodeComponent(e.key)}=${Uri.encodeComponent(e.value.toString())}")
+          .map(
+            (e) =>
+                "${Uri.encodeComponent(e.key)}=${Uri.encodeComponent(e.value.toString())}",
+          )
           .join("&");
 
       return queryString.isEmpty ? null : queryString;
@@ -570,6 +595,4 @@ class Utilities {
       return null;
     }
   }
-
-
 }
