@@ -1,17 +1,20 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:verifysafe/core/constants/app_dimension.dart';
 import 'package:verifysafe/core/constants/app_theme/custom_color_scheme.dart';
 import 'package:verifysafe/core/constants/color_path.dart';
 import 'package:verifysafe/core/constants/named_routes.dart';
+import 'package:verifysafe/core/data/models/user.dart';
 import 'package:verifysafe/core/utilities/date_utilitites.dart';
 import 'package:verifysafe/core/utilities/navigator.dart';
 import 'package:verifysafe/ui/pages/employers/employer_manage_worker_guanantor.dart';
-import 'package:verifysafe/ui/pages/profile/verification_information.dart';
 import 'package:verifysafe/ui/pages/profile/view_employment_details.dart';
 import 'package:verifysafe/ui/pages/workers/view_agency_information.dart';
+import 'package:verifysafe/ui/pages/workers/view_worker_verification_info.dart';
 import 'package:verifysafe/ui/pages/workers/view_worker_work_history.dart';
-import 'package:verifysafe/ui/pages/workers/worker_information.dart';
+import 'package:verifysafe/ui/pages/workers/user_information.dart';
 import 'package:verifysafe/ui/widgets/bottom_sheets/base_bottom_sheet.dart';
 import 'package:verifysafe/ui/widgets/bottom_sheets/rate_user.dart';
 import 'package:verifysafe/ui/widgets/clickable.dart';
@@ -23,16 +26,19 @@ import 'package:verifysafe/ui/widgets/verifysafe_tag.dart';
 import 'package:verifysafe/ui/widgets/work_widgets/worker_info_card.dart';
 
 class ViewWorker extends StatelessWidget {
-  const ViewWorker({super.key});
+  final User workerData;
+
+  const ViewWorker({super.key, required this.workerData});
 
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
+    log(workerData.toJson().toString());
     return Scaffold(
       appBar: customAppBar(
         context: context,
-        title: "Folashade Onifade",
+        title: workerData.name,
         showBottom: true,
       ),
       body: ListView(
@@ -41,7 +47,12 @@ class ViewWorker extends StatelessWidget {
           vertical: 24.h,
         ),
         children: [
-          WorkerInfoCard(),
+          WorkerInfoCard(
+            image: workerData.avatar,
+            firstName: workerData.name?.split(" ").first,
+            lastName: workerData.name?.split(" ").last,
+            workerID: workerData.workerId,
+          ),
           SizedBox(height: 16.h),
           VerifySafeContainer(
             bgColor: ColorPath.aquaGreen,
@@ -65,7 +76,7 @@ class ViewWorker extends StatelessWidget {
                             ),
                           ),
                           Text(
-                            "Cook",
+                            workerData.workerInfo?.jobRole ?? "N/A",
                             style: textTheme.bodySmall?.copyWith(
                               color: colorScheme.blackText,
                               fontWeight: FontWeight.w500,
@@ -85,7 +96,9 @@ class ViewWorker extends StatelessWidget {
                               color: colorScheme.text4,
                             ),
                           ),
-                          VerifySafeTag(status: "Verified"),
+                          VerifySafeTag(
+                            status: workerData.workerStatus ?? "N/A",
+                          ),
                         ],
                       ),
                     ),
@@ -106,7 +119,7 @@ class ViewWorker extends StatelessWidget {
                             ),
                           ),
                           Text(
-                            "jideson@yahoo.com",
+                            workerData.email?.toLowerCase() ?? "",
                             style: textTheme.bodySmall?.copyWith(
                               color: colorScheme.blackText,
                               fontWeight: FontWeight.w500,
@@ -116,48 +129,59 @@ class ViewWorker extends StatelessWidget {
                       ),
                     ),
                     SizedBox(width: 12.w),
-
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text.rich(
-                            TextSpan(
-                              text: "From: ",
-                              style: textTheme.bodySmall?.copyWith(
-                                color: colorScheme.text4,
-                              ),
-                              children: [
-                                TextSpan(
-                                  text: DateUtilities.monthDayYear(
-                                    date: DateTime.now(),
-                                  ),
-                                  style: textTheme.bodySmall?.copyWith(
-                                    color: colorScheme.blackText,
-                                  ),
+                    if (workerData.employer != null)
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text.rich(
+                              TextSpan(
+                                text: "From: ",
+                                style: textTheme.bodySmall?.copyWith(
+                                  color: colorScheme.text4,
                                 ),
-                              ],
-                            ),
-                          ),
-                          Text.rich(
-                            TextSpan(
-                              text: "To: ",
-                              style: textTheme.bodySmall?.copyWith(
-                                color: colorScheme.text4,
-                              ),
-                              children: [
-                                TextSpan(
-                                  text: "Present",
-                                  style: textTheme.bodySmall?.copyWith(
-                                    color: ColorPath.niagaraGreen,
+                                children: [
+                                  TextSpan(
+                                    text: DateUtilities.monthDayYear(
+                                      date: workerData.employer?.startDate,
+                                    ),
+                                    style: textTheme.bodySmall?.copyWith(
+                                      color: colorScheme.blackText,
+                                    ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
-                          ),
-                        ],
+                            Text.rich(
+                              TextSpan(
+                                text: "To: ",
+                                style: textTheme.bodySmall?.copyWith(
+                                  color: colorScheme.text4,
+                                ),
+                                children: [
+                                  workerData.employer?.endDate != null
+                                      ? TextSpan(
+                                          text: DateUtilities.monthDayYear(
+                                            date:
+                                                workerData.employer?.endDate ??
+                                                DateTime.now(),
+                                          ),
+                                          style: textTheme.bodySmall?.copyWith(
+                                            color: colorScheme.blackText,
+                                          ),
+                                        )
+                                      : TextSpan(
+                                          text: "Present",
+                                          style: textTheme.bodySmall?.copyWith(
+                                            color: ColorPath.niagaraGreen,
+                                          ),
+                                        ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
                   ],
                 ),
               ],
@@ -165,7 +189,14 @@ class ViewWorker extends StatelessWidget {
           ),
           SizedBox(height: 16.h),
           //Document Widget
-          DocumentWidget(),
+          if (workerData.workerInfo?.resumeUrl != null &&
+              (workerData.workerInfo?.resumeUrl?.isNotEmpty ?? false))
+            DocumentWidget(
+              fileName: workerData.workerInfo?.resumeUrl?.split('/').last ?? '',
+              onPressed: () {
+                //todo: handle doc view/download
+              },
+            ),
           SizedBox(height: 16.h),
           Text(
             "Details",
@@ -180,23 +211,32 @@ class ViewWorker extends StatelessWidget {
             onPressed: () {
               pushNavigation(
                 context: context,
-                widget: WorkerInformation(),
+                widget: UserInformation(data: workerData),
                 routeName: NamedRoutes.viewWorkerInfo,
               );
             },
           ),
-          CustomDivider(),
-          ActionTile(
-            title: "Employment Information",
-            subTitle: "Change and update employment information",
-            onPressed: () {
-              pushNavigation(
-                context: context,
-                widget: ViewEmploymentDetails(canEdit: false),
-                routeName: NamedRoutes.viewEmploymentDetails,
-              );
-            },
-          ),
+          //todo::: if provided
+          if (workerData.employer != null)
+            Column(
+              children: [
+                CustomDivider(),
+                ActionTile(
+                  title: "Employment Information",
+                  subTitle: "Change and update employment information",
+                  onPressed: () {
+                    pushNavigation(
+                      context: context,
+                      widget: ViewEmploymentDetails(
+                        canEdit: false,
+                        data: workerData,
+                      ),
+                      routeName: NamedRoutes.viewEmploymentDetails,
+                    );
+                  },
+                ),
+              ],
+            ),
           CustomDivider(),
           ActionTile(
             title: "Verification Information",
@@ -204,7 +244,7 @@ class ViewWorker extends StatelessWidget {
             onPressed: () {
               pushNavigation(
                 context: context,
-                widget: VerificationInformation(),
+                widget: ViewWorkerVerificationInfo(workerData: workerData),
                 routeName: NamedRoutes.verificationInformation,
               );
             },
@@ -221,18 +261,24 @@ class ViewWorker extends StatelessWidget {
               );
             },
           ),
-          CustomDivider(),
-          ActionTile(
-            title: "Agent/Agency",
-            subTitle: "Change and update agency information",
-            onPressed: () {
-              pushNavigation(
-                context: context,
-                widget: ViewAgencyInformation(),
-                routeName: NamedRoutes.viewWorkerAgencyInfo,
-              );
-            },
-          ),
+          //todo::: if provided
+          if (workerData.agency != null)
+            Column(
+              children: [
+                CustomDivider(),
+                ActionTile(
+                  title: "Agent/Agency",
+                  subTitle: "Change and update agency information",
+                  onPressed: () {
+                    pushNavigation(
+                      context: context,
+                      widget: ViewAgencyInformation(),
+                      routeName: NamedRoutes.viewWorkerAgencyInfo,
+                    );
+                  },
+                ),
+              ],
+            ),
           CustomDivider(),
           ActionTile(
             title: "Guarantor Details",

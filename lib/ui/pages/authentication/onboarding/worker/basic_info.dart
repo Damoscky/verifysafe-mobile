@@ -8,10 +8,12 @@ import 'package:verifysafe/core/data/enum/password_type.dart';
 import 'package:verifysafe/core/data/enum/view_state.dart';
 import 'package:verifysafe/core/data/view_models/authentication_vms/onboarding_vms/onboarding_vm.dart';
 import 'package:verifysafe/core/utilities/navigator.dart';
+import 'package:verifysafe/core/utilities/utilities.dart';
 import 'package:verifysafe/core/utilities/validator.dart';
 import 'package:verifysafe/ui/pages/authentication/create_password.dart';
 import 'package:verifysafe/ui/pages/authentication/otp.dart';
-import 'package:verifysafe/ui/widgets/authentication/onboarding/step_counter.dart';
+import 'package:verifysafe/ui/widgets/bottom_sheets/action_completed.dart';
+import 'package:verifysafe/ui/widgets/bottom_sheets/base_bottom_sheet.dart';
 import 'package:verifysafe/ui/widgets/busy_overlay.dart';
 import 'package:verifysafe/ui/widgets/clickable.dart';
 import 'package:verifysafe/ui/widgets/show_flush_bar.dart';
@@ -27,7 +29,8 @@ import '../../../../widgets/custom_text_field.dart';
 import '../../../../widgets/screen_title.dart';
 
 class BasicInfo extends ConsumerStatefulWidget {
-  const BasicInfo({super.key});
+  final String? userRole;
+  const BasicInfo({super.key, this.userRole});
 
   @override
   ConsumerState<BasicInfo> createState() => _BasicInfoState();
@@ -49,7 +52,12 @@ class _BasicInfoState extends ConsumerState<BasicInfo> {
     return BusyOverlay(
       show: vm.state == ViewState.busy,
       child: Scaffold(
-        appBar: customAppBar(context: context),
+        appBar: customAppBar(
+          context: context,
+          title: widget.userRole == null
+              ? null
+              : "Add ${Utilities.capitalizeWord(widget.userRole!)}",
+        ),
         body: SingleChildScrollView(
           padding: EdgeInsets.only(
             left: AppDimension.paddingLeft,
@@ -191,7 +199,7 @@ class _BasicInfoState extends ConsumerState<BasicInfo> {
                     _maritalStatus = value;
                     setState(() {});
                   },
-                  items: ['Married', 'Single'],
+                  items: ['Married', 'Single', "Widowed","Divorced"],
                 ),
                 SizedBox(height: 16.h),
                 CustomTextField(
@@ -237,6 +245,7 @@ class _BasicInfoState extends ConsumerState<BasicInfo> {
                         );
                         return;
                       }
+                      Utilities.hideKeyboard(context);
                       await vm.createUserBasicInfo(
                         firstName: _firstName.text,
                         lastName: _lastName.text,
@@ -244,9 +253,27 @@ class _BasicInfoState extends ConsumerState<BasicInfo> {
                         gender: _gender == 0 ? "female" : "male",
                         maritalStatus: (_maritalStatus ?? "").toLowerCase(),
                         email: _email.text,
+                        role: widget.userRole,
                       );
 
                       if (vm.state == ViewState.retrieved) {
+                        //if Add Worker/Employer route users back
+                        if (widget.userRole != null) {
+                          baseBottomSheet(
+                            context: context,
+                            content: ActionCompleted(
+                              title: "Success!",
+                              subtitle:
+                                  "You have successfully added ${widget.userRole == "worker" ? "a worker." : "an employer."}\n A link has been sent to ${_email.text} to access their account.",
+                              onPressed: () {
+                                popNavigation(context: context);
+                                popNavigation(context: context);
+                              },
+                              buttonText: "Done",
+                            ),
+                          );
+                          return;
+                        }
                         //if email is verified route user to create Password
                         if (vm.userBasicInfoResponseData?.emailVerified ??
                             false) {

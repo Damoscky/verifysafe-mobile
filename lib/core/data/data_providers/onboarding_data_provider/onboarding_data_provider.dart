@@ -13,6 +13,7 @@ class OnboardingDataProvider {
   /// - creates user basic information record
   Future<ApiResponse<BasicInfoRespnseData>> createProfile({
     required Map<String, dynamic> details,
+    bool useAuth = false
   }) async {
     var completer = Completer<ApiResponse<BasicInfoRespnseData>>();
     try {
@@ -20,7 +21,7 @@ class OnboardingDataProvider {
           .networkRequestManager(
             RequestType.post,
             ApiRoutes.createProfile,
-            useAuth: false,
+            useAuth: useAuth,
             body: jsonEncode(details),
           );
       var result = ApiResponse<BasicInfoRespnseData>.fromJson(

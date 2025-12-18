@@ -40,7 +40,7 @@ class WorkHistoriesData extends StatelessWidget {
               onPressed: () {
                 pushNavigation(
                   context: context,
-                  widget: ViewWorkHistory(employmentData: data,),
+                  widget: ViewWorkHistory(employmentData: data),
                   routeName: NamedRoutes.viewWorkHistory,
                 );
               },

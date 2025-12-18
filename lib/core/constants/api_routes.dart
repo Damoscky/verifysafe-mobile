@@ -34,13 +34,16 @@ class ApiRoutes {
   static var profile = "${dotenv.env['PROFILE']}";
 
   //worker
-  static var workerDashboard = "${dotenv.env['V1']}/work-histories";
+  static var workHistoriesOverview = "${dotenv.env['V1']}/work-histories";
+  static var workers = "${dotenv.env['V1']}/workers";
   static fetchWorkers({required String? keyword}) =>
       "${dotenv.env['V1']}/workers?q=$keyword&paginate=0";
 
 
   //employer
   static var employerDashboardStats = "${dotenv.env['V1']}/dashboard/employer-stats";
+  static var employers = "${dotenv.env['V1']}/employers";
+
   static fetchEmployers({required String? keyword}) =>
       "${dotenv.env['V1']}/employers?q=$keyword&paginate=0";
 

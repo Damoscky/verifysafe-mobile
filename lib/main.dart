@@ -6,6 +6,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:verifysafe/core/constants/app_constants.dart';
+import 'package:verifysafe/core/data/view_models/general_data_view_model.dart';
 import 'package:verifysafe/router.dart' as router;
 import 'package:verifysafe/ui/pages/splash.dart';
 import 'core/constants/app_config.dart';
@@ -16,15 +17,11 @@ import 'core/data/view_models/theme_selection_view_model.dart';
 import 'core/utilities/secure_storage/secure_storage_init.dart';
 import 'locator.dart';
 
-
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  if (message.notification != null) {
-
-  }
+  if (message.notification != null) {}
 }
 
-
-void main() async{
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await ScreenUtil.ensureScreenSize();
   //await Firebase.initializeApp();
@@ -45,27 +42,22 @@ class MyApp extends ConsumerStatefulWidget {
 }
 
 class _MyAppState extends ConsumerState<MyApp> {
-
-
   @override
   void initState() {
-
-
     //push notification initial set up
-   // FirebaseMessagingUtils.requestPushNotificationPermission();
+    // FirebaseMessagingUtils.requestPushNotificationPermission();
 
     //location permission
     // final locationService = locator<GeoLocatorService>();
     // locationService.requestPermission();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ref
+          .read(generalDataViewModel)
+          .fetchDropdownOptions(); //prefetches platform dropdown data
+    });
 
     super.initState();
   }
-
-
-
-
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -112,4 +104,3 @@ class _MyAppState extends ConsumerState<MyApp> {
     );
   }
 }
-

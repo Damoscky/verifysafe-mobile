@@ -106,7 +106,7 @@ class _AddWorkHistoryState extends ConsumerState<AddWorkHistory> {
                   _employmentType = value;
                   setState(() {});
                 },
-                items: ["Full TIme", "Part Time", "Contract"],
+                items: ["Full Time", "Part Time", "Contract"],
               ),
               SizedBox(height: 20.h),
               CustomTextField(
