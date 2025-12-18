@@ -53,8 +53,7 @@ class EmployerViewModel extends EmployerState {
     );
   }
 
-  List<User> _employers = [];
-  List<User> get employers => _employers;
+
   List<User> get recentWorker =>
       _employers.sublist(0, _employers.length < 3 ? _employers.length : 3);
 
@@ -97,6 +96,27 @@ class EmployerViewModel extends EmployerState {
             }
           },
         );
+  }
+
+  /// fetch employers
+  fetchEmployers({required String? keyword}) async{
+    setSecondState(ViewState.busy);
+    await _employerDp.fetchEmployers(keyword: keyword).then(
+          (response) {
+        _employersMessage = response.message ?? defaultSuccessMessage;
+        _employers = List<User>.from(response.data?.data ?? []);
+        setSecondState(ViewState.retrieved);
+      },
+      onError: (error) {
+        _employersMessage = Utilities.formatMessage(error.toString(), isSuccess: false);
+        setSecondState(ViewState.error);
+      },
+    );
+  }
+
+  reset(){
+    setSecondState(ViewState.idle, refreshUi: false);
+    _employers.clear();
   }
 }
 

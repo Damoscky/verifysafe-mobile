@@ -6,7 +6,7 @@ class WorkerState extends ChangeNotifier {
   ViewState get state => _state;
 
   ViewState _secondState = ViewState.idle;
-  ViewState get ssecondStatetate => _secondState;
+  ViewState get secondState => _secondState;
 
   ViewState _paginatedState = ViewState.idle;
   ViewState get paginatedState => _paginatedState;
@@ -18,9 +18,9 @@ class WorkerState extends ChangeNotifier {
     }
   }
 
-  void setSecondState(ViewState viewState, {bool notifyListener = true}) {
+  void setSecondState(ViewState viewState, {bool refreshUi= true}) {
     _secondState = viewState;
-    if (notifyListener) {
+    if (refreshUi) {
       notifyListeners();
     }
   }

@@ -26,12 +26,8 @@ class WorkerViewModel extends WorkerState {
   String _workerMessage = '';
   String get workerMessage => _workerMessage;
 
-  //list of workers
-  List<Worker> _workers = [];
-  List<Worker> get workers => _workers;
-
   //selected worker
-  Worker? selectedWorker;
+  User? selectedWorker;
 
   WorkerDashboardResponse? _dashboardData;
 
@@ -104,6 +100,27 @@ class WorkerViewModel extends WorkerState {
             }
           },
         );
+  }
+
+    /// fetch employers
+  fetchWorkers({required String? keyword}) async{
+    setSecondState(ViewState.busy);
+    await _workerDataProvider.fetchWorkers(keyword: keyword).then(
+          (response) {
+        _workerMessage = response.message ?? defaultSuccessMessage;
+        _workers = List<User>.from(response.data?.data ?? []);
+        setSecondState(ViewState.retrieved);
+      },
+      onError: (error) {
+        _workerMessage = Utilities.formatMessage(error.toString(), isSuccess: false);
+        setSecondState(ViewState.error);
+      },
+    );
+  }
+
+  reset(){
+    setSecondState(ViewState.idle, refreshUi: false);
+    _workers.clear();
   }
 }
 
