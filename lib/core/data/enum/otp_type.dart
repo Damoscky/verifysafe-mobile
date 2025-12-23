@@ -2,5 +2,6 @@ enum OtpType {
   forgotPassword,
   verifyPhone,
   verifyEmail,
-  resetPassword
+  resetPassword,
+  twoFA
 }

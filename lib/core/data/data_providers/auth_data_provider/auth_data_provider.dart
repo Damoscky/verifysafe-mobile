@@ -58,6 +58,30 @@ class AuthDataProvider {
     return completer.future;
   }
 
+  /// - Verify 2FA OTP
+  Future<ApiResponse<AuthorizationResponse>> verify2FA({
+    required Map<String, dynamic> details,
+  }) async {
+    var completer = Completer<ApiResponse<AuthorizationResponse>>();
+    try {
+      Map<String, dynamic> response = await NetworkManager()
+          .networkRequestManager(
+            RequestType.post,
+            ApiRoutes.resend,
+            useAuth: false,
+            body: jsonEncode(details),
+          );
+      var result = ApiResponse<AuthorizationResponse>.fromJson(
+        response,
+        (data) => AuthorizationResponse.fromJson(data as Map<String, dynamic>),
+      );
+      completer.complete(result);
+    } catch (e) {
+      completer.completeError(e);
+    }
+    return completer.future;
+  }
+
   /// - Recover Forgot Password
   /// -- handles otp verification for forgot password and password reset.
   /// -- Called twice: first with provided token from [resetForgetPassword] and otp

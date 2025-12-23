@@ -504,8 +504,8 @@ class Employer {
       "employer_name": employerName,
       "category": category,
       "job_role": jobRole,
-      "start_date": startDate,
-      "end_date": endDate,
+      "start_date": startDate?.toIso8601String(),
+      "end_date": endDate?.toIso8601String(),
     };
   }
 
