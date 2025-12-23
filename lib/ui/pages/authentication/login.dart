@@ -73,7 +73,9 @@ class _LoginState extends ConsumerState<Login> {
       ref.read(authenticationViewModel).currentStep ==
           OnboardingSteps.contactPerson ||
       ref.read(authenticationViewModel).currentStep ==
-          OnboardingSteps.serviceSpecialization;
+          OnboardingSteps.serviceSpecialization ||
+          //returns null when completed
+      ref.read(authenticationViewModel).authorizationResponse?.onboarding == null;
 
   @override
   Widget build(BuildContext context) {
@@ -191,6 +193,7 @@ class _LoginState extends ConsumerState<Login> {
                                           context: context,
                                           widget: Otp(
                                             otpType: OtpType.twoFA,
+                                            token: vm.authorizationResponse?.token,
                                             identifier:
                                                 vm
                                                     .authorizationResponse

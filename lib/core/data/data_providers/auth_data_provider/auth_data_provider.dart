@@ -67,7 +67,7 @@ class AuthDataProvider {
       Map<String, dynamic> response = await NetworkManager()
           .networkRequestManager(
             RequestType.post,
-            ApiRoutes.resend,
+            ApiRoutes.verify,
             useAuth: false,
             body: jsonEncode(details),
           );
