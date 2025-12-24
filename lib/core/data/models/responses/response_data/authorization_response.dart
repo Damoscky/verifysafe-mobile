@@ -11,6 +11,7 @@ class AuthorizationResponse {
   Authorization? authorization;
   Onboarding? onboarding;
   String? tokenExpiresAt;
+  String? token;
 
   AuthorizationResponse({
     this.accessToken,
@@ -21,6 +22,7 @@ class AuthorizationResponse {
     this.authorization,
     this.onboarding,
     this.tokenExpiresAt,
+    this.token
   });
 
   factory AuthorizationResponse.fromJson(Map<String, dynamic> json) {
@@ -37,6 +39,7 @@ class AuthorizationResponse {
           ? Onboarding.fromJson(json['onboarding'])
           : null,
       tokenExpiresAt: json['token_expires_at'] as String?,
+      token: json["token"] as String?,
     );
   }
 
@@ -50,6 +53,7 @@ class AuthorizationResponse {
       'authorization': authorization?.toJson(),
       'onboarding': onboarding?.toJson(),
       'token_expires_at': tokenExpiresAt,
+      'token': token
     };
   }
 }

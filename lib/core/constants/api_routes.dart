@@ -8,6 +8,8 @@ class ApiRoutes {
       "${dotenv.env['AUTH']}/forgot-password/recover";
   static var signIn = "${dotenv.env['AUTH']}/signin";
   static var resend = "${dotenv.env['AUTH']}/resend";
+  static var verify = "${dotenv.env['AUTH']}/verify-otp";
+
 
   //onboarding
   static var createProfile = "${dotenv.env['ONBOARDING']}/create-profile";

@@ -7,6 +7,7 @@ import 'package:verifysafe/core/data/enum/user_type.dart';
 import 'package:verifysafe/core/data/enum/view_state.dart';
 import 'package:verifysafe/core/data/models/user.dart';
 import 'package:verifysafe/core/data/states/user_state.dart';
+import 'package:verifysafe/core/utilities/secure_storage/secure_storage_utils.dart';
 import 'package:verifysafe/core/utilities/utilities.dart';
 import 'package:verifysafe/locator.dart';
 
@@ -66,6 +67,31 @@ class UserViewModel extends UserState {
               isSuccess: false,
             );
             setState(ViewState.error);
+          },
+        );
+  }
+
+    update2FA({required bool value}) async {
+       setPasswordState(ViewState.busy);
+
+    final details = {
+      "2fa_enabled": value,
+       "action": "password",
+    };
+    await _userDataProvider
+        .updateUser(details: details)
+        .then(
+          (response) async {
+            _message = response.message ?? defaultSuccessMessage;
+            await SecureStorageUtils.save2FA(value: value);
+            setPasswordState(ViewState.retrieved);
+          },
+          onError: (error) {
+           _message = Utilities.formatMessage(
+              error.toString(),
+              isSuccess: false,
+            );
+            setPasswordState(ViewState.error);
           },
         );
   }

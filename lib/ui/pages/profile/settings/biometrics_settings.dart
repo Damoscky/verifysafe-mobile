@@ -6,8 +6,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:verifysafe/core/constants/app_dimension.dart';
 import 'package:verifysafe/core/constants/app_theme/custom_color_scheme.dart';
 import 'package:verifysafe/core/constants/color_path.dart';
+import 'package:verifysafe/core/utilities/secure_storage/secure_storage_utils.dart';
 import 'package:verifysafe/ui/widgets/custom_appbar.dart';
-
+import 'package:verifysafe/ui/widgets/show_flush_bar.dart';
+//todo::: check if device have biometrics feat
 class BiometricsSettings extends StatefulWidget {
   const BiometricsSettings({super.key});
 
@@ -16,6 +18,21 @@ class BiometricsSettings extends StatefulWidget {
 }
 
 class _BiometricsSettingsState extends State<BiometricsSettings> {
+  bool _isEnabled = false;
+
+  @override
+  void initState() {
+   updateBiometricState();
+    super.initState();
+  }
+
+  updateBiometricState(){
+    SecureStorageUtils.retrieveBiometricPref().then((value) {
+      setState(() {
+        _isEnabled = value;
+      });
+    });
+  }
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
@@ -66,8 +83,25 @@ class _BiometricsSettingsState extends State<BiometricsSettings> {
                 Spacer(),
                 CupertinoSwitch(
                   activeTrackColor: ColorPath.meadowGreen,
-                  value: true,
-                  onChanged: (value) {},
+                  value: _isEnabled,
+                  onChanged: (value) async {
+                    setState(() {
+                      _isEnabled = value;
+                    });
+                    await SecureStorageUtils.biometricsEnabled(value: value);
+
+                    if (value) {
+                      showFlushBar(
+                        context: context,
+                        message: "Biometrics enabled successfuly",
+                      );
+                    } else {
+                      showFlushBar(
+                        context: context,
+                        message: "Biometrics disabled successfuly",
+                      );
+                    }
+                  },
                 ),
               ],
             ),

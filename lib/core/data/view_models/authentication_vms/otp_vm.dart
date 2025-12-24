@@ -1,10 +1,14 @@
+import 'dart:convert';
+
 import 'package:verifysafe/core/constants/app_constants.dart';
 import 'package:verifysafe/core/data/data_providers/auth_data_provider/auth_data_provider.dart';
 import 'package:verifysafe/core/data/data_providers/onboarding_data_provider/onboarding_data_provider.dart';
 import 'package:verifysafe/core/data/enum/otp_type.dart';
 import 'package:verifysafe/core/data/enum/view_state.dart';
+import 'package:verifysafe/core/data/models/responses/response_data/authorization_response.dart';
 import 'package:verifysafe/core/data/models/responses/response_data/reset_password_detail.dart';
 import 'package:verifysafe/core/data/states/base_state.dart';
+import 'package:verifysafe/core/utilities/secure_storage/secure_storage_utils.dart';
 import 'package:verifysafe/core/utilities/utilities.dart';
 import 'package:verifysafe/locator.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -73,6 +77,38 @@ class OtpViewModel extends BaseState {
         );
   }
 
+  AuthorizationResponse? _authorizationResponse;
+  AuthorizationResponse? get authorizationResponse => _authorizationResponse;
+
+    /// Verify 2FA otp
+  verify2FA({required String otp, required String token}) async {
+    setState(ViewState.busy);
+    final details = {"token": token, "otp": otp, "action": "2fa-signin"};
+
+    await _authDp
+        .verify2FA(details: details)
+        .then(
+          (response) async {
+            _message = response.message ?? defaultSuccessMessage;
+            _authorizationResponse = response.data;
+            //handle session mgt
+            await SecureStorageUtils.saveToken(
+              token: _authorizationResponse?.accessToken ?? '',
+            );
+            await SecureStorageUtils.saveUser(user: jsonEncode(_authorizationResponse?.user));
+            await SecureStorageUtils.save2FA(value: _authorizationResponse?.twoFaEnabled ?? false);
+            setState(ViewState.retrieved);
+          },
+          onError: (error) {
+            _message = Utilities.formatMessage(
+              error.toString(),
+              isSuccess: false,
+            );
+            setState(ViewState.error);
+          },
+        );
+  }
+
   resendOTP({required String email, required OtpType otpType}) async {
     setSecondState(ViewState.busy);
     String action = '';
@@ -118,6 +154,9 @@ class OtpViewModel extends BaseState {
         break;
       case OtpType.verifyEmail:
         await verifyOnboardingEmail(otp: otp, token: _resendOtpData == null ? token! : _resendOtpData?.verificationToken ?? '');
+        break;
+      case OtpType.twoFA:
+        await verify2FA(otp: otp, token: _resendOtpData == null ? token! : _resendOtpData?.verificationToken ?? '');
         break;
       default:
     }

@@ -6,7 +6,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:verifysafe/core/constants/app_asset.dart';
 import 'package:verifysafe/core/constants/color_path.dart';
 import 'package:verifysafe/core/constants/named_routes.dart';
+import 'package:verifysafe/core/data/models/user.dart';
 import 'package:verifysafe/core/utilities/navigator.dart';
+import 'package:verifysafe/core/utilities/secure_storage/secure_storage_utils.dart';
+import 'package:verifysafe/ui/pages/authentication/login.dart';
 import 'package:verifysafe/ui/pages/bottom_nav.dart';
 import 'package:verifysafe/ui/pages/landing.dart';
 import 'package:verifysafe/ui/widgets/custom_svg.dart';
@@ -19,6 +22,8 @@ class Splash extends StatefulWidget {
 }
 
 class _SplashState extends State<Splash> {
+
+  User? _savedUser;
 
   @override
   void initState() {
@@ -45,18 +50,18 @@ class _SplashState extends State<Splash> {
   }
 
   initUserAndNavigate()async{
-    // _savedUser = await SecureStorageUtils.retrieveUser();
-    // userExist = _savedUser != null;
+    _savedUser = await SecureStorageUtils.retrieveUser();
+   bool userExist = _savedUser != null;
     Timer(const Duration(seconds: 3), () {
-      // if(userExist){
-      //   //nav returning user to login screen
-      //   replaceNavigation(
-      //       context: context,
-      //       transitionType: PageTransitionType.rightToLeft,
-      //       widget: const Login(),
-      //       routeName: NamedRoutes.login);
-      //   return;
-      // }
+      if(userExist){
+        //nav returning user to login screen
+        replaceNavigation(
+            context: context,
+            // transitionType: PageTransitionType.rightToLeft,
+            widget: const Login(),
+            routeName: NamedRoutes.login);
+        return;
+      }
       //nav user to landing screen
       replaceNavigation(
           context: context,

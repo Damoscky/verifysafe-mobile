@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:verifysafe/core/data/models/user.dart';
 import 'package:verifysafe/core/utilities/secure_storage/secure_storage_init.dart';
 import '../../constants/secure_storage_constants.dart';
 
@@ -46,14 +47,14 @@ class SecureStorageUtils{
   }
 
   ///retrieve user details
-  // static Future<User?> retrieveUser() async{
-  //   final userString = await SecureStorageInit.storage.read(key: SecuredStorageConstants.user);
-  //   if(userString != null) {
-  //     final user = User.fromJson(json.decode(userString));
-  //     return user;
-  //   }
-  //   return null;
-  // }
+  static Future<User?> retrieveUser() async{
+    final userString = await SecureStorageInit.storage.read(key: SecuredStorageConstants.user);
+    if(userString != null) {
+      final user = User.fromJson(json.decode(userString));
+      return user;
+    }
+    return null;
+  }
 
   ///save password
   static savePassword({required String? value}) async{
@@ -88,19 +89,25 @@ class SecureStorageUtils{
   // }
 
   ///saves biometrics flag
-  static biometricsEnabled() async{
-    SecureStorageInit.storage.write(key: SecuredStorageConstants.biometricStatus, value: 'true');
+  static biometricsEnabled({required bool value}) async{
+    SecureStorageInit.storage.write(key: SecuredStorageConstants.biometricPref, value: value ? 'true' : 'false');
   }
-
-  // ///retrieves 'biometrics status flag'
-  // static Future<bool> isBiometricsEnabled() async{
-  //   final seen = await SecureStorageInit.storage.read(key: SecuredStorageConstants.biometricStatus);
-  //   return seen == 'true' ?  true : false;
-  // }
 
   ///retrieves 'biometrics pref'
   static Future<bool> retrieveBiometricPref() async{
     final pref = await SecureStorageInit.storage.read(key: SecuredStorageConstants.biometricPref);
+    if(pref == null)return false;
+    return pref == 'true' ?  true : false;
+  }
+
+  ///saves 2FA flag
+  static save2FA({required bool value}) async{
+    SecureStorageInit.storage.write(key: SecuredStorageConstants.twoFA, value: value ? 'true' : 'false');
+  }
+
+    ///retrieves 2FA flag
+  static Future<bool> retrieve2FA() async{
+    final pref = await SecureStorageInit.storage.read(key: SecuredStorageConstants.twoFA);
     if(pref == null)return false;
     return pref == 'true' ?  true : false;
   }

@@ -6,15 +6,18 @@ import 'package:verifysafe/core/constants/app_dimension.dart';
 import 'package:verifysafe/core/constants/app_theme/custom_color_scheme.dart';
 import 'package:verifysafe/core/constants/named_routes.dart';
 import 'package:verifysafe/core/constants/onboarding_steps.dart';
+import 'package:verifysafe/core/data/enum/otp_type.dart';
 import 'package:verifysafe/core/data/enum/user_type.dart';
 import 'package:verifysafe/core/data/enum/view_state.dart';
 import 'package:verifysafe/core/data/view_models/authentication_vms/authentication_view_model.dart';
 import 'package:verifysafe/core/data/view_models/authentication_vms/onboarding_vms/onboarding_vm.dart';
 import 'package:verifysafe/core/utilities/navigator.dart';
+import 'package:verifysafe/core/utilities/secure_storage/secure_storage_utils.dart';
 import 'package:verifysafe/core/utilities/utilities.dart';
 import 'package:verifysafe/ui/pages/authentication/forgot_password.dart';
 import 'package:verifysafe/ui/pages/authentication/onboarding/select_user_type.dart';
 import 'package:verifysafe/ui/pages/authentication/onboarding/sign_up_successful.dart';
+import 'package:verifysafe/ui/pages/authentication/otp.dart';
 import 'package:verifysafe/ui/pages/bottom_nav.dart';
 import 'package:verifysafe/ui/widgets/authentication/terms.dart';
 import 'package:verifysafe/ui/widgets/busy_overlay.dart';
@@ -42,11 +45,20 @@ class _LoginState extends ConsumerState<Login> {
   final _formKey = GlobalKey<FormState>();
 
   bool _hidePwd = true;
+  bool _isBioEnabled = false;
 
   @override
   void initState() {
     super.initState();
+    updateBioEnabled();
+  }
 
+  updateBioEnabled() {
+    SecureStorageUtils.retrieveBiometricPref().then((value) {
+      setState(() {
+        _isBioEnabled = value;
+      });
+    });
   }
 
   isDashboardRoute() =>
@@ -61,7 +73,9 @@ class _LoginState extends ConsumerState<Login> {
       ref.read(authenticationViewModel).currentStep ==
           OnboardingSteps.contactPerson ||
       ref.read(authenticationViewModel).currentStep ==
-          OnboardingSteps.serviceSpecialization;
+          OnboardingSteps.serviceSpecialization ||
+          //returns null when completed
+      ref.read(authenticationViewModel).authorizationResponse?.onboarding == null;
 
   @override
   Widget build(BuildContext context) {
@@ -170,6 +184,26 @@ class _LoginState extends ConsumerState<Login> {
 
                                   if (vm.state == ViewState.retrieved) {
                                     if (isDashboardRoute()) {
+                                      //handle 2FA route if enabled
+                                      if (vm
+                                              .authorizationResponse
+                                              ?.twoFaEnabled ??
+                                          false) {
+                                        replaceNavigation(
+                                          context: context,
+                                          widget: Otp(
+                                            otpType: OtpType.twoFA,
+                                            token: vm.authorizationResponse?.token,
+                                            identifier:
+                                                vm
+                                                    .authorizationResponse
+                                                    ?.user
+                                                    ?.email ??
+                                                "your mail",
+                                          ),
+                                        );
+                                        return;
+                                      }
                                       replaceNavigation(
                                         context: context,
                                         widget: BottomNav(
@@ -201,33 +235,35 @@ class _LoginState extends ConsumerState<Login> {
                               },
                             ),
                           ),
-                          Clickable(
-                            onPressed: () {
-                              pushNavigation(
-                                context: context,
-                                widget: const SignUpSuccessful(),
-                                routeName: NamedRoutes.signupSuccessful,
-                              );
-                            },
-                            child: Container(
-                              margin: EdgeInsets.only(left: 16.w),
-                              height: 56.h,
-                              width: 56.w,
-                              decoration: BoxDecoration(
-                                color: ColorPath.athensGrey3,
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(12.r),
+                          if (_isBioEnabled)
+                            Clickable(
+                              onPressed: () {
+                                //todo::: handle biometrics login
+                                pushNavigation(
+                                  context: context,
+                                  widget: const SignUpSuccessful(),
+                                  routeName: NamedRoutes.signupSuccessful,
+                                );
+                              },
+                              child: Container(
+                                margin: EdgeInsets.only(left: 16.w),
+                                height: 56.h,
+                                width: 56.w,
+                                decoration: BoxDecoration(
+                                  color: ColorPath.athensGrey3,
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(12.r),
+                                  ),
                                 ),
-                              ),
-                              child: Center(
-                                child: CustomAssetViewer(
-                                  asset: Platform.isIOS
-                                      ? AppAsset.faceId
-                                      : AppAsset.fingerprint,
+                                child: Center(
+                                  child: CustomAssetViewer(
+                                    asset: Platform.isIOS
+                                        ? AppAsset.faceId
+                                        : AppAsset.fingerprint,
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
                         ],
                       ),
                       SizedBox(height: 16.h),
