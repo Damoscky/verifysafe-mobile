@@ -57,11 +57,17 @@ class ApiRoutes {
       "${dotenv.env['V1']}/worker-references/$id";
 
   //misconducts
-  static fetchMisconducts({required String? filterOptions}) =>
+  static fetchMisconducts({required String? filterOptions, required int? pageNumber}) =>
       filterOptions == null ?
-      "${dotenv.env['V1']}/misconducts?paginate=1"
-          :"${dotenv.env['V1']}/misconducts?paginate=1&$filterOptions";
+      "${dotenv.env['V1']}/misconducts?paginate=1&page=$pageNumber"
+          :"${dotenv.env['V1']}/misconducts?paginate=1&page=$pageNumber&$filterOptions";
   static var createMisconductReport = "${dotenv.env['V1']}/misconducts";
   static deleteReport({required String? id}) =>
       "${dotenv.env['V1']}/misconducts/$id";
+
+  //ratings and review
+  static fetchRatings({required String? filterOptions, required int? pageNumber}) =>
+      filterOptions == null ?
+      "${dotenv.env['V1']}/reviews?paginate=1&page=$pageNumber"
+          :"${dotenv.env['V1']}/reviews?paginate=1&page=$pageNumber&$filterOptions";
 }

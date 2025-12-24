@@ -271,6 +271,7 @@ class _SupportAndMisconductsState extends ConsumerState<SupportAndMisconducts> {
                     )
                     else ListView.separated(
                     itemCount: vm.sortedReports.length,
+                    controller: _scrollController,
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
                     padding: EdgeInsets.zero,

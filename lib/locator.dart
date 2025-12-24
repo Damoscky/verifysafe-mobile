@@ -4,6 +4,7 @@ import 'package:verifysafe/core/data/data_providers/general_data_provider/genera
 import 'package:verifysafe/core/data/data_providers/guarantor_data_provider/guarantor_data_provider.dart';
 import 'package:verifysafe/core/data/data_providers/misconducts_data_provider/misconducts_data_provider.dart';
 import 'package:verifysafe/core/data/data_providers/onboarding_data_provider/onboarding_data_provider.dart';
+import 'package:verifysafe/core/data/data_providers/review_data_provider.dart';
 import 'package:verifysafe/core/data/data_providers/users_data_providers/agency_data_provider.dart';
 import 'package:verifysafe/core/data/data_providers/users_data_providers/employer_data_provider.dart';
 import 'package:verifysafe/core/data/data_providers/users_data_providers/user_data_provider.dart';
@@ -28,8 +29,7 @@ void setupLocator() {
   locator.registerLazySingleton<AgencyDataProvider>(() => AgencyDataProvider());
   locator.registerLazySingleton<GuarantorDataProvider>(() => GuarantorDataProvider());
   locator.registerLazySingleton<MisconductsDataProvider>(() => MisconductsDataProvider());
-
-
+  locator.registerLazySingleton<ReviewDataProvider>(() => ReviewDataProvider());
 
 
 

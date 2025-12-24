@@ -76,6 +76,7 @@ class MisconductsViewModel extends BaseState {
 
 
     await _misconductsDp.fetchMisconductReports(
+      pageNumber: pageNumber,
         filterOptions: Utilities.returnQueryString(
             params: selectedFilterOptions,
             omitKeys: {'start_date', 'end_date'} //filter out this key so its not sent to backend to filter games

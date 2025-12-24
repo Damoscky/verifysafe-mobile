@@ -10,13 +10,13 @@ import '../../network_manager/network_manager.dart';
 class MisconductsDataProvider{
 
   //fetch misconduct reports
-  Future<ApiResponse<MisconductData>> fetchMisconductReports({String? filterOptions}) async {
+  Future<ApiResponse<MisconductData>> fetchMisconductReports({String? filterOptions, required int? pageNumber}) async {
     var completer = Completer<ApiResponse<MisconductData>>();
     try {
       Map<String, dynamic> response = await NetworkManager()
           .networkRequestManager(
         RequestType.get,
-        ApiRoutes.fetchMisconducts(filterOptions: filterOptions),
+        ApiRoutes.fetchMisconducts(filterOptions: filterOptions, pageNumber: pageNumber),
       );
       var result = ApiResponse<MisconductData>.fromJson(
         response,
