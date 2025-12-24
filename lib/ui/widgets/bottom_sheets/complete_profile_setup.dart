@@ -149,6 +149,7 @@ class CompleteProfileSetup extends ConsumerWidget {
                   },
                   buttonText: "Complete Profile",
                 ),
+              SizedBox(height: 32.h),
             ],
           ),
         ),

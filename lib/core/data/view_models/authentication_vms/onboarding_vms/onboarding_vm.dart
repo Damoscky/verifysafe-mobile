@@ -98,6 +98,8 @@ class OnboardingVm extends BaseState {
     required String phone,
     required String gender,
     required String maritalStatus,
+    String?
+    role, //Pass this as an [UserType.employer]/[UserType.agency],when creating worker/employer
   }) async {
     setState(ViewState.busy);
     final details = {
@@ -106,11 +108,11 @@ class OnboardingVm extends BaseState {
       "phone": phone,
       "gender": gender,
       "marital_status": maritalStatus,
-      "roles": [getUserType()],
+      "roles": [role ?? getUserType()],
     };
 
     await _onboardingDp
-        .createProfile(details: details)
+        .createProfile(details: details, useAuth: role != null)
         .then(
           (response) {
             _message = response.message ?? defaultSuccessMessage;
@@ -316,7 +318,7 @@ class OnboardingVm extends BaseState {
     required String experience,
     required String language,
     required String relocatable,
-    String? resumeUrl
+    String? resumeUrl,
   }) async {
     setState(ViewState.busy);
 
@@ -326,7 +328,7 @@ class OnboardingVm extends BaseState {
       "experience": experience,
       "language": language,
       "relocatable": relocatable,
-      "resume_url": resumeUrl
+      "resume_url": resumeUrl,
     };
 
     log(details.toString());

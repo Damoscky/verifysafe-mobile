@@ -3,7 +3,9 @@ import 'dart:async';
 import 'package:verifysafe/core/constants/api_routes.dart';
 import 'package:verifysafe/core/data/enum/request_type.dart';
 import 'package:verifysafe/core/data/models/responses/api_response.dart';
+import 'package:verifysafe/core/data/models/responses/response_data/pagination_data.dart';
 import 'package:verifysafe/core/data/models/responses/response_data/stats.dart';
+import 'package:verifysafe/core/data/models/user.dart';
 import 'package:verifysafe/core/data/network_manager/network_manager.dart';
 
 import '../../models/user.dart';
@@ -30,23 +32,33 @@ class EmployerDataProvider {
     return completer.future;
   }
 
-  /// Fetch employers
-  Future<ApiResponse<List<User>>> fetchEmployers({
-    required String? keyword
+  /// Fetch [UserType.employer] attached to Agency
+  Future<ApiResponse<PaginationData>> fetchEmployers({
+    String? query,
+     String? keyword,
+    int? limit,
+    int? pageNumber,
   }) async {
-    var completer = Completer<ApiResponse<List<User>>>();
+    var completer = Completer<ApiResponse<PaginationData>>();
     try {
       Map<String, dynamic> response = await NetworkManager()
           .networkRequestManager(
-        RequestType.get,
-        ApiRoutes.fetchEmployers(keyword: keyword),
-        useAuth: true,
-      );
-      var result = ApiResponse<List<User>>.fromJson(
+            RequestType.get,
+            ApiRoutes.employers,
+            useAuth: true,
+            queryParameters: {
+              "paginate": "1",
+              "limit": limit,
+              "page": pageNumber,
+              "q": query ?? keyword,
+            },
+          );
+      var result = ApiResponse<PaginationData>.fromJson(
         response,
-            (data) => List.from(
-          data,
-        ).map((e) => User.fromJson(e as Map<String, dynamic>)).toList(),
+        (data) => PaginationData<User>.fromJson(
+          data as Map<String, dynamic>,
+          (e) => User.fromJson(e),
+        ),
       );
       completer.complete(result);
     } catch (e) {

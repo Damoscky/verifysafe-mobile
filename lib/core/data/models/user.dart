@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:verifysafe/core/data/enum/user_type.dart';
 
 class User {
@@ -222,12 +224,16 @@ class Identity {
   String? identityNumber;
   String? status;
   String? identityFileUrl;
+  DateTime? associatedDate;
+  Reviewer? reviewedBy;
 
   Identity({
     this.identityName,
     this.identityNumber,
     this.status,
     this.identityFileUrl,
+    this.associatedDate,
+    this.reviewedBy,
   });
 
   factory Identity.fromJson(Map<String, dynamic> json) {
@@ -236,6 +242,12 @@ class Identity {
       identityNumber: json['identity_number'] as String?,
       status: json['status'] as String?,
       identityFileUrl: json['identity_file_url'] as String?,
+      associatedDate: json["associated_date"] != null
+          ? DateTime.parse(json["associated_date"])
+          : null,
+      reviewedBy: json["reviewed_by"] != null
+          ? Reviewer.fromJson(json["reviewed_by"])
+          : null,
     );
   }
 
@@ -245,7 +257,25 @@ class Identity {
       'identity_number': identityNumber,
       'status': status,
       'identity_file_url': identityFileUrl,
+      "associated_date": associatedDate?.toIso8601String(),
+      "reviewed_by": reviewedBy?.toJson(),
     };
+  }
+}
+
+class Reviewer {
+  final String? identifier;
+  final String? name;
+
+  Reviewer({this.identifier, this.name});
+  factory Reviewer.fromJson(Map<String, dynamic> json) {
+    return Reviewer(
+      identifier: json['identifier'] as String?,
+      name: json['name'] as String?,
+    );
+  }
+  Map<String, dynamic> toJson() {
+    return {'identifier': identifier, 'name': name};
   }
 }
 
@@ -254,13 +284,13 @@ class WorkerInfo {
   String? maritalStatus;
   String? dateOfBirth;
   String? residentialAddress;
-  String? createdAt;
-  final String? jobCategory;
-  final String? jobRole;
-  final String? experience;
-  final String? language;
-  final int? relocatable;
-  final String? resumeUrl;
+  DateTime? createdAt;
+  String? jobCategory;
+  String? jobRole;
+  String? experience;
+  String? language;
+  dynamic relocatable;
+  String? resumeUrl;
 
   WorkerInfo({
     this.gender,
@@ -282,13 +312,15 @@ class WorkerInfo {
       maritalStatus: json['marital_status'] as String?,
       dateOfBirth: json['date_of_birth'] as String?,
       residentialAddress: json['residential_address'] as String?,
-      createdAt: json['created_at'] as String?,
-      jobCategory: json["job_category"],
-      jobRole: json["job_role"],
-      experience: json["experience"],
-      language: json["language"],
-      relocatable: json["relocatable"],
-      resumeUrl: json["resume_url"],
+      createdAt: json['created_at'] != null
+          ? DateTime.parse(json['created_at'])
+          : null,
+      jobCategory: json['job_category'],
+      jobRole: json['job_role'],
+      experience: json['experience'],
+      language: json['language'],
+      relocatable: json['relocatable'],
+      resumeUrl: json['resume_url'],
     );
   }
 
@@ -298,9 +330,9 @@ class WorkerInfo {
       'marital_status': maritalStatus,
       'date_of_birth': dateOfBirth,
       'residential_address': residentialAddress,
-      'created_at': createdAt,
+      'created_at': createdAt?.toIso8601String(),
       "job_category": jobCategory,
-      "job_role": jobRole,
+      "job_role":jobRole,
       "experience": experience,
       "language": language,
       "relocatable": relocatable,
@@ -310,8 +342,6 @@ class WorkerInfo {
 }
 
 class WorkHistory {
-  // Add fields based on your work history structure
-  // Since the array is empty in the JSON, you'll need to add fields when you have a sample
   final String? id;
   final String? employerName;
   final String? category;
@@ -474,8 +504,35 @@ class Employer {
       "employer_name": employerName,
       "category": category,
       "job_role": jobRole,
-      "start_date": startDate,
-      "end_date": endDate,
+      "start_date": startDate?.toIso8601String(),
+      "end_date": endDate?.toIso8601String(),
     };
   }
+
+  /// Converts a contact_person JSON string to a Map
+/// 
+/// Returns an empty Map if the input is null, empty, or invalid JSON
+Map<String, dynamic> parseContactPerson() {
+  // Handle null or empty string
+  if (contactPerson == null || (contactPerson?.trim().isEmpty ?? true)) {
+    return {};
+  }
+  
+  try {
+    // Parse the JSON string
+    final parsed = jsonDecode(contactPerson!);
+    
+    // Ensure the result is a Map
+    if (parsed is Map<String, dynamic>) {
+      return parsed;
+    }
+    
+    // If it's not a Map, return empty Map
+    return {};
+  } catch (e) {
+    // Handle JSON parsing errors
+    print('Error parsing contact person: $e');
+    return {};
+  }
+}
 }

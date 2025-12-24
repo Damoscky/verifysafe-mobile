@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:verifysafe/core/constants/app_dimension.dart';
 import 'package:verifysafe/core/constants/app_theme/custom_color_scheme.dart';
+import 'package:verifysafe/core/data/models/user.dart';
 import 'package:verifysafe/core/data/view_models/worker_view_model.dart';
 import 'package:verifysafe/core/utilities/navigator.dart';
 import 'package:verifysafe/ui/widgets/app_loader.dart';
@@ -18,7 +19,7 @@ import '../show_flush_bar.dart';
 
 class SelectWorker extends ConsumerStatefulWidget {
   final String searchHintText;
-  final ValueChanged<Worker> onDone;
+  final ValueChanged<User> onDone;
   const SelectWorker({super.key, required this.searchHintText, required this.onDone});
 
   @override

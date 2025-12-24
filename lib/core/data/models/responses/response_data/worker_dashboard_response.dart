@@ -1,8 +1,9 @@
+import 'package:verifysafe/core/data/models/responses/response_data/pagination_data.dart';
 import 'package:verifysafe/core/data/models/responses/response_data/stats.dart';
 
 class WorkerDashboardResponse {
   final Stats? stats;
-  final List<EmploymentData>? data;
+  final PaginationData? data;
 
   WorkerDashboardResponse({this.stats, this.data});
 
@@ -10,18 +11,16 @@ class WorkerDashboardResponse {
     return WorkerDashboardResponse(
       stats: json['stats'] != null ? Stats.fromJson(json['stats']) : null,
       data: json['data'] != null
-          ? (json['data'] as List)
-                .map((e) => EmploymentData.fromJson(e))
-                .toList()
+          ? PaginationData<EmploymentData>.fromJson(
+              json['data'],
+              (e) => EmploymentData.fromJson(e),
+            )
           : null,
     );
   }
 
   Map<String, dynamic> toJson() {
-    return {
-      'stats': stats?.toJson(),
-      'data': data?.map((e) => e.toJson()).toList(),
-    };
+    return {'stats': stats?.toJson(), 'data': data?.toJson((e) => e.toJson())};
   }
 }
 

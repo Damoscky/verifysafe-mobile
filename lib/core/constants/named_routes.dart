@@ -52,6 +52,10 @@ class NamedRoutes {
   static const verificationInformation = '/verificationInformation';
   static const viewEmploymentDetails = '/viewEmploymentDetails';
   static const showId = '/showId';
+  static const editUserInfo = '/editUserInfo';
+  static const viewWorkerAgency = '/viewWorkerAgency';
+  static const viewEmployer = '/viewEmployer';
+
 
   //search
   static const search = '/search';

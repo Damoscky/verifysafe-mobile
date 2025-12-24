@@ -13,6 +13,7 @@ import 'package:verifysafe/core/data/enum/view_state.dart';
 import 'package:verifysafe/core/data/view_models/authentication_vms/otp_vm.dart';
 import 'package:verifysafe/core/utilities/navigator.dart';
 import 'package:verifysafe/ui/pages/authentication/create_password.dart';
+import 'package:verifysafe/ui/pages/bottom_nav.dart';
 import 'package:verifysafe/ui/widgets/busy_overlay.dart';
 import 'package:verifysafe/ui/widgets/show_flush_bar.dart';
 
@@ -298,6 +299,17 @@ class _OtpState extends ConsumerState<Otp> {
                                     onboardingId: vm.onboardingId,
                                   ),
                                   routeName: NamedRoutes.createPassword,
+                                );
+                                return;
+                              }
+
+                              if (widget.otpType == OtpType.twoFA) {
+                                replaceNavigation(
+                                  context: context,
+                                  widget: BottomNav(
+                                    userData: vm.authorizationResponse?.user,
+                                  ),
+                                  routeName: NamedRoutes.bottomNav,
                                 );
                                 return;
                               }

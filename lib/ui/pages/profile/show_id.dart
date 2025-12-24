@@ -77,7 +77,7 @@ class ShowId extends StatelessWidget {
                     borderRadius: BorderRadius.circular(16.r),
                     image: DecorationImage(
                       image: NetworkImage(
-                        "https://mir-s3-cdn-cf.behance.net/user/276/888fd91082619909.61d2827bbd7a2.jpg",
+                        userData.avatar!,
                       ),
                       fit: BoxFit.cover,
                     ),

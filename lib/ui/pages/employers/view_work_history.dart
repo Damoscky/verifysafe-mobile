@@ -199,39 +199,39 @@ class ViewWorkHistory extends StatelessWidget {
             ),
           ),
           SizedBox(height: 16.h),
-          ActionTile(
-            title: "Employer Information",
-            subTitle: "Change and update your employer information",
-            onPressed: () {
-              pushNavigation(
-                context: context,
-                widget: ViewEmploymentDetails(canEdit: false),
-                routeName: NamedRoutes.viewEmploymentDetails,
-              );
-            },
-          ),
+          // ActionTile(
+          //   title: "Employer Information",
+          //   subTitle: "Change and update your employer information",
+          //   onPressed: () {
+          //     pushNavigation(
+          //       context: context,
+          //       widget: ViewEmploymentDetails(canEdit: false),
+          //       routeName: NamedRoutes.viewEmploymentDetails,
+          //     );
+          //   },
+          // ),
           CustomDivider(),
-          ActionTile(
-            title: "Contact Person",
-            subTitle: "Change and update contact person information",
-            onPressed: () {
-              pushNavigation(
-                context: context,
-                widget: ViewContactPerson(),
-                routeName: NamedRoutes.viewContactPerson,
-              );
-            },
-          ),
+          // ActionTile(
+          //   title: "Contact Person",
+          //   subTitle: "Change and update contact person information",
+          //   onPressed: () {
+          //     pushNavigation(
+          //       context: context,
+          //       widget: ViewContactPerson(),
+          //       routeName: NamedRoutes.viewContactPerson,
+          //     );
+          //   },
+          // ),
           CustomDivider(),
           ActionTile(
             title: "Services & Specialisations",
             subTitle: "Change and update services information",
             onPressed: () {
-              pushNavigation(
-                context: context,
-                widget: ViewServicesAndSpecialization(),
-                routeName: NamedRoutes.viewServicesAndSpecialization,
-              );
+              // pushNavigation(
+              //   context: context,
+              //   widget: ViewServicesAndSpecialization(),
+              //   routeName: NamedRoutes.viewServicesAndSpecialization,
+              // );
             },
           ),
         ],

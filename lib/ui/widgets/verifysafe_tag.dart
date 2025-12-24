@@ -6,12 +6,18 @@ import '../../core/utilities/utilities.dart';
 class VerifySafeTag extends StatelessWidget {
   final String status;
   final bool useEndAlignment;
-  const VerifySafeTag({super.key, required this.status,this.useEndAlignment = false});
+  const VerifySafeTag({
+    super.key,
+    required this.status,
+    this.useEndAlignment = false,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Row(
-      mainAxisAlignment: useEndAlignment ? MainAxisAlignment.end : MainAxisAlignment.start,
+      mainAxisAlignment: useEndAlignment
+          ? MainAxisAlignment.end
+          : MainAxisAlignment.start,
       children: [
         Container(
           padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 2.h),
@@ -46,6 +52,8 @@ class VerifySafeTag extends StatelessWidget {
       case 'failed':
       case 'rejected':
         return ColorPath.provincialPink;
+      case 'unverified':
+        return ColorPath.athensGrey5;
       default:
         return Colors.white;
     }
@@ -65,6 +73,8 @@ class VerifySafeTag extends StatelessWidget {
       case 'failed':
       case 'rejected':
         return ColorPath.thunderbirdRed;
+      case 'unverified':
+        return ColorPath.gullGrey;
       default:
         return Colors.white;
     }

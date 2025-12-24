@@ -7,7 +7,6 @@ import 'package:verifysafe/core/constants/named_routes.dart';
 import 'package:verifysafe/core/data/enum/user_type.dart';
 import 'package:verifysafe/core/data/view_models/worker_view_model.dart';
 import 'package:verifysafe/core/utilities/navigator.dart';
-import 'package:verifysafe/ui/pages/authentication/onboarding/employer/employer_info.dart';
 import 'package:verifysafe/ui/pages/authentication/onboarding/worker/basic_info.dart';
 import 'package:verifysafe/ui/pages/search.dart';
 import 'package:verifysafe/ui/widgets/clickable.dart';
@@ -66,10 +65,9 @@ class _DashboardBodyDataState extends ConsumerState<DashboardBodyData> {
                   Expanded(
                     child: Clickable(
                       onPressed: () {
-                        //todo::: handle route to add worker
                         pushNavigation(
                           context: context,
-                          widget: BasicInfo(),
+                          widget: BasicInfo(userRole: "worker"),
                           routeName: NamedRoutes.basicInfo,
                         );
                       },
@@ -96,11 +94,10 @@ class _DashboardBodyDataState extends ConsumerState<DashboardBodyData> {
                   Expanded(
                     child: Clickable(
                       onPressed: () {
-                        //todo::: handle route to add employer
                         pushNavigation(
                           context: context,
-                          widget: EmployerInfo(),
-                          routeName: NamedRoutes.employerInfo,
+                          widget: BasicInfo(userRole: "employer"),
+                          routeName: NamedRoutes.basicInfo,
                         );
                       },
                       child: VerifySafeContainer(
@@ -143,9 +140,9 @@ class _DashboardBodyDataState extends ConsumerState<DashboardBodyData> {
           ),
         ),
         if (widget.userType == UserType.worker)
-          WorkHistoriesData(workHistories: workerVm.recentWorkHistory)
+          WorkHistoriesData(workHistories: workerVm.subWorkHistoryList)
         else
-          WorkersData(),
+          WorkersData(workers: workerVm.recentWorker),//todo:::
       ],
     );
   }
@@ -159,7 +156,7 @@ class _DashboardBodyDataState extends ConsumerState<DashboardBodyData> {
         ];
       case UserType.employer:
       case UserType.agency:
-        return ["Registered Workers", "Showing all registered workers below"];
+        return ["Registered Workers", "Showing recent workers below"];
     }
   }
 }

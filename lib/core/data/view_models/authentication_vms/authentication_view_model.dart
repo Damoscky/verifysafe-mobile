@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:verifysafe/core/constants/app_constants.dart';
 import 'package:verifysafe/core/data/data_providers/auth_data_provider/auth_data_provider.dart';
@@ -49,9 +51,13 @@ updateUI(){
           (response) async {
             _message = response.message ?? defaultSuccessMessage;
             _authorizationResponse = response.data;
+            //handle session mgt
             await SecureStorageUtils.saveToken(
               token: _authorizationResponse?.accessToken ?? '',
             );
+            await SecureStorageUtils.saveUser(user: jsonEncode(_authorizationResponse?.user?.toJson()));
+            await SecureStorageUtils.savePassword(value: password);
+            await SecureStorageUtils.save2FA(value: _authorizationResponse?.twoFaEnabled ?? false);
             setState(ViewState.retrieved);
           },
           onError: (error) {
