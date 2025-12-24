@@ -1,9 +1,5 @@
 import 'dart:async';
-import 'dart:convert';
-import 'package:verifysafe/core/data/models/guarantor.dart';
-import 'package:verifysafe/core/data/models/responses/response_data/guarantor_data.dart';
 import 'package:verifysafe/core/data/models/responses/response_data/review_data.dart';
-
 import '../../constants/api_routes.dart';
 import '../enum/request_type.dart';
 import '../models/responses/api_response.dart';

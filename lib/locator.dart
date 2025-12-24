@@ -9,7 +9,6 @@ import 'package:verifysafe/core/data/data_providers/users_data_providers/agency_
 import 'package:verifysafe/core/data/data_providers/users_data_providers/employer_data_provider.dart';
 import 'package:verifysafe/core/data/data_providers/users_data_providers/user_data_provider.dart';
 import 'package:verifysafe/core/data/data_providers/users_data_providers/worker_data_provider.dart';
-import 'package:verifysafe/core/data/models/guarantor.dart';
 import 'core/data/services/geolocator_service.dart';
 import 'core/data/services/navigation_service.dart';
 
