@@ -184,6 +184,57 @@ class GuarantorViewModel extends BaseState {
     _sortedGuarantors = _guarantors;
     notifyListeners();
   }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  //list of guarantors
+  List<Guarantor> _userGuarantors = [];
+  List<Guarantor> get userGuarantors => _userGuarantors;
+  fetchUserGuarantors({required String userId}) async {
+    setThirdState(ViewState.busy);
+    await _guarantorDp.fetchUserGuarantors(userId: userId).then(
+          (response) {
+        _message = response.message ?? defaultSuccessMessage;
+        _userGuarantors = response.data?.data ?? [];
+        setThirdState(ViewState.retrieved);
+      },
+      onError: (error) {
+        _message = Utilities.formatMessage(error.toString(), isSuccess: false);
+        setThirdState(ViewState.error);
+      },
+    );
+  }
 }
 
 final guarantorViewModel = ChangeNotifierProvider.autoDispose<GuarantorViewModel>((ref) {

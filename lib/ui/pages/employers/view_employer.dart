@@ -120,7 +120,7 @@ class ViewEmployer extends StatelessWidget {
             onPressed: () {
               pushNavigation(
                 context: context,
-                widget: EmployerManageWorkerGuanantor(),
+                widget: EmployerManageWorkerGuanantor(data: data,),
                 routeName: NamedRoutes.employerManageWorkerGuanantor,
               );
             },

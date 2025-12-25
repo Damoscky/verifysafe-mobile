@@ -59,6 +59,8 @@ class NamedRoutes {
 
   //search
   static const search = '/search';
+  static const searchWorker = '/searchWorker';
+  static const searchEmployer = '/searchEmployer';  
 
   //billing
   static const billType = '/billType';

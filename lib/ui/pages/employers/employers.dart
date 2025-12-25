@@ -11,6 +11,8 @@ import 'package:verifysafe/core/data/enum/view_state.dart';
 import 'package:verifysafe/core/data/view_models/employer_view_model.dart';
 import 'package:verifysafe/core/utilities/navigator.dart';
 import 'package:verifysafe/ui/pages/authentication/onboarding/worker/basic_info.dart';
+import 'package:verifysafe/ui/pages/employers/search_employers.dart';
+import 'package:verifysafe/ui/widgets/app_loader.dart';
 import 'package:verifysafe/ui/widgets/bottom_sheets/base_bottom_sheet.dart';
 import 'package:verifysafe/ui/widgets/bottom_sheets/sort_options.dart';
 import 'package:verifysafe/ui/widgets/clickable.dart';
@@ -109,16 +111,23 @@ class _EmployersState extends ConsumerState<Employers> {
                 left: AppDimension.paddingLeft,
                 right: AppDimension.paddingRight,
               ),
-              child: CustomTextField(
-                hintText: "Search for Employer",
-                onChanged: (value) {
-                  // todo::: handle route to search screen here
+              child: Clickable(
+                onPressed: () {
+                  pushNavigation(
+                    context: context,
+                    widget: const SearchEmployers(),
+                    routeName: NamedRoutes.searchEmployer,
+                  );
                 },
-                enabled: false,
-                borderColor: ColorPath.niagaraGreen,
-                prefixIcon: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Icon(CupertinoIcons.search),
+                child: CustomTextField(
+                  hintText: "Search for Employer",
+                  onChanged: (value) {},
+                  enabled: false,
+                  borderColor: ColorPath.niagaraGreen,
+                  prefixIcon: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Icon(CupertinoIcons.search),
+                  ),
                 ),
               ),
             ),
@@ -154,6 +163,14 @@ class _EmployersState extends ConsumerState<Employers> {
             ),
 
             EmployersData(employers: vm.employers),
+            if (vm.paginatedState == ViewState.busy)
+              Column(
+                children: [
+                  SizedBox(height: 8.h),
+                  AppLoader(size: 30.h),
+                  SizedBox(height: 8.h),
+                ],
+              ),
           ],
         ),
       ),

@@ -10,6 +10,7 @@ import 'package:verifysafe/core/data/enum/view_state.dart';
 import 'package:verifysafe/core/data/view_models/worker_view_model.dart';
 import 'package:verifysafe/core/utilities/navigator.dart';
 import 'package:verifysafe/ui/pages/authentication/onboarding/worker/basic_info.dart';
+import 'package:verifysafe/ui/pages/workers/search_workers.dart';
 import 'package:verifysafe/ui/widgets/app_loader.dart';
 import 'package:verifysafe/ui/widgets/bottom_sheets/base_bottom_sheet.dart';
 import 'package:verifysafe/ui/widgets/bottom_sheets/sort_options.dart';
@@ -105,16 +106,24 @@ class _WorkersState extends ConsumerState<Workers> {
             WorkersDashboardCard(total: vm.totalRecords.toString()),
             Padding(
               padding: EdgeInsets.only(left: 24.w, right: 24.w),
-              child: CustomTextField(
-                hintText: "Search for Worker",
-                onChanged: (value) {
-                  // todo::: handle route to search screen here
+              child: Clickable(
+                onPressed: () {
+                  pushNavigation(
+                    context: context,
+                    widget: const SearchWorkers(),
+                    routeName: NamedRoutes.searchWorker,
+                  );
                 },
-                enabled: false,
-                borderColor: ColorPath.niagaraGreen,
-                prefixIcon: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Icon(CupertinoIcons.search),
+                child: CustomTextField(
+                  hintText: "Search for Worker",
+                  onChanged: (value) {},
+                  enabled: false,
+                  readOnly: true,
+                  borderColor: ColorPath.niagaraGreen,
+                  prefixIcon: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Icon(CupertinoIcons.search),
+                  ),
                 ),
               ),
             ),

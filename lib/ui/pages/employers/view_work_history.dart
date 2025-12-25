@@ -14,7 +14,7 @@ import 'package:verifysafe/ui/widgets/clickable.dart';
 import 'package:verifysafe/ui/widgets/custom_appbar.dart';
 import 'package:verifysafe/ui/widgets/custom_divider.dart';
 import 'package:verifysafe/ui/widgets/verifysafe_container.dart';
-
+//TODO ::: COMPLETE VIEW WORK HISTORY : [EmploymentData] Does not correlate with Employer [User] data
 class ViewWorkHistory extends StatelessWidget {
   final EmploymentData employmentData;
   const ViewWorkHistory({super.key, required this.employmentData});
@@ -199,29 +199,29 @@ class ViewWorkHistory extends StatelessWidget {
             ),
           ),
           SizedBox(height: 16.h),
-          // ActionTile(
-          //   title: "Employer Information",
-          //   subTitle: "Change and update your employer information",
-          //   onPressed: () {
-          //     pushNavigation(
-          //       context: context,
-          //       widget: ViewEmploymentDetails(canEdit: false),
-          //       routeName: NamedRoutes.viewEmploymentDetails,
-          //     );
-          //   },
-          // ),
+          ActionTile(
+            title: "Employer Information",
+            subTitle: "Change and update your employer information",
+            onPressed: () {
+              // pushNavigation(
+              //   context: context,
+              //   widget: ViewEmploymentDetails(canEdit: false),
+              //   routeName: NamedRoutes.viewEmploymentDetails,
+              // );
+            },
+          ),
           CustomDivider(),
-          // ActionTile(
-          //   title: "Contact Person",
-          //   subTitle: "Change and update contact person information",
-          //   onPressed: () {
-          //     pushNavigation(
-          //       context: context,
-          //       widget: ViewContactPerson(),
-          //       routeName: NamedRoutes.viewContactPerson,
-          //     );
-          //   },
-          // ),
+          ActionTile(
+            title: "Contact Person",
+            subTitle: "Change and update contact person information",
+            onPressed: () {
+              // pushNavigation(
+              //   context: context,
+              //   widget: ViewContactPerson(),
+              //   routeName: NamedRoutes.viewContactPerson,
+              // );
+            },
+          ),
           CustomDivider(),
           ActionTile(
             title: "Services & Specialisations",

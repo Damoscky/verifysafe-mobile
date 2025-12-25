@@ -8,6 +8,9 @@ class WorkerState extends ChangeNotifier {
   ViewState _secondState = ViewState.idle;
   ViewState get secondState => _secondState;
 
+    ViewState _thirdState = ViewState.idle;
+  ViewState get thirdState => _thirdState;
+
   ViewState _paginatedState = ViewState.idle;
   ViewState get paginatedState => _paginatedState;
 
@@ -23,6 +26,11 @@ class WorkerState extends ChangeNotifier {
     if (refreshUi) {
       notifyListeners();
     }
+  }
+
+  void setThirdState(ViewState viewState) {
+    _thirdState = viewState;
+    notifyListeners();
   }
 
   void setPaginatedState(ViewState viewState) {

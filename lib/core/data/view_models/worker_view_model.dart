@@ -102,7 +102,7 @@ class WorkerViewModel extends WorkerState {
         );
   }
 
-    /// fetch employers
+    /// fetch workers under an employer/agency
   fetchWorkers({required String? keyword}) async{
     setSecondState(ViewState.busy);
     await _workerDataProvider.fetchWorkers(keyword: keyword).then(
@@ -114,6 +114,24 @@ class WorkerViewModel extends WorkerState {
       onError: (error) {
         _workerMessage = Utilities.formatMessage(error.toString(), isSuccess: false);
         setSecondState(ViewState.error);
+      },
+    );
+  }
+
+List<EmploymentData> _workerWorkHistories = [];
+List<EmploymentData> get workerWorkHistories => _workerWorkHistories;
+
+  fetchWorkerWorkHistory({required String workerID})async{
+    setThirdState(ViewState.busy);
+    await _workerDataProvider.workHistoriesOverview(userID: workerID).then(
+          (response) {
+        _workerMessage = response.message ?? defaultSuccessMessage;
+        _workerWorkHistories = List<EmploymentData>.from(_dashboardData?.data?.data ?? []);
+        setThirdState(ViewState.retrieved);
+      },
+      onError: (error) {
+        _workerMessage = Utilities.formatMessage(error.toString(), isSuccess: false);
+        setThirdState(ViewState.error);
       },
     );
   }
