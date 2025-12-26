@@ -71,8 +71,13 @@ class ApiRoutes {
       "${dotenv.env['V1']}/misconducts/$id";
 
   //ratings and review
-  static fetchRatings({required String? filterOptions, required int? pageNumber}) =>
+  static fetchRatings({required String? filterOptions, required int? pageNumber, required String? userId}) =>
       filterOptions == null ?
-      "${dotenv.env['V1']}/reviews?paginate=1&page=$pageNumber"
-          :"${dotenv.env['V1']}/reviews?paginate=1&page=$pageNumber&$filterOptions";
+      "${dotenv.env['V1']}/reviews?paginate=1&user_id=$userId&page=$pageNumber"
+          :"${dotenv.env['V1']}/reviews?paginate=1&user_id=$userId&page=$pageNumber&$filterOptions";
+
+  static var shareFeedback = "${dotenv.env['V1']}/app-relations";
+
+
+
 }

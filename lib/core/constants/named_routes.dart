@@ -40,6 +40,7 @@ class NamedRoutes {
   static const twoFaSettings = '/twoFaSettings';
   static const twoFaPinScreen = '/twoFaPinScreen';
   static const rateApp = '/rateApp';
+  static const help = '/help';
   static const viewWorker = '/viewWorker';
   static const viewWorkerInfo = '/viewWorkerInfo';
   static const viewWorkerWorkHistory = '/viewWorkerWorkHistory';

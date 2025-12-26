@@ -54,7 +54,7 @@ class ReviewViewModel extends BaseState {
   int get total => _ratingStats?.total ?? 0;
 
 
-  fetchRatings({bool firstCall = true, bool refreshUi = true, bool withFilters = false}) async {
+  fetchRatings({bool firstCall = true, bool refreshUi = true, bool withFilters = false, required String? userId}) async {
     if(firstCall){
       pageNumber = 1;
       if(refreshUi)setState(ViewState.busy);
@@ -66,6 +66,7 @@ class ReviewViewModel extends BaseState {
 
 
     await _reviewDp.fetchRatings(
+      userId: userId,
       pageNumber: pageNumber,
         filterOptions: Utilities.returnQueryString(
             params: selectedFilterOptions,
@@ -97,6 +98,39 @@ class ReviewViewModel extends BaseState {
         setPaginatedState(ViewState.error);
       }
     });
+  }
+
+  shareFeedback({
+    int? rating,
+    required String description,
+    String? subject,
+    required String type
+}) async{
+    setSecondState(ViewState.busy);
+    Map<String, dynamic> details = {};
+    if(type.toLowerCase() == 'feedback'){
+      details = {
+        'rating': rating,
+        'comment': description,
+        'type': type
+      };
+    }else{
+      details = {
+        'subject': subject,
+        'description': description,
+        'type': type
+      };
+    }
+    await _reviewDp.shareFeedback(details: details).then(
+          (response) {
+        _message = response.message ?? defaultSuccessMessage;
+        setSecondState(ViewState.retrieved);
+      },
+      onError: (error) {
+        _message = Utilities.formatMessage(error.toString(), isSuccess: false);
+        setSecondState(ViewState.error);
+      },
+    );
   }
 
 

@@ -36,6 +36,7 @@ updateUI(){
 }
 
   String? get currentStep => _authorizationResponse?.onboarding?.currentStep;
+  String? get userId => _authorizationResponse?.user?.id;
 
   login({required String email, required String password}) async {
     setState(ViewState.busy);

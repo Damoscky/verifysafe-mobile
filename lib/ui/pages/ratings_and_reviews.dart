@@ -6,6 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:verifysafe/core/constants/app_asset.dart';
 import 'package:verifysafe/core/constants/app_dimension.dart';
 import 'package:verifysafe/core/constants/app_theme/custom_color_scheme.dart';
+import 'package:verifysafe/core/data/view_models/authentication_vms/authentication_view_model.dart';
 import 'package:verifysafe/core/data/view_models/review_view_model.dart';
 import 'package:verifysafe/ui/widgets/bottom_sheets/filters/review_filter_options.dart';
 import 'package:verifysafe/ui/widgets/bottom_sheets/view_ratings.dart';
@@ -26,7 +27,8 @@ import '../widgets/error_state.dart';
 import '../widgets/sort_and_filter_tab.dart';
 
 class RatingsAndReviews extends ConsumerStatefulWidget {
-  const RatingsAndReviews({super.key});
+  final String? userId;
+  const RatingsAndReviews({super.key, this.userId});
 
   @override
   ConsumerState<RatingsAndReviews> createState() => _RatingsAndReviewsState();
@@ -41,7 +43,7 @@ class _RatingsAndReviewsState extends ConsumerState<RatingsAndReviews> {
     _scrollController= ScrollController();
     final vm = ref.read(reviewViewModel);
     SchedulerBinding.instance.addPostFrameCallback((_) {
-      vm.fetchRatings();
+      vm.fetchRatings(userId: widget.userId ?? ref.read(authenticationViewModel).userId);
     });
     _scrollListener(vm);
     super.initState();
@@ -57,7 +59,8 @@ class _RatingsAndReviewsState extends ConsumerState<RatingsAndReviews> {
           if (vm.paginatedState != ViewState.busy && vm.sortedReviews.length < vm.totalRecords) {
             //fetch more ratings/reviews
             vm.fetchRatings(
-                firstCall: false
+                firstCall: false,
+                userId: widget.userId ?? ref.read(authenticationViewModel).userId
             );
           }
         }
@@ -356,7 +359,8 @@ class _RatingsAndReviewsState extends ConsumerState<RatingsAndReviews> {
                         isPaginationType: true,
                         onPressed: ()=>vm.fetchRatings(
                             firstCall: false,
-                            withFilters: vm.selectedFilterOptions.isNotEmpty
+                            withFilters: vm.selectedFilterOptions.isNotEmpty,
+                            userId: ref.read(authenticationViewModel).userId
                         ))
                 ],
               ),
@@ -367,7 +371,7 @@ class _RatingsAndReviewsState extends ConsumerState<RatingsAndReviews> {
             return Center(
               child: ErrorState(
                   message: vm.message,
-                  onPressed: ()=>vm.fetchRatings()),
+                  onPressed: ()=>vm.fetchRatings(userId: widget.userId ?? ref.read(authenticationViewModel).userId)),
             );
           }
 

@@ -13,13 +13,15 @@ import '../../../../core/constants/app_asset.dart';
 import '../../../../core/constants/app_dimension.dart';
 import '../../../../core/constants/color_path.dart';
 import '../../../../core/data/enum/view_state.dart';
+import '../../../../core/data/view_models/authentication_vms/authentication_view_model.dart';
 import '../../alert_dialogs/select_date.dart';
 import '../../clickable.dart';
 import '../../custom_button.dart';
 
 class ReviewFilterOptions extends ConsumerStatefulWidget {
   final Map<String, dynamic>? initialValues;
-  const ReviewFilterOptions({super.key, this.initialValues});
+  final String? userId;
+  const ReviewFilterOptions({super.key, this.initialValues, this.userId});
 
   @override
   ConsumerState<ReviewFilterOptions> createState() => _ReviewFilterOptionsState();
@@ -246,7 +248,7 @@ class _ReviewFilterOptionsState extends ConsumerState<ReviewFilterOptions> {
                       endDate: _endDate
                   );
 
-                  await vm.fetchRatings(withFilters: true);
+                  await vm.fetchRatings(withFilters: true, userId: widget.userId ?? ref.read(authenticationViewModel).userId);
                   if(vm.state == ViewState.retrieved){
                     popNavigation(context: context);
                   }
