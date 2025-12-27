@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:verifysafe/core/constants/app_dimension.dart';
 import 'package:verifysafe/core/constants/app_theme/custom_color_scheme.dart';
@@ -20,20 +21,22 @@ import 'package:verifysafe/ui/widgets/custom_divider.dart';
 import 'package:verifysafe/ui/widgets/work_widgets/worker_info_card.dart';
 
 import '../../../core/constants/app_asset.dart';
+import '../../../core/data/view_models/user_view_model.dart';
 import '../../widgets/custom_svg.dart';
 import '../support_and_misconducts/submit_report.dart';
 
-class ViewEmployer extends StatelessWidget {
+class ViewEmployer extends ConsumerWidget {
   final User data;
 
   const ViewEmployer({super.key, required this.data});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final colorScheme = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
-    log(data.toJson().toString());
     final isEmployer = data.userType?.toLowerCase() == 'employer';
+    final canTerminate = data.isTerminatable ?? false;
+    final userVm = ref.read(userViewModel);
     return Scaffold(
       appBar: customAppBar(
         context: context,
@@ -61,7 +64,7 @@ class ViewEmployer extends StatelessWidget {
                         ),
                       ),
                     ),
-                    PopupMenuItem(
+                   if(canTerminate && !userVm.isAgency)PopupMenuItem(
                       value: 'terminate',
                       child:Text(
                         "Terminate employment",

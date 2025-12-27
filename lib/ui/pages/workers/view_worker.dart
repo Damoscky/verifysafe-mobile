@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:verifysafe/core/constants/app_asset.dart';
 import 'package:verifysafe/core/constants/app_dimension.dart';
@@ -8,6 +9,7 @@ import 'package:verifysafe/core/constants/app_theme/custom_color_scheme.dart';
 import 'package:verifysafe/core/constants/color_path.dart';
 import 'package:verifysafe/core/constants/named_routes.dart';
 import 'package:verifysafe/core/data/models/user.dart';
+import 'package:verifysafe/core/data/view_models/user_view_model.dart';
 import 'package:verifysafe/core/utilities/date_utilitites.dart';
 import 'package:verifysafe/core/utilities/navigator.dart';
 import 'package:verifysafe/ui/pages/employers/employer_manage_worker_guanantor.dart';
@@ -28,17 +30,18 @@ import 'package:verifysafe/ui/widgets/verifysafe_container.dart';
 import 'package:verifysafe/ui/widgets/verifysafe_tag.dart';
 import 'package:verifysafe/ui/widgets/work_widgets/worker_info_card.dart';
 
-class ViewWorker extends StatelessWidget {
+class ViewWorker extends ConsumerWidget {
   final User workerData;
 
   const ViewWorker({super.key, required this.workerData});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final colorScheme = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
-    log(workerData.toJson().toString());
     final isEmployer = workerData.userType?.toLowerCase() == 'employer';
+    final canTerminate = workerData.isTerminatable ?? false;
+    final userVm = ref.read(userViewModel);
     return Scaffold(
       appBar: customAppBar(
         context: context,
@@ -66,7 +69,7 @@ class ViewWorker extends StatelessWidget {
                         ),
                       ),
                     ),
-                    PopupMenuItem(
+                    if(canTerminate && !userVm.isAgency)PopupMenuItem(
                       value: 'terminate',
                       child:Text(
                         "Terminate employment",
@@ -83,7 +86,7 @@ class ViewWorker extends StatelessWidget {
                       user: workerData,
                     ), routeName: NamedRoutes.submitReport);
                   } else if (value == 'terminate') {
-                    debugPrint('Delete clicked');
+
                   }
                 });
               },
