@@ -53,12 +53,18 @@ class EmployerViewModel extends EmployerState {
     );
   }
 
-
   List<User> get recentWorker =>
       _employers.sublist(0, _employers.length < 3 ? _employers.length : 3);
 
+  String? sortOption;
+  String? startDate;
+  String? endDate;
+
+  List<String> statusType = ['active', 'inactive', 'pending', 'suspended'];
+  String? selectedStatus;
+
   /// employers attached to [UserType.agency]
-  fetchEmployersDetails({bool firstCall = true}) {
+  fetchEmployersDetails({bool firstCall = true}) async {
     if (firstCall) {
       pageNumber = 1;
       setSecondState(ViewState.busy);
@@ -66,8 +72,16 @@ class EmployerViewModel extends EmployerState {
       setPaginatedState(ViewState.busy);
     }
 
-    _employerDp
-        .fetchEmployers(pageNumber: pageNumber, limit: 5)
+    await _employerDp
+        .fetchEmployers(
+          pageNumber: pageNumber,
+          limit: 10,
+          sortBy: sortOption,
+          status: selectedStatus,
+          dateFilter: startDate != null && endDate != null
+              ? "$startDate|$endDate"
+              : null,
+        )
         .then(
           (response) {
             _message = response.message ?? defaultSuccessMessage;
@@ -99,22 +113,27 @@ class EmployerViewModel extends EmployerState {
   }
 
   /// fetch employers
-  fetchEmployers({required String? keyword}) async{
+  fetchEmployers({required String? keyword}) async {
     setSecondState(ViewState.busy);
-    await _employerDp.fetchEmployers(keyword: keyword).then(
+    await _employerDp
+        .fetchEmployers(keyword: keyword)
+        .then(
           (response) {
-        _employersMessage = response.message ?? defaultSuccessMessage;
-        _employers = List<User>.from(response.data?.data ?? []);
-        setSecondState(ViewState.retrieved);
-      },
-      onError: (error) {
-        _employersMessage = Utilities.formatMessage(error.toString(), isSuccess: false);
-        setSecondState(ViewState.error);
-      },
-    );
+            _employersMessage = response.message ?? defaultSuccessMessage;
+            _employers = List<User>.from(response.data?.data ?? []);
+            setSecondState(ViewState.retrieved);
+          },
+          onError: (error) {
+            _employersMessage = Utilities.formatMessage(
+              error.toString(),
+              isSuccess: false,
+            );
+            setSecondState(ViewState.error);
+          },
+        );
   }
 
-  reset(){
+  reset() {
     setSecondState(ViewState.idle, refreshUi: false);
     _employers.clear();
   }

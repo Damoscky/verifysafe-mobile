@@ -97,6 +97,8 @@ class OtpViewModel extends BaseState {
             );
             await SecureStorageUtils.saveUser(user: jsonEncode(_authorizationResponse?.user));
             await SecureStorageUtils.save2FA(value: _authorizationResponse?.twoFaEnabled ?? false);
+            await SecureStorageUtils.savePN(value: _authorizationResponse?.user?.pushNotificationEnabled ?? false);
+
             setState(ViewState.retrieved);
           },
           onError: (error) {

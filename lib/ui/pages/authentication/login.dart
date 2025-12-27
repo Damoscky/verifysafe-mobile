@@ -9,8 +9,10 @@ import 'package:verifysafe/core/constants/onboarding_steps.dart';
 import 'package:verifysafe/core/data/enum/otp_type.dart';
 import 'package:verifysafe/core/data/enum/user_type.dart';
 import 'package:verifysafe/core/data/enum/view_state.dart';
+import 'package:verifysafe/core/data/models/user.dart';
 import 'package:verifysafe/core/data/view_models/authentication_vms/authentication_view_model.dart';
 import 'package:verifysafe/core/data/view_models/authentication_vms/onboarding_vms/onboarding_vm.dart';
+import 'package:verifysafe/core/utilities/biometric_utils.dart';
 import 'package:verifysafe/core/utilities/navigator.dart';
 import 'package:verifysafe/core/utilities/secure_storage/secure_storage_utils.dart';
 import 'package:verifysafe/core/utilities/utilities.dart';
@@ -46,17 +48,27 @@ class _LoginState extends ConsumerState<Login> {
 
   bool _hidePwd = true;
   bool _isBioEnabled = false;
+  User? _deviceUser;
 
   @override
   void initState() {
     super.initState();
     updateBioEnabled();
+    updateDeviceUser();
   }
 
-  updateBioEnabled() {
-    SecureStorageUtils.retrieveBiometricPref().then((value) {
+  updateBioEnabled() async {
+    await SecureStorageUtils.retrieveBiometricPref().then((value) {
       setState(() {
         _isBioEnabled = value;
+      });
+    });
+  }
+
+  updateDeviceUser() async {
+    await SecureStorageUtils.retrieveUser().then((user) {
+      setState(() {
+        _deviceUser = user;
       });
     });
   }
@@ -74,8 +86,9 @@ class _LoginState extends ConsumerState<Login> {
           OnboardingSteps.contactPerson ||
       ref.read(authenticationViewModel).currentStep ==
           OnboardingSteps.serviceSpecialization ||
-          //returns null when completed
-      ref.read(authenticationViewModel).authorizationResponse?.onboarding == null;
+      //returns null when completed
+      ref.read(authenticationViewModel).authorizationResponse?.onboarding ==
+          null;
 
   @override
   Widget build(BuildContext context) {
@@ -193,7 +206,8 @@ class _LoginState extends ConsumerState<Login> {
                                           context: context,
                                           widget: Otp(
                                             otpType: OtpType.twoFA,
-                                            token: vm.authorizationResponse?.token,
+                                            token:
+                                                vm.authorizationResponse?.token,
                                             identifier:
                                                 vm
                                                     .authorizationResponse
@@ -237,13 +251,73 @@ class _LoginState extends ConsumerState<Login> {
                           ),
                           if (_isBioEnabled)
                             Clickable(
-                              onPressed: () {
-                                //todo::: handle biometrics login
-                                pushNavigation(
-                                  context: context,
-                                  widget: const SignUpSuccessful(),
-                                  routeName: NamedRoutes.signupSuccessful,
-                                );
+                              onPressed: () async {
+                                final isBioAuth =
+                                    await BiometricUtils.authenticate();
+                                if (isBioAuth ?? false) {
+                                  final password =
+                                      await SecureStorageUtils.retrievePassword();
+                                  await vm.login(
+                                    email: _deviceUser?.email ?? "",
+                                    password: password ?? "",
+                                  );
+
+                                  if (vm.state == ViewState.retrieved) {
+                                    if (isDashboardRoute()) {
+                                      //handle 2FA route if enabled
+                                      if (vm
+                                              .authorizationResponse
+                                              ?.twoFaEnabled ??
+                                          false) {
+                                        replaceNavigation(
+                                          context: context,
+                                          widget: Otp(
+                                            otpType: OtpType.twoFA,
+                                            token:
+                                                vm.authorizationResponse?.token,
+                                            identifier:
+                                                vm
+                                                    .authorizationResponse
+                                                    ?.user
+                                                    ?.email ??
+                                                "your mail",
+                                          ),
+                                        );
+                                        return;
+                                      }
+                                      replaceNavigation(
+                                        context: context,
+                                        widget: BottomNav(
+                                          userData:
+                                              vm.authorizationResponse?.user,
+                                        ),
+                                        routeName: NamedRoutes.bottomNav,
+                                      );
+                                    } else {
+                                      onbardingVm.handleOnboardingNavigation(
+                                        context: context,
+                                        userType:
+                                            vm
+                                                .authorizationResponse
+                                                ?.user
+                                                ?.userEnumType ??
+                                            UserType.worker,
+                                        currentStep: vm.currentStep ?? '',
+                                      );
+                                    }
+                                  } else {
+                                    showFlushBar(
+                                      context: context,
+                                      message: vm.message,
+                                      success: false,
+                                    );
+                                  }
+                                }
+                                // pushNavigation(
+                                //   context: context,
+                                //   widget: const SignUpSuccessful(),
+                                //   routeName: NamedRoutes.signupSuccessful,
+                                // );
                               },
                               child: Container(
                                 margin: EdgeInsets.only(left: 16.w),

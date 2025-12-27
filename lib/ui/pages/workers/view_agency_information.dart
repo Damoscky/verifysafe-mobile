@@ -3,12 +3,15 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:verifysafe/core/constants/app_dimension.dart';
 import 'package:verifysafe/core/constants/app_theme/custom_color_scheme.dart';
 import 'package:verifysafe/core/constants/color_path.dart';
+import 'package:verifysafe/core/data/models/user.dart';
+import 'package:verifysafe/core/utilities/utilities.dart';
 import 'package:verifysafe/ui/widgets/custom_appbar.dart';
 import 'package:verifysafe/ui/widgets/custom_divider.dart';
 import 'package:verifysafe/ui/widgets/data_tile.dart';
 
 class ViewAgencyInformation extends StatelessWidget {
-  const ViewAgencyInformation({super.key});
+  final User data;
+  const ViewAgencyInformation({super.key, required this.data});
 
   @override
   Widget build(BuildContext context) {
@@ -29,19 +32,33 @@ class ViewAgencyInformation extends StatelessWidget {
             ),
           ),
           SizedBox(height: 16.h),
-          DataTile(title: "Agent/Recruitment Name", data: "Chukwudi Odili"),
+          DataTile(
+            title: "Agent/Recruitment Name",
+            data: data.agency?.name ?? "N/A",
+          ),
+          // CustomDivider(verticalSpace: 14),
+          // DataTile(title: "Agency Name", data: "Okeyson Ventures"),
           CustomDivider(verticalSpace: 14),
-          DataTile(title: "Agency Name", data: "Okeyson Ventures"),
-          CustomDivider(verticalSpace: 14),
-          DataTile(title: "Email", data: "Codilli@email.com"),
-          CustomDivider(verticalSpace: 14),
-          DataTile(title: "Contact Number", data: "+2348123456789"),
+          DataTile(title: "Email", data: data.agency?.email ?? "N/A"),
           CustomDivider(verticalSpace: 14),
           DataTile(
-            title: "Verification Status",
-            data: "Verified",
+            title: "Contact Number",
+            data: Utilities.formatPhoneWithCode(
+              phoneNumber: data.agency?.phone ?? "",
+            ),
+          ),
+          CustomDivider(verticalSpace: 14),
+          DataTile(
+            title: "Business Type",
+            data: data.agency?.businessType ?? "N/A",
             dataColor: ColorPath.meadowGreen,
           ),
+          // CustomDivider(verticalSpace: 14),
+          // DataTile(
+          //   title: "Verification Status",
+          //   data: "Verified",
+          //   dataColor: ColorPath.meadowGreen,
+          // ),
         ],
       ),
     );

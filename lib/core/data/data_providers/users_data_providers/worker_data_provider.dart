@@ -57,6 +57,12 @@ class WorkerDataProvider {
     String? keyword,
     int? limit,
     int? pageNumber,
+    //filter options
+    String? employmentType,
+    String? gender,
+    String? status,
+    String? dateFilter,
+    String? sortBy,
   }) async {
     var completer = Completer<ApiResponse<PaginationData>>();
     try {
@@ -70,6 +76,11 @@ class WorkerDataProvider {
               "limit": limit,
               "page": pageNumber,
               "q": query ?? keyword,
+              "employment_type": employmentType,
+              "gender": gender,
+              "status": status,
+              "date_filter": dateFilter,
+              "sort_by": sortBy,
             },
           );
       var result = ApiResponse<PaginationData>.fromJson(
