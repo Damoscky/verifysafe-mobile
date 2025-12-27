@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:verifysafe/core/constants/app_asset.dart';
 import 'package:verifysafe/core/constants/app_dimension.dart';
 import 'package:verifysafe/core/constants/app_theme/custom_color_scheme.dart';
 import 'package:verifysafe/core/constants/color_path.dart';
@@ -20,6 +21,7 @@ import 'package:verifysafe/ui/widgets/bottom_sheets/rate_user.dart';
 import 'package:verifysafe/ui/widgets/clickable.dart';
 import 'package:verifysafe/ui/widgets/custom_appbar.dart';
 import 'package:verifysafe/ui/widgets/custom_divider.dart';
+import 'package:verifysafe/ui/widgets/custom_svg.dart';
 import 'package:verifysafe/ui/widgets/document_widget.dart';
 import 'package:verifysafe/ui/widgets/verifysafe_container.dart';
 import 'package:verifysafe/ui/widgets/verifysafe_tag.dart';
@@ -40,6 +42,50 @@ class ViewWorker extends StatelessWidget {
         context: context,
         title: workerData.name,
         showBottom: true,
+        actions: [
+          Padding(
+            padding: EdgeInsets.only(right: AppDimension.paddingRight),
+            child: Clickable(
+              onPressed: () {
+                showMenu<String>(
+                  context: context,
+                  position: const RelativeRect.fromLTRB(100, 80, 16, 0),
+                  color: Colors.white,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                  items: [
+                    PopupMenuItem(
+                      value: 'report',
+                      child:  Text(
+                        "Report Employer",
+                        style: textTheme.bodyLarge?.copyWith(
+                          color: colorScheme.textPrimary,
+                        ),
+                      ),
+                    ),
+                    PopupMenuItem(
+                      value: 'terminate',
+                      child:Text(
+                        "Terminate employment",
+                        style: textTheme.bodyLarge?.copyWith(
+                          color: colorScheme.textPrimary,
+                        ),
+                      ),
+                    ),
+                  ],
+                ).then((value) {
+                  if (value == 'report') {
+
+                  } else if (value == 'terminate') {
+                    debugPrint('Delete clicked');
+                  }
+                });
+              },
+              child: CustomAssetViewer(asset: AppAsset.more),
+            ),
+          ),
+        ]
       ),
       body: ListView(
         padding: EdgeInsets.symmetric(
@@ -355,5 +401,49 @@ class ActionTile extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  void _showPopupMenu(BuildContext context, Offset position) async {
+    final RenderBox overlay = Overlay.of(context).context.findRenderObject() as RenderBox;
+
+    await showMenu<String>(
+      context: context,
+      position: RelativeRect.fromRect(
+        Rect.fromLTWH(position.dx, position.dy, 0, 0),
+        Offset.zero & overlay.size,
+      ),
+      color: Colors.white,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16),
+      ),
+      items: [
+        PopupMenuItem(
+          value: 'edit',
+          child: Row(
+            children: const [
+              Icon(Icons.edit, color: Colors.black87),
+              SizedBox(width: 8),
+              Text('Edit'),
+            ],
+          ),
+        ),
+        PopupMenuItem(
+          value: 'delete',
+          child: Row(
+            children: const [
+              Icon(Icons.delete, color: Colors.black87),
+              SizedBox(width: 8),
+              Text('Delete'),
+            ],
+          ),
+        ),
+      ],
+    ).then((value) {
+      if (value == 'edit') {
+        debugPrint('Edit clicked');
+      } else if (value == 'delete') {
+        debugPrint('Delete clicked');
+      }
+    });
   }
 }

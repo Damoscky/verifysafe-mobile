@@ -88,6 +88,7 @@ class AppAsset {
   static const String capture = '$_iconDirectory/capture.svg';
   static const String verifysafe = '$_iconDirectory/verifysafe.svg';
   static const String bgLogo = '$_iconDirectory/bg_logo.svg';
+  static const String more = '$_iconDirectory/more.svg';
 
 
 
