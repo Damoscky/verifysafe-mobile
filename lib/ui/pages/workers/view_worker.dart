@@ -253,7 +253,7 @@ class ViewWorker extends StatelessWidget {
           SizedBox(height: 16.h),
           ActionTile(
             title: "Worker Information",
-            subTitle: "Change and update your data",
+            subTitle: "View worker basic information",
             onPressed: () {
               pushNavigation(
                 context: context,
@@ -262,14 +262,13 @@ class ViewWorker extends StatelessWidget {
               );
             },
           ),
-          //todo::: if provided
           if (workerData.employer != null)
             Column(
               children: [
                 CustomDivider(),
                 ActionTile(
                   title: "Employment Information",
-                  subTitle: "Change and update employment information",
+                  subTitle: "View employment information",
                   onPressed: () {
                     pushNavigation(
                       context: context,
@@ -286,7 +285,7 @@ class ViewWorker extends StatelessWidget {
           CustomDivider(),
           ActionTile(
             title: "Verification Information",
-            subTitle: "Change and update verification information",
+            subTitle: "View verification information",
             onPressed: () {
               pushNavigation(
                 context: context,
@@ -298,27 +297,26 @@ class ViewWorker extends StatelessWidget {
           CustomDivider(),
           ActionTile(
             title: "Work History",
-            subTitle: "Change and update work history",
+            subTitle: "View work history",
             onPressed: () {
               pushNavigation(
                 context: context,
-                widget: ViewWorkerWorkHistory(),
+                widget: ViewWorkerWorkHistory(workerData: workerData,),
                 routeName: NamedRoutes.viewWorkerWorkHistory,
               );
             },
           ),
-          //todo::: if provided
           if (workerData.agency != null)
             Column(
               children: [
                 CustomDivider(),
                 ActionTile(
                   title: "Agent/Agency",
-                  subTitle: "Change and update agency information",
+                  subTitle: "View agency information",
                   onPressed: () {
                     pushNavigation(
                       context: context,
-                      widget: ViewAgencyInformation(),
+                      widget: ViewAgencyInformation(data:  workerData,),
                       routeName: NamedRoutes.viewWorkerAgencyInfo,
                     );
                   },
@@ -328,11 +326,11 @@ class ViewWorker extends StatelessWidget {
           CustomDivider(),
           ActionTile(
             title: "Guarantor Details",
-            subTitle: "Change and update Guarantor's information",
+            subTitle: "View Guarantor's information",
             onPressed: () {
               pushNavigation(
                 context: context,
-                widget: EmployerManageWorkerGuanantor(),
+                widget: EmployerManageWorkerGuanantor(data: workerData,),
                 routeName: NamedRoutes.employerManageWorkerGuanantor,
               );
             },

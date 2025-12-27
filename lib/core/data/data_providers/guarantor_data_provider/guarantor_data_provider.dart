@@ -68,4 +68,73 @@ class GuarantorDataProvider{
     }
     return completer.future;
   }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  Future<ApiResponse<GuarantorData>> fetchUserGuarantors({String? userId}) async {
+    var completer = Completer<ApiResponse<GuarantorData>>();
+    try {
+      Map<String, dynamic> response = await NetworkManager()
+          .networkRequestManager(
+        RequestType.get,
+        ApiRoutes.createGuarantor,
+        queryParameters: {
+          'user_id':userId,
+          'paginate': '1'
+        }
+      );
+      var result = ApiResponse<GuarantorData>.fromJson(
+        response,
+            (data) => GuarantorData.fromJson(data as Map<String, dynamic>),
+      );
+      completer.complete(result);
+    } catch (e) {
+      completer.completeError(e);
+    }
+    return completer.future;
+  }
 }

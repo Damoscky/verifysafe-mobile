@@ -10,7 +10,8 @@ import 'package:verifysafe/ui/widgets/listview_items/worker_data_item.dart';
 
 class WorkersData extends StatelessWidget {
     final List<User> workers;
-  const WorkersData({super.key, required this.workers});
+    final String emptyStateTitle;
+  const WorkersData({super.key, required this.workers,this.emptyStateTitle =  "No Workers added yet"});
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +24,7 @@ class WorkersData extends StatelessWidget {
               asset: AppAsset.empty,
               useBgCard: false,
               assetHeight: 200.h,
-              title: "No Workers added yet",
+              title:emptyStateTitle,
               subtitle: "",
               showCtaButton: false,
             ),

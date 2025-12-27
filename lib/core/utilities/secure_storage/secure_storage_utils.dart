@@ -112,6 +112,18 @@ class SecureStorageUtils{
     return pref == 'true' ?  true : false;
   }
 
+    ///saves 2FA flag
+  static savePN({required bool value}) async{
+    SecureStorageInit.storage.write(key: SecuredStorageConstants.pushNotification, value: value ? 'true' : 'false');
+  }
+
+    ///retrieves 2FA flag
+  static Future<bool> retrievePN() async{
+    final pref = await SecureStorageInit.storage.read(key: SecuredStorageConstants.pushNotification);
+    if(pref == null)return false;
+    return pref == 'true' ?  true : false;
+  }
+
   ///saves biometrics pref
   static saveAuthStatus({required bool value}) async{
     SecureStorageInit.storage.write(key: SecuredStorageConstants.authStatus, value: value == true ? 'true':'false');

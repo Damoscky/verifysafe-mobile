@@ -9,4 +9,6 @@ class SecuredStorageConstants {
   static const String guestToken = 'guestToken';
   static const String authStatus = 'authStatus';
   static const String twoFA = 'twoFA';
+  static const String pushNotification = 'pushNotification';
+
 }

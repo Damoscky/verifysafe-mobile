@@ -29,6 +29,17 @@ class WorkerViewModel extends WorkerState {
   //selected worker
   User? selectedWorker;
 
+  List<String> statusType = ['active', 'inactive', 'pending', 'suspended'];
+  String? selectedStatus;
+
+  List<String> gender = ['male', 'female'];
+  String? selectedGender;
+
+  // List<String> employmentType = [
+  //   'full',
+  //   'female',
+  // ];
+
   WorkerDashboardResponse? _dashboardData;
 
   Stats? get dashboardStats => _dashboardData?.stats;
@@ -61,8 +72,12 @@ class WorkerViewModel extends WorkerState {
   List<User> get recentWorker =>
       _workers.sublist(0, _workers.length < 3 ? _workers.length : 3);
 
+  String? sortOption;
+  String? startDate;
+  String? endDate;
+
   /// workers attached to [UserType.employer] or [UserType.agency]
-  fetchWorkersDetails({bool firstCall = true}) {
+  fetchWorkersDetails({bool firstCall = true}) async {
     if (firstCall) {
       pageNumber = 1;
       setSecondState(ViewState.busy);
@@ -70,12 +85,22 @@ class WorkerViewModel extends WorkerState {
       setPaginatedState(ViewState.busy);
     }
 
-    _workerDataProvider
-        .fetchWorkers(pageNumber: pageNumber, limit: 5)
+    await _workerDataProvider
+        .fetchWorkers(
+          pageNumber: pageNumber,
+          limit: 10,
+          sortBy: sortOption,
+          gender: selectedGender,
+          status: selectedStatus,
+          dateFilter: startDate != null && endDate != null
+              ? "$startDate|$endDate"
+              : null,
+        )
         .then(
           (response) {
             _message = response.message ?? defaultSuccessMessage;
             totalRecords = response.data?.total ?? 0;
+            // sortOption=null;
             pageNumber++;
 
             if (firstCall) {
@@ -102,23 +127,53 @@ class WorkerViewModel extends WorkerState {
         );
   }
 
-    /// fetch employers
-  fetchWorkers({required String? keyword}) async{
+  /// fetch workers under an employer/agency
+  fetchWorkers({required String? keyword}) async {
     setSecondState(ViewState.busy);
-    await _workerDataProvider.fetchWorkers(keyword: keyword).then(
+    await _workerDataProvider
+        .fetchWorkers(keyword: keyword)
+        .then(
           (response) {
-        _workerMessage = response.message ?? defaultSuccessMessage;
-        _workers = List<User>.from(response.data?.data ?? []);
-        setSecondState(ViewState.retrieved);
-      },
-      onError: (error) {
-        _workerMessage = Utilities.formatMessage(error.toString(), isSuccess: false);
-        setSecondState(ViewState.error);
-      },
-    );
+            _workerMessage = response.message ?? defaultSuccessMessage;
+            _workers = List<User>.from(response.data?.data ?? []);
+            setSecondState(ViewState.retrieved);
+          },
+          onError: (error) {
+            _workerMessage = Utilities.formatMessage(
+              error.toString(),
+              isSuccess: false,
+            );
+            setSecondState(ViewState.error);
+          },
+        );
   }
 
-  reset(){
+  List<EmploymentData> _workerWorkHistories = [];
+  List<EmploymentData> get workerWorkHistories => _workerWorkHistories;
+
+  fetchWorkerWorkHistory({required String workerID}) async {
+    setThirdState(ViewState.busy);
+    await _workerDataProvider
+        .workHistoriesOverview(userID: workerID)
+        .then(
+          (response) {
+            _workerMessage = response.message ?? defaultSuccessMessage;
+            _workerWorkHistories = List<EmploymentData>.from(
+              _dashboardData?.data?.data ?? [],
+            );
+            setThirdState(ViewState.retrieved);
+          },
+          onError: (error) {
+            _workerMessage = Utilities.formatMessage(
+              error.toString(),
+              isSuccess: false,
+            );
+            setThirdState(ViewState.error);
+          },
+        );
+  }
+
+  reset() {
     setSecondState(ViewState.idle, refreshUi: false);
     _workers.clear();
   }

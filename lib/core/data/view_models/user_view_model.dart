@@ -1,4 +1,4 @@
-import 'dart:developer';
+import 'dart:convert';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:verifysafe/core/constants/app_constants.dart';
@@ -25,9 +25,9 @@ class UserViewModel extends UserState {
   String get firstName => _userData?.name?.split(' ').first ?? '';
   String get lastName => _userData?.name?.split(' ').last ?? '';
 
-  bool get isWorker =>  userData?.userEnumType == UserType.worker;
-  bool get isEmployer =>  userData?.userEnumType == UserType.employer;
-  bool get isAgency =>  userData?.userEnumType == UserType.agency;
+  bool get isWorker => userData?.userEnumType == UserType.worker;
+  bool get isEmployer => userData?.userEnumType == UserType.employer;
+  bool get isAgency => userData?.userEnumType == UserType.agency;
 
   set userData(User? user) {
     _userData = user;
@@ -52,13 +52,14 @@ class UserViewModel extends UserState {
   updateUserData({required Map<String, dynamic> details}) async {
     setState(ViewState.busy);
     details['action'] = "profile";
-    log(details.toString());
     await _userDataProvider
         .updateUser(details: details)
         .then(
           (response) {
             _message = response.message ?? defaultSuccessMessage;
             _userData = response.data;
+            SecureStorageUtils.savePN(value: response.data?.pushNotificationEnabled ?? false);
+            SecureStorageUtils.saveUser(user: jsonEncode(response.data));
             setState(ViewState.retrieved);
           },
           onError: (error) {
@@ -71,13 +72,10 @@ class UserViewModel extends UserState {
         );
   }
 
-    update2FA({required bool value}) async {
-       setPasswordState(ViewState.busy);
+  update2FA({required bool value}) async {
+    setPasswordState(ViewState.busy);
 
-    final details = {
-      "2fa_enabled": value,
-       "action": "password",
-    };
+    final details = {"2fa_enabled": value, "action": "password"};
     await _userDataProvider
         .updateUser(details: details)
         .then(
@@ -87,7 +85,7 @@ class UserViewModel extends UserState {
             setPasswordState(ViewState.retrieved);
           },
           onError: (error) {
-           _message = Utilities.formatMessage(
+            _message = Utilities.formatMessage(
               error.toString(),
               isSuccess: false,
             );
@@ -125,21 +123,20 @@ class UserViewModel extends UserState {
         );
   }
 
-    updateEmploymentDetails({
+  updateEmploymentDetails({
     required String category,
     required String jobRole,
     required String experience,
     required String language,
     required String relocateable,
     required String resumeUrl,
-
   }) async {
     setState(ViewState.busy);
     Map<String, dynamic> details = {
       "category": category,
       "job_role": jobRole,
       "experience": experience,
-      "relocatable":relocateable,
+      "relocatable": relocateable,
       "resume_url": resumeUrl,
       "action": "employment-details",
     };

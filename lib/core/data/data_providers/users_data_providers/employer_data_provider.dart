@@ -35,9 +35,13 @@ class EmployerDataProvider {
   /// Fetch [UserType.employer] attached to Agency
   Future<ApiResponse<PaginationData>> fetchEmployers({
     String? query,
-     String? keyword,
+    String? keyword,
     int? limit,
     int? pageNumber,
+    //filter options
+    String? status,
+    String? dateFilter,
+    String? sortBy,
   }) async {
     var completer = Completer<ApiResponse<PaginationData>>();
     try {
@@ -51,6 +55,9 @@ class EmployerDataProvider {
               "limit": limit,
               "page": pageNumber,
               "q": query ?? keyword,
+              "status": status,
+              "date_filter": dateFilter,
+              "sort_by": sortBy,
             },
           );
       var result = ApiResponse<PaginationData>.fromJson(

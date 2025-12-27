@@ -122,7 +122,7 @@ class EmployerDataItem extends StatelessWidget {
                           color: colorScheme.text4,
                         ),
                       ),
-                      VerifySafeTag(status: data.workerStatus ?? "N/A"),
+                      VerifySafeTag(status: data.identity?.status ?? "N/A"),
                     ],
                   ),
                 ),
