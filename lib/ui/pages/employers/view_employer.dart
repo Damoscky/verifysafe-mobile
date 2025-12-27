@@ -19,6 +19,10 @@ import 'package:verifysafe/ui/widgets/custom_appbar.dart';
 import 'package:verifysafe/ui/widgets/custom_divider.dart';
 import 'package:verifysafe/ui/widgets/work_widgets/worker_info_card.dart';
 
+import '../../../core/constants/app_asset.dart';
+import '../../widgets/custom_svg.dart';
+import '../support_and_misconducts/submit_report.dart';
+
 class ViewEmployer extends StatelessWidget {
   final User data;
 
@@ -29,11 +33,59 @@ class ViewEmployer extends StatelessWidget {
     final colorScheme = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
     log(data.toJson().toString());
+    final isEmployer = data.userType?.toLowerCase() == 'employer';
     return Scaffold(
       appBar: customAppBar(
         context: context,
         title: data.name,
         showBottom: true,
+        actions: [
+          Padding(
+            padding: EdgeInsets.only(right: AppDimension.paddingRight),
+            child: Clickable(
+              onPressed: () {
+                showMenu<String>(
+                  context: context,
+                  position: const RelativeRect.fromLTRB(100, 80, 16, 0),
+                  color: Colors.white,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                  items: [
+                    PopupMenuItem(
+                      value: 'report',
+                      child:  Text(
+                        "Report ${isEmployer ? 'Employer':'Worker'}",
+                        style: textTheme.bodyLarge?.copyWith(
+                          color: colorScheme.textPrimary,
+                        ),
+                      ),
+                    ),
+                    PopupMenuItem(
+                      value: 'terminate',
+                      child:Text(
+                        "Terminate employment",
+                        style: textTheme.bodyLarge?.copyWith(
+                          color: colorScheme.textPrimary,
+                        ),
+                      ),
+                    ),
+                  ],
+                ).then((value) {
+                  if (value == 'report') {
+                    pushNavigation(context: context, widget: SubmitReport(
+                      isReportingEmployer: true,
+                      user: data,
+                    ), routeName: NamedRoutes.submitReport);
+                  } else if (value == 'terminate') {
+                    debugPrint('Delete clicked');
+                  }
+                });
+              },
+              child: CustomAssetViewer(asset: AppAsset.more),
+            ),
+          ),
+        ]
       ),
       body: ListView(
         padding: EdgeInsets.symmetric(
@@ -131,7 +183,7 @@ class ViewEmployer extends StatelessWidget {
             subTitle: "Leave ratings and review for Worker",
             onPressed: () {
               baseBottomSheet(context: context, content: RateUser(
-                isEmployer: data.userType?.toLowerCase() == 'employer',
+                isEmployer: isEmployer,
               ));
             },
           ),

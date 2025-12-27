@@ -12,6 +12,7 @@ import 'package:verifysafe/core/utilities/date_utilitites.dart';
 import 'package:verifysafe/core/utilities/navigator.dart';
 import 'package:verifysafe/ui/pages/employers/employer_manage_worker_guanantor.dart';
 import 'package:verifysafe/ui/pages/profile/view_employment_details.dart';
+import 'package:verifysafe/ui/pages/support_and_misconducts/submit_report.dart';
 import 'package:verifysafe/ui/pages/workers/view_agency_information.dart';
 import 'package:verifysafe/ui/pages/workers/view_worker_verification_info.dart';
 import 'package:verifysafe/ui/pages/workers/view_worker_work_history.dart';
@@ -37,6 +38,7 @@ class ViewWorker extends StatelessWidget {
     final colorScheme = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
     log(workerData.toJson().toString());
+    final isEmployer = workerData.userType?.toLowerCase() == 'employer';
     return Scaffold(
       appBar: customAppBar(
         context: context,
@@ -58,7 +60,7 @@ class ViewWorker extends StatelessWidget {
                     PopupMenuItem(
                       value: 'report',
                       child:  Text(
-                        "Report Employer",
+                        "Report ${isEmployer ? 'Employer':'Worker'}",
                         style: textTheme.bodyLarge?.copyWith(
                           color: colorScheme.textPrimary,
                         ),
@@ -76,7 +78,10 @@ class ViewWorker extends StatelessWidget {
                   ],
                 ).then((value) {
                   if (value == 'report') {
-
+                    pushNavigation(context: context, widget: SubmitReport(
+                      isReportingWorker: true,
+                      user: workerData,
+                    ), routeName: NamedRoutes.submitReport);
                   } else if (value == 'terminate') {
                     debugPrint('Delete clicked');
                   }
@@ -341,7 +346,7 @@ class ViewWorker extends StatelessWidget {
             subTitle: "Leave ratings and review for Worker",
             onPressed: () {
               baseBottomSheet(context: context, content: RateUser(
-                isEmployer: workerData.userType?.toLowerCase() == 'employer',
+                isEmployer: isEmployer,
               ));
             },
           ),
