@@ -296,7 +296,9 @@ class ViewWorker extends StatelessWidget {
             title: "Ratings & Reviews",
             subTitle: "Leave ratings and review for Worker",
             onPressed: () {
-              baseBottomSheet(context: context, content: RateUser());
+              baseBottomSheet(context: context, content: RateUser(
+                isEmployer: workerData.userType?.toLowerCase() == 'employer',
+              ));
             },
           ),
           CustomDivider(),

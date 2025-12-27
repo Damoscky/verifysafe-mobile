@@ -76,6 +76,7 @@ class ApiRoutes {
       "${dotenv.env['V1']}/reviews?paginate=1&user_id=$userId&page=$pageNumber"
           :"${dotenv.env['V1']}/reviews?paginate=1&user_id=$userId&page=$pageNumber&$filterOptions";
 
+  static var rateUser = "${dotenv.env['V1']}/reviews";
   static var shareFeedback = "${dotenv.env['V1']}/app-relations";
 
 

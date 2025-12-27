@@ -29,6 +29,24 @@ class ReviewDataProvider{
     return completer.future;
   }
 
+  Future<ApiResponse> rateUser({required Map<String, dynamic> details}) async {
+    var completer = Completer<ApiResponse>();
+    try {
+      Map<String, dynamic> response = await NetworkManager()
+          .networkRequestManager(RequestType.post, ApiRoutes.rateUser,
+        body: jsonEncode(details),
+        useAuth: true,
+      );
+      var result = ApiResponse.fromJson(
+          response,
+          null);
+      completer.complete(result);
+    } catch (e) {
+      completer.completeError(e);
+    }
+    return completer.future;
+  }
+
   //share feedback(rate app and support)
   Future<ApiResponse> shareFeedback({required Map<String, dynamic> details}) async {
     var completer = Completer<ApiResponse>();

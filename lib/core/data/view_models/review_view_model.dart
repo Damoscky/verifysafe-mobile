@@ -133,6 +133,31 @@ class ReviewViewModel extends BaseState {
     );
   }
 
+  rateUser({
+    required int? rating,
+    required String description,
+    required String? revieweeId,
+    required String? userType
+  }) async{
+    setThirdState(ViewState.busy);
+    final details = {
+      'rating': rating,
+      'feedback': description,
+      'reviewee': userType,
+      'reviewee_id': revieweeId
+    };
+    await _reviewDp.rateUser(details: details).then(
+          (response) {
+        _message = response.message ?? defaultSuccessMessage;
+        setThirdState(ViewState.retrieved);
+      },
+      onError: (error) {
+        _message = Utilities.formatMessage(error.toString(), isSuccess: false);
+        setThirdState(ViewState.error);
+      },
+    );
+  }
+
 
   sortReviewList(String? sortOption){
     selectedSortOption = sortOption;
