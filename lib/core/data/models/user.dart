@@ -22,6 +22,7 @@ class User {
   String? employmentType;
   String? workerStatus;
   String? workerId;
+  bool? isTerminatable;
   //agency
   Agency? agency;
   Location? location;
@@ -51,6 +52,7 @@ class User {
     this.employmentType,
     this.workerStatus,
     this.workerId,
+    this.isTerminatable,
 
     this.agency,
     this.location,
@@ -90,6 +92,7 @@ class User {
       employmentType: json['employment_type'] as String?,
       workerStatus: json['worker_status'] as String?,
       workerId: json['workerID'] as String?,
+      isTerminatable: json['is_terminatable'] as bool?,
 
       agency: json['agency'] != null ? Agency.fromJson(json['agency']) : null,
       location: json['location'] != null
@@ -130,6 +133,7 @@ class User {
       'employment_type': employmentType,
       'worker_status': workerStatus,
       'workerID': workerId,
+      'is_terminatable': isTerminatable,
 
       'agency': agency?.toJson(),
       'location': location?.toJson(),
@@ -336,7 +340,7 @@ class WorkerInfo {
       'residential_address': residentialAddress,
       'created_at': createdAt?.toIso8601String(),
       "job_category": jobCategory,
-      "job_role":jobRole,
+      "job_role": jobRole,
       "experience": experience,
       "language": language,
       "relocatable": relocatable,
@@ -514,29 +518,29 @@ class Employer {
   }
 
   /// Converts a contact_person JSON string to a Map
-/// 
-/// Returns an empty Map if the input is null, empty, or invalid JSON
-Map<String, dynamic> parseContactPerson() {
-  // Handle null or empty string
-  if (contactPerson == null || (contactPerson?.trim().isEmpty ?? true)) {
-    return {};
-  }
-  
-  try {
-    // Parse the JSON string
-    final parsed = jsonDecode(contactPerson!);
-    
-    // Ensure the result is a Map
-    if (parsed is Map<String, dynamic>) {
-      return parsed;
+  ///
+  /// Returns an empty Map if the input is null, empty, or invalid JSON
+  Map<String, dynamic> parseContactPerson() {
+    // Handle null or empty string
+    if (contactPerson == null || (contactPerson?.trim().isEmpty ?? true)) {
+      return {};
     }
-    
-    // If it's not a Map, return empty Map
-    return {};
-  } catch (e) {
-    // Handle JSON parsing errors
-    print('Error parsing contact person: $e');
-    return {};
+
+    try {
+      // Parse the JSON string
+      final parsed = jsonDecode(contactPerson!);
+
+      // Ensure the result is a Map
+      if (parsed is Map<String, dynamic>) {
+        return parsed;
+      }
+
+      // If it's not a Map, return empty Map
+      return {};
+    } catch (e) {
+      // Handle JSON parsing errors
+      print('Error parsing contact person: $e');
+      return {};
+    }
   }
-}
 }
