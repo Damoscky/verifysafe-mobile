@@ -14,6 +14,7 @@ import 'package:verifysafe/ui/pages/authentication/onboarding/worker/basic_info.
 import 'package:verifysafe/ui/pages/employers/search_employers.dart';
 import 'package:verifysafe/ui/widgets/app_loader.dart';
 import 'package:verifysafe/ui/widgets/bottom_sheets/base_bottom_sheet.dart';
+import 'package:verifysafe/ui/widgets/bottom_sheets/filters/employer_filter_options.dart';
 import 'package:verifysafe/ui/widgets/bottom_sheets/sort_options.dart';
 import 'package:verifysafe/ui/widgets/clickable.dart';
 import 'package:verifysafe/ui/widgets/custom_appbar.dart';
@@ -57,6 +58,8 @@ class _EmployersState extends ConsumerState<Employers> {
       }
     });
   }
+
+  String? selectedSortOption;
 
   @override
   Widget build(BuildContext context) {
@@ -141,14 +144,31 @@ class _EmployersState extends ConsumerState<Employers> {
                   baseBottomSheet(
                     context: context,
                     content: SortOptions(
-                      filterOptions: ['Date', 'Ascending', 'Descending'],
+                      filterOptions: ['Ascending', 'Descending'],
+                       initialValue: selectedSortOption,
                       onSelected: (value) {
-                        //todo: perform action
+                         if (value == 'Ascending') {
+                          vm.sortOption = 'date_ascending';
+                        }
+                        if (value == 'Descending') {
+                          vm.sortOption = 'date_descending';
+                        }
+                        if (value == null) {
+                          vm.sortOption = null;
+                        }
+                        selectedSortOption = value;
+                        setState(() {});
+                        vm.fetchEmployersDetails();
                       },
                     ),
                   );
                 },
-                filterOnPressed: () {},
+                filterOnPressed: () {
+                    baseBottomSheet(
+                    context: context,
+                    content: EmployerFilterOptions(),
+                  );
+                },
               ),
             ),
             SizedBox(height: 16.h),

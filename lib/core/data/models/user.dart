@@ -13,6 +13,7 @@ class User {
   String? residentialAddress;
   String? gender;
   String? maritalStatus;
+  bool? pushNotificationEnabled;
   //worker
   String? workerIdentifier;
   WorkerInfo? workerInfo;
@@ -41,6 +42,7 @@ class User {
     this.residentialAddress,
     this.gender,
     this.maritalStatus,
+    this.pushNotificationEnabled,
 
     this.workerIdentifier,
     this.workerInfo,
@@ -71,6 +73,7 @@ class User {
       residentialAddress: json['residential_address'] as String?,
       gender: json['gender'] as String?,
       maritalStatus: json['marital_status'] as String?,
+      pushNotificationEnabled: json['push_notification_enabled'] as bool?,
 
       workerIdentifier: json['worker_identifier'] as String?,
       workerInfo: json['worker_info'] != null
@@ -118,6 +121,7 @@ class User {
       'residential_address': residentialAddress,
       'gender': gender,
       'marital_status': maritalStatus,
+      'push_notification_enabled': pushNotificationEnabled,
 
       'worker_identifier': workerIdentifier,
       'worker_info': workerInfo?.toJson(),

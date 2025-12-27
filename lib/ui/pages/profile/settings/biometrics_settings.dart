@@ -6,10 +6,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:verifysafe/core/constants/app_dimension.dart';
 import 'package:verifysafe/core/constants/app_theme/custom_color_scheme.dart';
 import 'package:verifysafe/core/constants/color_path.dart';
+import 'package:verifysafe/core/utilities/biometric_utils.dart';
 import 'package:verifysafe/core/utilities/secure_storage/secure_storage_utils.dart';
 import 'package:verifysafe/ui/widgets/custom_appbar.dart';
 import 'package:verifysafe/ui/widgets/show_flush_bar.dart';
-//todo::: check if device have biometrics feat
+
 class BiometricsSettings extends StatefulWidget {
   const BiometricsSettings({super.key});
 
@@ -19,20 +20,28 @@ class BiometricsSettings extends StatefulWidget {
 
 class _BiometricsSettingsState extends State<BiometricsSettings> {
   bool _isEnabled = false;
+  bool _hasBio = false;
 
   @override
   void initState() {
-   updateBiometricState();
+    updateBiometricState();
+    hasBioMetrics();
     super.initState();
   }
 
-  updateBiometricState(){
+  updateBiometricState() {
     SecureStorageUtils.retrieveBiometricPref().then((value) {
       setState(() {
         _isEnabled = value;
       });
     });
   }
+
+  hasBioMetrics() async {
+    _hasBio = await BiometricUtils.canAuthenticate();
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
@@ -60,51 +69,60 @@ class _BiometricsSettingsState extends State<BiometricsSettings> {
               style: textTheme.bodyMedium?.copyWith(color: colorScheme.text4),
             ),
             SizedBox(height: 16.h),
-            Row(
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Login with ${Platform.isIOS ? "Face ID" : "Biometrics"}",
-                      style: textTheme.bodyLarge?.copyWith(
-                        color: colorScheme.blackText,
-                        fontWeight: FontWeight.w700,
+            if (_hasBio)
+              Row(
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Login with ${Platform.isIOS ? "Face ID" : "Biometrics"}",
+                        style: textTheme.bodyLarge?.copyWith(
+                          color: colorScheme.blackText,
+                          fontWeight: FontWeight.w700,
+                        ),
                       ),
-                    ),
-                    // Text(
-                    //   "See all notification",
-                    //   style: textTheme.bodySmall?.copyWith(
-                    //     color: colorScheme.textSecondary,
-                    //   ),
-                    // ),
-                  ],
-                ),
-                Spacer(),
-                CupertinoSwitch(
-                  activeTrackColor: ColorPath.meadowGreen,
-                  value: _isEnabled,
-                  onChanged: (value) async {
-                    setState(() {
-                      _isEnabled = value;
-                    });
-                    await SecureStorageUtils.biometricsEnabled(value: value);
+                      // Text(
+                      //   "See all notification",
+                      //   style: textTheme.bodySmall?.copyWith(
+                      //     color: colorScheme.textSecondary,
+                      //   ),
+                      // ),
+                    ],
+                  ),
+                  Spacer(),
+                  CupertinoSwitch(
+                    activeTrackColor: ColorPath.meadowGreen,
+                    value: _isEnabled,
+                    onChanged: (value) async {
+                      setState(() {
+                        _isEnabled = value;
+                      });
+                      await SecureStorageUtils.biometricsEnabled(value: value);
 
-                    if (value) {
-                      showFlushBar(
-                        context: context,
-                        message: "Biometrics enabled successfuly",
-                      );
-                    } else {
-                      showFlushBar(
-                        context: context,
-                        message: "Biometrics disabled successfuly",
-                      );
-                    }
-                  },
+                      if (value) {
+                        showFlushBar(
+                          context: context,
+                          message: "Biometrics enabled successfuly",
+                        );
+                      } else {
+                        showFlushBar(
+                          context: context,
+                          message: "Biometrics disabled successfuly",
+                        );
+                      }
+                    },
+                  ),
+                ],
+              )
+            else
+              Text(
+                "Device Does not have access to Biometrics",
+                style: textTheme.bodyLarge?.copyWith(
+                  color: colorScheme.error,
+                  fontWeight: FontWeight.w700,
                 ),
-              ],
-            ),
+              ),
           ],
         ),
       ),
