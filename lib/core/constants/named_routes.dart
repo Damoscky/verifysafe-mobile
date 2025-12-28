@@ -64,6 +64,8 @@ class NamedRoutes {
 
   //billing
   static const billType = '/billType';
+  static const billingDashboard = '/billingDashboard';
+
 
   //bottom-nav
   static const bottomNav = '/bottomNav';

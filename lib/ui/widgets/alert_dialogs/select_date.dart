@@ -48,7 +48,7 @@ class SelectDate extends StatelessWidget {
               );
               return;
             }
-            String formattedDate = DateFormat('dd-MM-yyyy').format(value as DateTime);
+            String formattedDate = DateFormat("yyyy-MM-dd").format(value as DateTime);
             returningValue(formattedDate);
             popNavigation(context: context);
           },
