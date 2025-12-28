@@ -1,33 +1,42 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:verifysafe/core/constants/app_theme/custom_color_scheme.dart';
+import 'package:verifysafe/core/data/view_models/employment_view_model.dart';
+import 'package:verifysafe/core/utilities/navigator.dart';
 import 'package:verifysafe/core/utilities/validator.dart';
+import 'package:verifysafe/ui/widgets/show_flush_bar.dart';
+import '../../../core/constants/app_asset.dart';
 import '../../../core/constants/app_dimension.dart';
+import '../../../core/data/enum/view_state.dart';
 import '../../../core/data/models/user.dart';
 import '../custom_button.dart';
 import '../custom_text_field.dart';
+import 'action_completed.dart';
+import 'base_bottom_sheet.dart';
 
 
-class EmploymentTermination extends StatefulWidget {
+class EmploymentTermination extends ConsumerStatefulWidget {
   final bool isEmployer;
   final User user;
-  const EmploymentTermination({super.key, this.isEmployer = true, required this.user});
+  const EmploymentTermination({super.key, required this.isEmployer, required this.user});
 
   @override
-  State<EmploymentTermination> createState() => _EmploymentTerminationState();
+  ConsumerState<EmploymentTermination> createState() => _EmploymentTerminationState();
 }
 
-class _EmploymentTerminationState extends State<EmploymentTermination> {
+class _EmploymentTerminationState extends ConsumerState<EmploymentTermination> {
 
   final _reason = TextEditingController();
   final _description = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
-    return IgnorePointer(
-      ignoring: false,
-      child: Padding(
-        padding: EdgeInsets.only(left: AppDimension.bottomSheetPaddingLeft, right: AppDimension.bottomSheetPaddingRight, top: 45.h, bottom: 31.h),
+    return Padding(
+      padding: EdgeInsets.only(left: AppDimension.bottomSheetPaddingLeft, right: AppDimension.bottomSheetPaddingRight, top: 45.h, bottom: 31.h),
+      child: Form(
+        key: _formKey,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
@@ -103,6 +112,7 @@ class _EmploymentTerminationState extends State<EmploymentTermination> {
               maxLines: 3,
               keyboardType: TextInputType.text,
               controller: _description,
+              validator: FieldValidator.validate,
             ),
             SizedBox(height: 24.h,),
             Padding(
@@ -111,6 +121,48 @@ class _EmploymentTerminationState extends State<EmploymentTermination> {
                   showLoader: false,
                   buttonText: 'Terminate',
                   onPressed: ()async{
+
+                    final validate = _formKey.currentState!.validate();
+
+                    if(validate){
+
+                      baseBottomSheet(
+                        context: context,
+                        content: ActionCompleted(
+                          asset: AppAsset.actionConfirmation,
+                          title: 'Terminate Employment',
+                          subtitle: 'Are you sure you want to Terminate Employment?',
+                          buttonText: 'Yes, Terminate',
+                          onPressed: ()async{
+
+                            //close confirmation bottom-sheet
+                            popNavigation(context: context);
+                            //close employment termination bottom-sheet
+                            popNavigation(context: context);
+
+                            final vm = ref.read(employmentViewModel);
+
+                            await vm.terminateEmployment(
+                                reason: _reason.text,
+                                description: _description.text,
+                                exitType: widget.isEmployer ? 'terminate':'resignation',
+                                userId: widget.user.id
+                            );
+
+                            showFlushBar(
+                                context: context,
+                                message: vm.message,
+                                success: vm.state == ViewState.retrieved
+                            );
+
+
+                          },
+                        ),
+                      );
+
+                    }
+
+
 
                   }
               ),

@@ -79,6 +79,10 @@ class ApiRoutes {
   static var rateUser = "${dotenv.env['V1']}/reviews";
   static var shareFeedback = "${dotenv.env['V1']}/app-relations";
 
+  //terminate employment contract
+  static var terminateContract = "${dotenv.env['V1']}/exits";
+
+
 
 
 }

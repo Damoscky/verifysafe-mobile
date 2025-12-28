@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:verifysafe/core/constants/color_path.dart';
+import 'package:verifysafe/core/constants/named_routes.dart';
 import 'package:verifysafe/core/data/enum/user_type.dart';
+import 'package:verifysafe/core/utilities/navigator.dart';
+import 'package:verifysafe/ui/pages/support_and_misconducts/submit_report.dart';
 import 'package:verifysafe/ui/widgets/custom_button.dart';
 import 'package:verifysafe/ui/widgets/verifysafe_container.dart';
 
@@ -28,7 +31,7 @@ class DashboardReportCard extends StatelessWidget {
           CustomButton(
             buttonWidth: null,
             onPressed: () {
-              //todo::: handle report emploeyer route here based on Usertype
+              pushNavigation(context: context, widget: const SubmitReport(), routeName: NamedRoutes.submitReport);
             },
             buttonText: "Report",
           ),

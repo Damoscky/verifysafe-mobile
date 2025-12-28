@@ -7,6 +7,7 @@ import 'package:verifysafe/core/data/data_providers/onboarding_data_provider/onb
 import 'package:verifysafe/core/data/data_providers/review_data_provider.dart';
 import 'package:verifysafe/core/data/data_providers/users_data_providers/agency_data_provider.dart';
 import 'package:verifysafe/core/data/data_providers/users_data_providers/employer_data_provider.dart';
+import 'package:verifysafe/core/data/data_providers/users_data_providers/employment_data_provider.dart';
 import 'package:verifysafe/core/data/data_providers/users_data_providers/user_data_provider.dart';
 import 'package:verifysafe/core/data/data_providers/users_data_providers/worker_data_provider.dart';
 import 'core/data/services/geolocator_service.dart';
@@ -29,6 +30,7 @@ void setupLocator() {
   locator.registerLazySingleton<GuarantorDataProvider>(() => GuarantorDataProvider());
   locator.registerLazySingleton<MisconductsDataProvider>(() => MisconductsDataProvider());
   locator.registerLazySingleton<ReviewDataProvider>(() => ReviewDataProvider());
+  locator.registerLazySingleton<EmploymentDataProvider>(() => EmploymentDataProvider());
 
 
 
