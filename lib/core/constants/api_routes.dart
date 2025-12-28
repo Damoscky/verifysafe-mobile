@@ -69,4 +69,7 @@ class ApiRoutes {
   static var createMisconductReport = "${dotenv.env['V1']}/misconducts";
   static deleteReport({required String? id}) =>
       "${dotenv.env['V1']}/misconducts/$id";
+
+  //billings
+  static var billings = "${dotenv.env['V1']}/billings";
 }
