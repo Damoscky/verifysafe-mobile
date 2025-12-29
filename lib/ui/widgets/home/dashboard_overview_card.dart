@@ -99,9 +99,9 @@ class _DashboardOverviewCardState extends ConsumerState<DashboardOverviewCard> {
   }
 
   String first() {
-    final workerVm = ref.read(workerViewModel);
-    final employerVm = ref.read(employerViewModel);
-    final agencyVm = ref.read(agencyViewModel);
+    final workerVm = ref.watch(workerViewModel);
+    final employerVm = ref.watch(employerViewModel);
+    final agencyVm = ref.watch(agencyViewModel);
 
     switch (widget.userType) {
       case UserType.worker:
@@ -114,9 +114,9 @@ class _DashboardOverviewCardState extends ConsumerState<DashboardOverviewCard> {
   }
 
   String second() {
-    final workerVm = ref.read(workerViewModel);
-    final employerVm = ref.read(employerViewModel);
-    final agencyVm = ref.read(agencyViewModel);
+    final workerVm = ref.watch(workerViewModel);
+    final employerVm = ref.watch(employerViewModel);
+    final agencyVm = ref.watch(agencyViewModel);
 
     switch (widget.userType) {
       case UserType.worker:
@@ -129,9 +129,9 @@ class _DashboardOverviewCardState extends ConsumerState<DashboardOverviewCard> {
   }
 
   String third() {
-    final workerVm = ref.read(workerViewModel);
-    final employerVm = ref.read(employerViewModel);
-    final agencyVm = ref.read(agencyViewModel);
+    final workerVm = ref.watch(workerViewModel);
+    final employerVm = ref.watch(employerViewModel);
+    final agencyVm = ref.watch(agencyViewModel);
 
     switch (widget.userType) {
       case UserType.worker:

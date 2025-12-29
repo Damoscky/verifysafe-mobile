@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:verifysafe/core/data/enum/user_type.dart';
+import 'package:verifysafe/core/data/models/billing.dart';
 
 class User {
   String? id;
@@ -31,6 +32,7 @@ class User {
   EmployerServices? services;
   //agency and employer
   Identity? identity;
+  Billing? billing;
 
   User({
     this.id,
@@ -61,6 +63,7 @@ class User {
     this.services,
 
     this.identity,
+    this.billing,
   });
 
   factory User.fromJson(Map<String, dynamic> json) {
@@ -109,6 +112,9 @@ class User {
       identity: json['identity'] != null
           ? Identity.fromJson(json['identity'])
           : null,
+      billing: json['billing'] != null
+          ? Billing.fromJson(json['billing'])
+          : null,
     );
   }
 
@@ -142,6 +148,7 @@ class User {
       'services': services?.toJson(),
 
       'identity': identity?.toJson(),
+      'billing': billing?.toJson()
     };
   }
 

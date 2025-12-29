@@ -8,8 +8,6 @@ import 'package:verifysafe/core/data/states/employer_state.dart';
 import 'package:verifysafe/core/utilities/utilities.dart';
 import 'package:verifysafe/locator.dart';
 
-import '../models/user.dart';
-
 class EmployerViewModel extends EmployerState {
   final EmployerDataProvider _employerDp = locator<EmployerDataProvider>();
 

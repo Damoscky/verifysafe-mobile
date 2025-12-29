@@ -155,7 +155,9 @@ class _HomeState extends ConsumerState<Home> {
                             text: "Subscription Plan: ",
                             children: [
                               TextSpan(
-                                text: 'Free',
+                                text:
+                                    userVm.userData?.billing?.currentPlan ??
+                                    "Free",
                                 style: textTheme.bodyLarge?.copyWith(
                                   color: ColorPath.gloryGreen,
                                   fontWeight: FontWeight.w700,

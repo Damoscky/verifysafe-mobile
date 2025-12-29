@@ -72,4 +72,9 @@ class ApiRoutes {
 
   //billings
   static var billings = "${dotenv.env['V1']}/billings";
+  static var initBilling = "${dotenv.env['V1']}/billings/subscribe/initiate";
+  static var verifyBillPaymment = "${dotenv.env['V1']}/billings/subscribe/complete";
+  static var cancel = "${dotenv.env['V1']}/billings/subscribe/cancel";
+  static getHistory({required String userID}) => "${dotenv.env['V1']}/billings/subscribers/$userID/histories";
+
 }

@@ -184,40 +184,7 @@ class GuarantorViewModel extends BaseState {
     _sortedGuarantors = _guarantors;
     notifyListeners();
   }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  
   //list of guarantors
   List<Guarantor> _userGuarantors = [];
   List<Guarantor> get userGuarantors => _userGuarantors;
