@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:verifysafe/core/constants/app_theme/custom_color_scheme.dart';
+import 'package:verifysafe/core/data/view_models/review_view_model.dart';
 import 'package:verifysafe/core/utilities/navigator.dart';
 
 import '../../../core/constants/app_asset.dart';
@@ -9,11 +11,12 @@ import '../../../core/constants/color_path.dart';
 import '../custom_button.dart';
 import '../custom_svg.dart';
 
-class ViewRatings extends StatelessWidget {
+class ViewRatings extends ConsumerWidget {
   const ViewRatings({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final vm = ref.read(reviewViewModel);
     return Padding(
       padding: EdgeInsets.symmetric(
         vertical: 24.h,
@@ -32,7 +35,7 @@ class ViewRatings extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Jideson & Co.',
+                      vm.name,
                       style: Theme.of(context)
                           .textTheme
                           .titleMedium
@@ -43,7 +46,7 @@ class ViewRatings extends StatelessWidget {
                     ),
                     SizedBox(height: 4.h,),
                     Text(
-                      'Domestic Worker',
+                      vm.job,
                       style: Theme.of(context)
                           .textTheme
                           .bodyLarge
@@ -56,7 +59,7 @@ class ViewRatings extends StatelessWidget {
                 ),
               ),
               SizedBox(width: 10.w,),
-              CustomAssetViewer(asset: AppAsset.verificationBadge, height: 40.h, width: 40.w,)
+              if(vm.isVerified)CustomAssetViewer(asset: AppAsset.verificationBadge, height: 40.h, width: 40.w,)
 
             ],
           ),
@@ -81,7 +84,7 @@ class ViewRatings extends StatelessWidget {
                     ),
                     SizedBox(height: 4.h,),
                     Text(
-                      'Dec 19, 2013',
+                      vm.date,
                       style: Theme.of(context)
                           .textTheme
                           .bodyMedium
@@ -110,7 +113,7 @@ class ViewRatings extends StatelessWidget {
                     ),
                     SizedBox(height: 4.h,),
                     RatingBar.builder(
-                      initialRating: 3.5,
+                      initialRating: vm.rating,
                       unratedColor: ColorPath.athensGrey5,
                       minRating: 0,
                       direction: Axis.horizontal,
@@ -131,7 +134,7 @@ class ViewRatings extends StatelessWidget {
           ),
           SizedBox(height: 16.h,),
           Text(
-            'New to the field but very interested in design and eager to learn. New to the field but very interested in design and eager to learn. New to the field but very interested in design and eager to learn.New to the field but very interested in design and eager to learn.New to the field but very interested in design and eager to learn. New to the field but very interested in design and eager to learn.New to the field but very interested in design and eager to learn.',
+            vm.feedback,
             style: Theme.of(context)
                 .textTheme
                 .bodyMedium

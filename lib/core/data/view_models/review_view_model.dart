@@ -1,38 +1,38 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:verifysafe/core/constants/app_constants.dart';
-import 'package:verifysafe/core/data/data_providers/misconducts_data_provider/misconducts_data_provider.dart';
 import 'package:verifysafe/core/data/enum/view_state.dart';
-import 'package:verifysafe/core/data/models/misconduct.dart';
 import 'package:verifysafe/core/data/models/responses/response_data/stats.dart';
+import 'package:verifysafe/core/data/models/review.dart';
 import 'package:verifysafe/core/data/states/base_state.dart';
 import 'package:verifysafe/core/utilities/utilities.dart';
 import 'package:verifysafe/locator.dart';
 
 import '../../utilities/date_sorter.dart';
 import '../../utilities/date_utilitites.dart';
+import '../data_providers/review_data_provider.dart';
 
-class MisconductsViewModel extends BaseState {
-  final MisconductsDataProvider _misconductsDp = locator<MisconductsDataProvider>();
+class ReviewViewModel extends BaseState {
+  final ReviewDataProvider _reviewDp = locator<ReviewDataProvider>();
 
   //message
   String _message = '';
   String get message => _message;
 
-  Stats? _misconductsStats;
-  Stats? get misconductsStats => _misconductsStats;
+  Stats? _ratingStats;
+  Stats? get ratingStats => _ratingStats;
 
-  //list of reports
-  List<Misconduct> _misconductReports = [];
-  List<Misconduct> get misconductReports => _misconductReports;
+  //list of reviews
+  List<Review> _reviews = [];
+  List<Review> get reviews => _reviews;
 
-  //list of repotts(sorted)
-  List<Misconduct> _sortedReports = [];
-  List<Misconduct> get sortedReports => _sortedReports;
+  //list of reviews(sorted)
+  List<Review> _sortedReviews = [];
+  List<Review> get sortedReviews => _sortedReviews;
 
   String? selectedSortOption;
 
-  //selected report
-  Misconduct? selectedReport;
+  //selected review
+  Review? selectedReview;
 
   //page number
   int pageNumber = 1;
@@ -40,31 +40,21 @@ class MisconductsViewModel extends BaseState {
   //total records
   int totalRecords = 0;
 
-
   Map<String, dynamic> selectedFilterOptions = {};
 
+  String get name => selectedReview?.name ?? 'N/A';
+  bool get isVerified => selectedReview?.status?.toLowerCase() == 'verified';
+  double get rating => double.tryParse(selectedReview?.rating?.toString() ??'0') ?? 0;
+  String get job => selectedReview?.jobType ?? 'N/A';
+  String get feedback => selectedReview?.feedback ?? 'N/A';
+  String get date => DateUtilities.abbrevMonthDayYear(selectedReview?.date?.toString() ?? DateTime.now().toString());
 
 
 
-  String get name => selectedReport?.reporter?.name ?? 'N/A';
-  String get date => DateUtilities.abbrevMonthDayYear(selectedReport?.date?.toString() ?? DateTime.now().toString());
-  String get reportType => selectedReport?.type ?? 'N/A';
-  String get comment => selectedReport?.comment ?? 'N/A';
-  String get status => selectedReport?.status ?? '';
-  bool get isPending => status.toLowerCase() == 'pending';
-  bool get isDeclined => status.toLowerCase() == 'declined';
-  bool get isActive => selectedReport?.isActive ?? false;
-  List<String> get attachments => selectedReport?.attachments ?? [];
-  bool get hasAttachments => attachments.isNotEmpty;
+  int get total => _ratingStats?.total ?? 0;
 
 
-  int get resolved => _misconductsStats?.resolved ?? 0;
-  int get pending => _misconductsStats?.pending ?? 0;
-  int get suspended => _misconductsStats?.suspended ?? 0;
-  int get total => _misconductsStats?.total ?? 0;
-
-
-  fetchReports({bool firstCall = true, bool refreshUi = true, bool withFilters = false}) async {
+  fetchRatings({bool firstCall = true, bool refreshUi = true, bool withFilters = false, required String? userId}) async {
     if(firstCall){
       pageNumber = 1;
       if(refreshUi)setState(ViewState.busy);
@@ -75,7 +65,8 @@ class MisconductsViewModel extends BaseState {
 
 
 
-    await _misconductsDp.fetchMisconductReports(
+    await _reviewDp.fetchRatings(
+      userId: userId,
       pageNumber: pageNumber,
         filterOptions: Utilities.returnQueryString(
             params: selectedFilterOptions,
@@ -86,16 +77,16 @@ class MisconductsViewModel extends BaseState {
       totalRecords = response.data?.data?.total ?? 0;
       if(firstCall){
         if(!withFilters){
-          _misconductReports = response.data?.data?.data ?? [];
+          _reviews = response.data?.data?.data ?? [];
         }
-        _sortedReports = List.from(response.data?.data?.data ?? []);
+        _reviews = List.from(response.data?.data?.data ?? []);
         setState(ViewState.retrieved);
       }
       else{
         if(!withFilters){
-          _misconductReports.addAll(response.data?.data?.data ?? []);
+          _reviews.addAll(response.data?.data?.data ?? []);
         }
-        _sortedReports.addAll(response.data?.data?.data ?? []);
+        _reviews.addAll(response.data?.data?.data ?? []);
         setPaginatedState(ViewState.retrieved);
       }
       pageNumber++;
@@ -109,31 +100,30 @@ class MisconductsViewModel extends BaseState {
     });
   }
 
-
-  //submit report
-  submitReport({
-    required String? reporteeId,
-    required String? reporteeType,
-    required String? reportType,
-    required String comment,
-    required String? attachment,
-  }) async{
-
+  shareFeedback({
+    int? rating,
+    required String description,
+    String? subject,
+    required String type
+}) async{
     setSecondState(ViewState.busy);
-    final details = {
-      'reportee_id':reporteeId,
-      'reportee_type':reporteeType,
-      'type':reportType,
-      'comment': comment,
-    };
-
-    if(attachment != null){
-      details['attachment'] = attachment;
+    Map<String, dynamic> details = {};
+    if(type.toLowerCase() == 'feedback'){
+      details = {
+        'rating': rating,
+        'comment': description,
+        'type': type
+      };
+    }else{
+      details = {
+        'subject': subject,
+        'description': description,
+        'type': type
+      };
     }
-    await _misconductsDp.submitReport(details: details).then(
+    await _reviewDp.shareFeedback(details: details).then(
           (response) {
         _message = response.message ?? defaultSuccessMessage;
-        fetchReports();
         setSecondState(ViewState.retrieved);
       },
       onError: (error) {
@@ -143,13 +133,22 @@ class MisconductsViewModel extends BaseState {
     );
   }
 
-  //delete report
-  deleteReport() async{
+  rateUser({
+    required int? rating,
+    required String description,
+    required String? revieweeId,
+    required String? userType
+  }) async{
     setThirdState(ViewState.busy);
-    await _misconductsDp.deleteReport(id: selectedReport?.id).then(
+    final details = {
+      'rating': rating,
+      'feedback': description,
+      'reviewee': userType,
+      'reviewee_id': revieweeId
+    };
+    await _reviewDp.rateUser(details: details).then(
           (response) {
         _message = response.message ?? defaultSuccessMessage;
-        fetchReports();
         setThirdState(ViewState.retrieved);
       },
       onError: (error) {
@@ -160,28 +159,25 @@ class MisconductsViewModel extends BaseState {
   }
 
 
-
-
-
-  sortList(String? sortOption){
+  sortReviewList(String? sortOption){
     selectedSortOption = sortOption;
 
     if(selectedSortOption == null){
-      _sortedReports = _misconductReports;
+      _sortedReviews = _reviews;
       notifyListeners();
       return;
     }
 
-    final sorter = DateSorter<Misconduct>(
-      list: _sortedReports,
-      getDate: (report) => report.date,
+    final sorter = DateSorter<Review>(
+      list: _sortedReviews,
+      getDate: (guarantor) => guarantor.date,
     );
 
     switch(selectedSortOption?.toLowerCase()){
       case 'ascending':
-        _sortedReports = sorter.sort(ascending: true);
+        _sortedReviews = sorter.sort(ascending: true);
       case 'descending':
-        _sortedReports = sorter.sort(ascending: false);
+        _sortedReviews = sorter.sort(ascending: false);
     }
 
     notifyListeners();
@@ -203,11 +199,11 @@ class MisconductsViewModel extends BaseState {
 
   clearFilters(){
     selectedFilterOptions = {};
-    _sortedReports = _misconductReports;
+    _sortedReviews = _reviews;
     notifyListeners();
   }
 }
 
-final misconductsViewModel = ChangeNotifierProvider.autoDispose<MisconductsViewModel>((ref) {
-  return MisconductsViewModel();
+final reviewViewModel = ChangeNotifierProvider.autoDispose<ReviewViewModel>((ref) {
+  return ReviewViewModel();
 });

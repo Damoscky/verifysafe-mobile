@@ -10,6 +10,7 @@ import 'package:verifysafe/core/utilities/navigator.dart';
 import 'package:verifysafe/ui/pages/billing/bill_type.dart';
 import 'package:verifysafe/ui/pages/billing/billing_dashboard.dart';
 import 'package:verifysafe/ui/pages/guarantor/manage_guarantor.dart';
+import 'package:verifysafe/ui/pages/profile/settings/help.dart';
 import 'package:verifysafe/ui/pages/profile/settings/rate_app.dart';
 import 'package:verifysafe/ui/pages/profile/settings/terms_and_condition.dart';
 import 'package:verifysafe/ui/pages/ratings_and_reviews.dart';
@@ -179,13 +180,13 @@ class MenuDrawer extends ConsumerWidget {
                         ),
                         SizedBox(height: 24.h),
                         MenuItem(
-                          title: "Share your  feedback",
+                          title: "Share your feedback",
                           asset: AppAsset.feedback,
                           onPressed: () {
                             pushNavigation(
                               context: context,
-                              widget: RateApp(),
-                              routeName: NamedRoutes.rateApp,
+                              widget: Help(),
+                              routeName: NamedRoutes.help,
                             );
                           },
                         ),

@@ -16,6 +16,7 @@ import 'package:verifysafe/ui/widgets/clickable.dart';
 import 'package:verifysafe/ui/widgets/upload_attachment.dart';
 import '../../../core/constants/app_dimension.dart';
 import '../../../core/data/enum/view_state.dart';
+import '../../../core/data/models/user.dart';
 import '../../../core/data/view_models/user_view_model.dart';
 import '../../../core/utilities/image_and_doc_utils.dart';
 import '../../../core/utilities/validator.dart';
@@ -29,7 +30,10 @@ import '../../widgets/show_flush_bar.dart';
 
 
 class SubmitReport extends ConsumerStatefulWidget {
-  const SubmitReport({super.key});
+  final bool isReportingWorker;
+  final bool isReportingEmployer;
+  final User? user;
+  const SubmitReport({super.key, this.isReportingEmployer = false, this.isReportingWorker = false, this.user});
 
   @override
   ConsumerState<SubmitReport> createState() => _SubmitReportState();
@@ -43,11 +47,29 @@ class _SubmitReportState extends ConsumerState<SubmitReport> {
   String? _userType;
   String? _imageUrl;
   final _description = TextEditingController();
+  final _name = TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
     super.initState();
+
+    if(widget.isReportingWorker || widget.isReportingEmployer){
+      //set selected worker
+      final workerVm = ref.read(workerViewModel);
+      workerVm.selectedWorker = widget.user;
+      //init text controller
+      _name.text = workerVm.selectedWorker?.name ?? '';
+
+    }
+
+    if(widget.isReportingEmployer){
+      //set selected employer
+      final employerVm = ref.read(employerViewModel);
+      employerVm.selectedEmployer = widget.user;
+      //init text controller
+      _name.text =  employerVm.selectedEmployer?.name ?? '';
+    }
   }
 
   @override
@@ -77,7 +99,17 @@ class _SubmitReportState extends ConsumerState<SubmitReport> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                if(userVm.isWorker || userVm.isEmployer)Consumer(
+                if(widget.isReportingWorker || widget.isReportingEmployer)
+                    CustomTextField(
+                    hintText: 'Email',
+                    label: widget.isReportingEmployer ? 'Employer':'Worker',
+                    keyboardType: TextInputType.text,
+                    controller: _name,
+                    enabled: false,
+                    validator: FieldValidator.validate,
+                  )
+                else
+                  if(userVm.isWorker || userVm.isEmployer)Consumer(
                   builder: (context, ref, child){
                     final employerVm = ref.watch(employerViewModel);
                     final workerVm = ref.watch(workerViewModel);
@@ -150,7 +182,7 @@ class _SubmitReportState extends ConsumerState<SubmitReport> {
                     );
                   },
                 )
-                else agencyFlow(context),
+                  else agencyFlow(context),
                 SizedBox(height: 16.h,),
                 Consumer(
                   builder: (context, ref, child){
@@ -215,49 +247,52 @@ class _SubmitReportState extends ConsumerState<SubmitReport> {
                         final isWorkerType = _userType?.toLowerCase() == 'worker';
                         final isEmployerType = _userType?.toLowerCase() == 'employer';
 
-                        if(userVm.isWorker && employerVm.selectedEmployer == null){
-                          showFlushBar(
-                              context: context,
-                              message: 'Select an employer to proceed',
-                              success: false
-                          );
-                          return;
-                        }
+                        if(!widget.isReportingEmployer && !widget.isReportingWorker){
 
-                        if(userVm.isEmployer && workerVm.selectedWorker == null){
-                          showFlushBar(
-                              context: context,
-                              message: 'Select a worker to proceed',
-                              success: false
-                          );
-                          return;
-                        }
+                          if(userVm.isWorker && employerVm.selectedEmployer == null){
+                            showFlushBar(
+                                context: context,
+                                message: 'Select an employer to proceed',
+                                success: false
+                            );
+                            return;
+                          }
 
-                        if(userVm.isAgency && _userType == null){
-                          showFlushBar(
-                              context: context,
-                              message: 'Select a user type',
-                              success: false
-                          );
-                          return;
-                        }
+                          if(userVm.isEmployer && workerVm.selectedWorker == null){
+                            showFlushBar(
+                                context: context,
+                                message: 'Select a worker to proceed',
+                                success: false
+                            );
+                            return;
+                          }
 
-                        if(userVm.isAgency && isWorkerType && workerVm.selectedWorker == null){
-                          showFlushBar(
-                              context: context,
-                              message: 'Select a worker to proceed',
-                              success: false
-                          );
-                          return;
-                        }
+                          if(userVm.isAgency && _userType == null){
+                            showFlushBar(
+                                context: context,
+                                message: 'Select a user type',
+                                success: false
+                            );
+                            return;
+                          }
 
-                        if(userVm.isAgency && isEmployerType && employerVm.selectedEmployer == null){
-                          showFlushBar(
-                              context: context,
-                              message: 'Select an employer to proceed',
-                              success: false
-                          );
-                          return;
+                          if(userVm.isAgency && isWorkerType && workerVm.selectedWorker == null){
+                            showFlushBar(
+                                context: context,
+                                message: 'Select a worker to proceed',
+                                success: false
+                            );
+                            return;
+                          }
+
+                          if(userVm.isAgency && isEmployerType && employerVm.selectedEmployer == null){
+                            showFlushBar(
+                                context: context,
+                                message: 'Select an employer to proceed',
+                                success: false
+                            );
+                            return;
+                          }
                         }
 
                         if(_misconductType == null){
@@ -280,35 +315,52 @@ class _SubmitReportState extends ConsumerState<SubmitReport> {
 
                               popNavigation(context: context);
 
-                              await vm.submitReport(
-                                  reporteeId:
-                                  userVm.isWorker
-                                      ? employerVm.selectedEmployer?.employer?.identifier
-                                      : userVm.isEmployer
-                                      ? workerVm.selectedWorker?.id
-                                      : isWorkerType
-                                      ? workerVm.selectedWorker?.id
-                                      : isEmployerType
-                                      ? employerVm.selectedEmployer?.employer?.identifier
-                                      :'',
-                                  reporteeType:
-                                  userVm.isWorker
-                                      ? 'employer'
-                                      : userVm.isEmployer
-                                      ? 'worker'
-                                      : isWorkerType
-                                      ? 'worker'
-                                      : isEmployerType
-                                      ? 'employer'
-                                      :'',
-                                  reportType: _misconductType,
-                                  comment: _description.text,
-                                  attachment: _imageUrl
-                              );
-
-                              if(vm.secondState == ViewState.retrieved){
-                                popNavigation(context: context);
+                              if(!widget.isReportingEmployer && !widget.isReportingWorker){
+                                await vm.submitReport(
+                                    reporteeId:
+                                    userVm.isWorker
+                                        ? employerVm.selectedEmployer?.employer?.identifier
+                                        : userVm.isEmployer
+                                        ? workerVm.selectedWorker?.id
+                                        : isWorkerType
+                                        ? workerVm.selectedWorker?.id
+                                        : isEmployerType
+                                        ? employerVm.selectedEmployer?.employer?.identifier
+                                        :'',
+                                    reporteeType:
+                                    userVm.isWorker
+                                        ? 'employer'
+                                        : userVm.isEmployer
+                                        ? 'worker'
+                                        : isWorkerType
+                                        ? 'worker'
+                                        : isEmployerType
+                                        ? 'employer'
+                                        :'',
+                                    reportType: _misconductType,
+                                    comment: _description.text,
+                                    attachment: _imageUrl
+                                );
                               }
+                              else{
+                                await vm.submitReport(
+                                    reporteeId:
+                                    widget.isReportingWorker
+                                        ? workerVm.selectedWorker?.id
+                                        : employerVm.selectedEmployer?.employer?.identifier,
+                                    reporteeType:
+                                    widget.isReportingWorker
+                                        ? 'worker'
+                                        : 'employer',
+                                    reportType: _misconductType,
+                                    comment: _description.text,
+                                    attachment: _imageUrl
+                                );
+                              }
+
+                              // if(vm.secondState == ViewState.retrieved){
+                              //   popNavigation(context: context);
+                              // }
 
                               showFlushBar(
                                   context: context,

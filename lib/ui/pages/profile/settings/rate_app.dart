@@ -1,52 +1,97 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:verifysafe/core/constants/app_dimension.dart';
+import 'package:verifysafe/core/data/view_models/review_view_model.dart';
+import 'package:verifysafe/core/utilities/navigator.dart';
+import 'package:verifysafe/ui/widgets/busy_overlay.dart';
 import 'package:verifysafe/ui/widgets/custom_appbar.dart';
 import 'package:verifysafe/ui/widgets/custom_button.dart';
 import 'package:verifysafe/ui/widgets/custom_text_field.dart';
 import 'package:verifysafe/ui/widgets/rate_widget.dart';
+import 'package:verifysafe/ui/widgets/show_flush_bar.dart';
 
-class RateApp extends StatelessWidget {
+import '../../../../core/data/enum/view_state.dart';
+
+class RateApp extends ConsumerStatefulWidget {
   const RateApp({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: customAppBar(
-        context: context,
-        showBottom: true,
-        title: "Rate VerifySafe App",
-      ),
-      body: ListView(
-        padding: EdgeInsets.only(
-          left: AppDimension.paddingLeft,
-          right: AppDimension.paddingRight,
-          bottom: 40.h,
-          top: 32.h,
-        ),
+  ConsumerState<RateApp> createState() => _RateAppState();
+}
 
-        children: [
-          Text(
-            "How’s your Experience with VerifySafe so far?",
-            style: Theme.of(
-              context,
-            ).textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w700),
+class _RateAppState extends ConsumerState<RateApp> {
+  
+  int? _selectedValue;
+  final _comment = TextEditingController();
+  
+  @override
+  Widget build(BuildContext context) {
+    final vm = ref.watch(reviewViewModel);
+    return BusyOverlay(
+      show: vm.secondState == ViewState.busy,
+      child: Scaffold(
+        appBar: customAppBar(
+          context: context,
+          showBottom: true,
+          title: "Rate VerifySafe App",
+        ),
+        body: ListView(
+          padding: EdgeInsets.only(
+            left: AppDimension.paddingLeft,
+            right: AppDimension.paddingRight,
+            bottom: 40.h,
+            top: 32.h,
           ),
-          SizedBox(height: 20.h),
-          Rate(
-            onSelect: (value) {
-              print(value);
-            },
-          ),
-          SizedBox(height: 16.h),
-          CustomTextField(
-            useDefaultHeight: false,
-            maxLines: 7,
-            hintText: "Got any comments?",
-          ),
-          SizedBox(height: 32.h),
-          CustomButton(onPressed: () {}, buttonText: "Done"),
-        ],
+      
+          children: [
+            Text(
+              "How’s your Experience with VerifySafe so far?",
+              style: Theme.of(
+                context,
+              ).textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w700),
+            ),
+            SizedBox(height: 20.h),
+            Rate(
+              onSelect: (value) {
+                print(value);
+                _selectedValue = value;
+              },
+            ),
+            SizedBox(height: 16.h),
+            CustomTextField(
+              useDefaultHeight: false,
+              maxLines: 7,
+              hintText: "Got any comments?",
+              controller: _comment,
+            ),
+            SizedBox(height: 32.h),
+            CustomButton(onPressed: () async{
+              if(_selectedValue == null){
+                showFlushBar(
+                    context: context,
+                    message: 'Kindly select a rate value by clicking on an emoji to proceed',
+                  success: false
+                );
+                return;
+              }
+
+              await vm.shareFeedback(
+                rating: _selectedValue,
+                  description: _comment.text,
+                  type: 'feedback'
+              );
+              if(vm.secondState == ViewState.retrieved){
+                popNavigation(context: context);
+              }
+              showFlushBar(
+                  context: context,
+                  message: vm.message,
+                success: vm.secondState == ViewState.retrieved
+              );
+            }, buttonText: "Done"),
+          ],
+        ),
       ),
     );
   }

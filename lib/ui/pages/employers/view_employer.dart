@@ -1,6 +1,5 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:verifysafe/core/constants/app_dimension.dart';
 import 'package:verifysafe/core/constants/app_theme/custom_color_scheme.dart';
@@ -14,127 +13,197 @@ import 'package:verifysafe/ui/pages/workers/view_worker_verification_info.dart';
 import 'package:verifysafe/ui/pages/workers/user_information.dart';
 import 'package:verifysafe/ui/widgets/bottom_sheets/base_bottom_sheet.dart';
 import 'package:verifysafe/ui/widgets/bottom_sheets/rate_user.dart';
+import 'package:verifysafe/ui/widgets/busy_overlay.dart';
 import 'package:verifysafe/ui/widgets/clickable.dart';
 import 'package:verifysafe/ui/widgets/custom_appbar.dart';
 import 'package:verifysafe/ui/widgets/custom_divider.dart';
 import 'package:verifysafe/ui/widgets/work_widgets/worker_info_card.dart';
 
-class ViewEmployer extends StatelessWidget {
+import '../../../core/constants/app_asset.dart';
+import '../../../core/data/enum/view_state.dart';
+import '../../../core/data/view_models/employment_view_model.dart';
+import '../../../core/data/view_models/user_view_model.dart';
+import '../../widgets/bottom_sheets/employment_termination.dart';
+import '../../widgets/custom_svg.dart';
+import '../support_and_misconducts/submit_report.dart';
+
+class ViewEmployer extends ConsumerWidget {
   final User data;
 
   const ViewEmployer({super.key, required this.data});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final colorScheme = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
-    log(data.toJson().toString());
-    return Scaffold(
-      appBar: customAppBar(
-        context: context,
-        title: data.name,
-        showBottom: true,
-      ),
-      body: ListView(
-        padding: EdgeInsets.symmetric(
-          horizontal: AppDimension.paddingLeft,
-          vertical: 24.h,
-        ),
-        children: [
-          WorkerInfoCard(
-            image: data.avatar,
-            firstName: data.name?.split(" ").first,
-            lastName: data.name?.split(" ").last,
-            workerID: data.employer?.employerId,
-          ),
-          SizedBox(height: 16.h),
-
-          Text(
-            "Details",
-            style: textTheme.bodyMedium?.copyWith(
-              color: colorScheme.textSecondary,
+    final isEmployer = data.userType?.toLowerCase() == 'employer';
+    final canTerminate = data.isTerminatable ?? false;
+    final userVm = ref.read(userViewModel);
+    final employmentVm = ref.watch(employmentViewModel);
+    return BusyOverlay(
+      show: employmentVm.state == ViewState.busy,
+      child: Scaffold(
+        appBar: customAppBar(
+          context: context,
+          title: data.name,
+          showBottom: true,
+          actions: [
+            Padding(
+              padding: EdgeInsets.only(right: AppDimension.paddingRight),
+              child: Clickable(
+                onPressed: () {
+                  showMenu<String>(
+                    context: context,
+                    position: const RelativeRect.fromLTRB(100, 80, 16, 0),
+                    color: Colors.white,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    items: [
+                      PopupMenuItem(
+                        value: 'report',
+                        child:  Text(
+                          "Report ${isEmployer ? 'Employer':'Worker'}",
+                          style: textTheme.bodyLarge?.copyWith(
+                            color: colorScheme.textPrimary,
+                          ),
+                        ),
+                      ),
+                     if(canTerminate && !userVm.isAgency)PopupMenuItem(
+                        value: 'terminate',
+                        child:Text(
+                          "Terminate employment",
+                          style: textTheme.bodyLarge?.copyWith(
+                            color: colorScheme.textPrimary,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ).then((value) {
+                    if (value == 'report') {
+                      pushNavigation(context: context, widget: SubmitReport(
+                        isReportingEmployer: true,
+                        user: data,
+                      ), routeName: NamedRoutes.submitReport);
+                    } else if (value == 'terminate') {
+                      baseBottomSheet(
+                          context: context,
+                          content: EmploymentTermination(
+                              isEmployer: isEmployer,
+                              user: data
+                          )
+                      );
+                    }
+                  });
+                },
+                child: CustomAssetViewer(asset: AppAsset.more),
+              ),
             ),
+          ]
+        ),
+        body: ListView(
+          padding: EdgeInsets.symmetric(
+            horizontal: AppDimension.paddingLeft,
+            vertical: 24.h,
           ),
-          SizedBox(height: 16.h),
-          ActionTile(
-            title: "Employer Information",
-            subTitle: "View Employer infofrmation",
-            onPressed: () {
-              pushNavigation(
-                context: context,
-                widget: UserInformation(data: data),
-                routeName: NamedRoutes.viewWorkerInfo,
-              );
-            },
-          ),
+          children: [
+            WorkerInfoCard(
+              image: data.avatar,
+              firstName: data.name?.split(" ").first,
+              lastName: data.name?.split(" ").last,
+              workerID: data.employer?.employerId,
+            ),
+            SizedBox(height: 16.h),
 
-          Column(
-            children: [
-              CustomDivider(),
-              ActionTile(
-                title: "Contact Person Information",
-                subTitle: "View Contact Person information",
-                onPressed: () {
-                  pushNavigation(
-                    context: context,
-                    widget: ViewContactPerson(canEdit: false,data: data,),
-                    routeName: NamedRoutes.viewContactPerson,
-                  );
-                },
+            Text(
+              "Details",
+              style: textTheme.bodyMedium?.copyWith(
+                color: colorScheme.textSecondary,
               ),
-            ],
-          ),
-          Column(
-            children: [
-              CustomDivider(),
-              ActionTile(
-                title: "Services and Specialisation",
-                subTitle: "View Services and specialisation offered",
-                onPressed: () {
-                  pushNavigation(
-                    context: context,
-                    widget: ViewServicesAndSpecialization(data: data,),
-                    routeName: NamedRoutes.viewEmploymentDetails,
-                  );
-                },
-              ),
-            ],
-          ),
-          CustomDivider(),
-          ActionTile(
-            title: "Verification Information",
-            subTitle: "Change and update verification information",
-            onPressed: () {
-              pushNavigation(
-                context: context,
-                widget: ViewWorkerVerificationInfo(workerData: data),
-                routeName: NamedRoutes.verificationInformation,
-              );
-            },
-          ),
+            ),
+            SizedBox(height: 16.h),
+            ActionTile(
+              title: "Employer Information",
+              subTitle: "View Employer infofrmation",
+              onPressed: () {
+                pushNavigation(
+                  context: context,
+                  widget: UserInformation(data: data),
+                  routeName: NamedRoutes.viewWorkerInfo,
+                );
+              },
+            ),
 
-          CustomDivider(),
-          ActionTile(
-            title: "Guarantor Details",
-            subTitle: "Change and update Guarantor's information",
-            onPressed: () {
-              pushNavigation(
-                context: context,
-                widget: EmployerManageWorkerGuanantor(data: data,),
-                routeName: NamedRoutes.employerManageWorkerGuanantor,
-              );
-            },
-          ),
-          CustomDivider(),
-          ActionTile(
-            title: "Ratings & Reviews",
-            subTitle: "Leave ratings and review for Worker",
-            onPressed: () {
-              baseBottomSheet(context: context, content: RateUser());
-            },
-          ),
-          CustomDivider(),
-        ],
+            Column(
+              children: [
+                CustomDivider(),
+                ActionTile(
+                  title: "Contact Person Information",
+                  subTitle: "View Contact Person information",
+                  onPressed: () {
+                    pushNavigation(
+                      context: context,
+                      widget: ViewContactPerson(canEdit: false,data: data,),
+                      routeName: NamedRoutes.viewContactPerson,
+                    );
+                  },
+                ),
+              ],
+            ),
+            Column(
+              children: [
+                CustomDivider(),
+                ActionTile(
+                  title: "Services and Specialisation",
+                  subTitle: "View Services and specialisation offered",
+                  onPressed: () {
+                    pushNavigation(
+                      context: context,
+                      widget: ViewServicesAndSpecialization(data: data,),
+                      routeName: NamedRoutes.viewEmploymentDetails,
+                    );
+                  },
+                ),
+              ],
+            ),
+            CustomDivider(),
+            ActionTile(
+              title: "Verification Information",
+              subTitle: "Change and update verification information",
+              onPressed: () {
+                pushNavigation(
+                  context: context,
+                  widget: ViewWorkerVerificationInfo(workerData: data),
+                  routeName: NamedRoutes.verificationInformation,
+                );
+              },
+            ),
+
+            CustomDivider(),
+            ActionTile(
+              title: "Guarantor Details",
+              subTitle: "Change and update Guarantor's information",
+              onPressed: () {
+                pushNavigation(
+                  context: context,
+                  widget: EmployerManageWorkerGuanantor(data: data,),
+                  routeName: NamedRoutes.employerManageWorkerGuanantor,
+                );
+              },
+            ),
+            CustomDivider(),
+            ActionTile(
+              title: "Ratings & Reviews",
+              subTitle: "Leave ratings and review for Worker",
+              onPressed: () {
+                baseBottomSheet(context: context, content: RateUser(
+                  isEmployer: isEmployer,
+                ));
+              },
+            ),
+            CustomDivider(),
+          ],
+        ),
       ),
     );
   }
