@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -422,49 +420,5 @@ class ActionTile extends StatelessWidget {
         ],
       ),
     );
-  }
-
-  void _showPopupMenu(BuildContext context, Offset position) async {
-    final RenderBox overlay = Overlay.of(context).context.findRenderObject() as RenderBox;
-
-    await showMenu<String>(
-      context: context,
-      position: RelativeRect.fromRect(
-        Rect.fromLTWH(position.dx, position.dy, 0, 0),
-        Offset.zero & overlay.size,
-      ),
-      color: Colors.white,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16),
-      ),
-      items: [
-        PopupMenuItem(
-          value: 'edit',
-          child: Row(
-            children: const [
-              Icon(Icons.edit, color: Colors.black87),
-              SizedBox(width: 8),
-              Text('Edit'),
-            ],
-          ),
-        ),
-        PopupMenuItem(
-          value: 'delete',
-          child: Row(
-            children: const [
-              Icon(Icons.delete, color: Colors.black87),
-              SizedBox(width: 8),
-              Text('Delete'),
-            ],
-          ),
-        ),
-      ],
-    ).then((value) {
-      if (value == 'edit') {
-        debugPrint('Edit clicked');
-      } else if (value == 'delete') {
-        debugPrint('Delete clicked');
-      }
-    });
   }
 }
