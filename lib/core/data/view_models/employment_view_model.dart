@@ -48,6 +48,7 @@ class EmploymentViewModel extends BaseState {
     setSecondState(ViewState.busy);
     final details = {
       'worker_id': workerId,
+      'employment_type': 'Contract' //for now till we get clarity from backend
     };
     await _employmentDp.requestEmploymentContract(details: details).then(
           (response) {
