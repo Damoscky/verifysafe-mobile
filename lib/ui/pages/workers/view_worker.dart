@@ -27,11 +27,14 @@ import 'package:verifysafe/ui/widgets/custom_appbar.dart';
 import 'package:verifysafe/ui/widgets/custom_divider.dart';
 import 'package:verifysafe/ui/widgets/custom_svg.dart';
 import 'package:verifysafe/ui/widgets/document_widget.dart';
+import 'package:verifysafe/ui/widgets/show_flush_bar.dart';
 import 'package:verifysafe/ui/widgets/verifysafe_container.dart';
 import 'package:verifysafe/ui/widgets/verifysafe_tag.dart';
 import 'package:verifysafe/ui/widgets/work_widgets/worker_info_card.dart';
 
 import '../../../core/data/enum/view_state.dart';
+import '../../widgets/bottom_sheets/action_completed.dart';
+import '../../widgets/custom_button.dart';
 
 class ViewWorker extends ConsumerWidget {
   final User workerData;
@@ -47,7 +50,7 @@ class ViewWorker extends ConsumerWidget {
     final userVm = ref.read(userViewModel);
     final employmentVm = ref.watch(employmentViewModel);
     return BusyOverlay(
-      show: employmentVm.state == ViewState.busy,
+      show: employmentVm.state == ViewState.busy || employmentVm.secondState == ViewState.busy,
       child: Scaffold(
         appBar: customAppBar(
           context: context,
@@ -107,267 +110,313 @@ class ViewWorker extends ConsumerWidget {
             ),
           ]
         ),
-        body: ListView(
-          padding: EdgeInsets.symmetric(
-            horizontal: AppDimension.paddingLeft,
-            vertical: 24.h,
-          ),
+        body: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            WorkerInfoCard(
-              image: workerData.avatar,
-              firstName: workerData.name?.split(" ").first,
-              lastName: workerData.name?.split(" ").last,
-              workerID: workerData.workerId,
-            ),
-            SizedBox(height: 16.h),
-            VerifySafeContainer(
-              bgColor: ColorPath.aquaGreen,
-              borderRadius: BorderRadius.circular(16.r),
-              padding: EdgeInsets.all(16.w),
-              border: Border.all(color: ColorPath.gloryGreen),
-              child: Column(
+            Expanded(
+              child: ListView(
+                padding: EdgeInsets.symmetric(
+                  horizontal: AppDimension.paddingLeft,
+                  vertical: 24.h,
+                ),
                 children: [
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-      
-                    children: [
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Job Type:",
-                              style: textTheme.bodySmall?.copyWith(
-                                color: colorScheme.text4,
-                              ),
-                            ),
-                            Text(
-                              workerData.workerInfo?.jobRole ?? "N/A",
-                              style: textTheme.bodySmall?.copyWith(
-                                color: colorScheme.blackText,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      SizedBox(width: 12.w),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Status:",
-                              style: textTheme.bodySmall?.copyWith(
-                                color: colorScheme.text4,
-                              ),
-                            ),
-                            VerifySafeTag(
-                              status: workerData.workerStatus ?? "N/A",
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
+                  WorkerInfoCard(
+                    image: workerData.avatar,
+                    firstName: workerData.name?.split(" ").first,
+                    lastName: workerData.name?.split(" ").last,
+                    workerID: workerData.workerId,
                   ),
-                  SizedBox(height: 12.h),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Expanded(
-                        child: Column(
+                  SizedBox(height: 16.h),
+                  VerifySafeContainer(
+                    bgColor: ColorPath.aquaGreen,
+                    borderRadius: BorderRadius.circular(16.r),
+                    padding: EdgeInsets.all(16.w),
+                    border: Border.all(color: ColorPath.gloryGreen),
+                    child: Column(
+                      children: [
+                        Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
+
                           children: [
-                            Text(
-                              "Email:",
-                              style: textTheme.bodySmall?.copyWith(
-                                color: colorScheme.text4,
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "Job Type:",
+                                    style: textTheme.bodySmall?.copyWith(
+                                      color: colorScheme.text4,
+                                    ),
+                                  ),
+                                  Text(
+                                    workerData.workerInfo?.jobRole ?? "N/A",
+                                    style: textTheme.bodySmall?.copyWith(
+                                      color: colorScheme.blackText,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
-                            Text(
-                              workerData.email?.toLowerCase() ?? "",
-                              style: textTheme.bodySmall?.copyWith(
-                                color: colorScheme.blackText,
-                                fontWeight: FontWeight.w500,
+                            SizedBox(width: 12.w),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "Status:",
+                                    style: textTheme.bodySmall?.copyWith(
+                                      color: colorScheme.text4,
+                                    ),
+                                  ),
+                                  VerifySafeTag(
+                                    status: workerData.workerStatus ?? "N/A",
+                                  ),
+                                ],
                               ),
                             ),
                           ],
                         ),
-                      ),
-                      SizedBox(width: 12.w),
-                      if (workerData.employer != null)
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text.rich(
-                                TextSpan(
-                                  text: "From: ",
-                                  style: textTheme.bodySmall?.copyWith(
-                                    color: colorScheme.text4,
+                        SizedBox(height: 12.h),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "Email:",
+                                    style: textTheme.bodySmall?.copyWith(
+                                      color: colorScheme.text4,
+                                    ),
                                   ),
+                                  Text(
+                                    workerData.email?.toLowerCase() ?? "",
+                                    style: textTheme.bodySmall?.copyWith(
+                                      color: colorScheme.blackText,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            SizedBox(width: 12.w),
+                            if (workerData.employer != null)
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    TextSpan(
-                                      text: DateUtilities.monthDayYear(
-                                        date: workerData.employer?.startDate,
-                                      ),
-                                      style: textTheme.bodySmall?.copyWith(
-                                        color: colorScheme.blackText,
+                                    Text.rich(
+                                      TextSpan(
+                                        text: "From: ",
+                                        style: textTheme.bodySmall?.copyWith(
+                                          color: colorScheme.text4,
+                                        ),
+                                        children: [
+                                          TextSpan(
+                                            text: DateUtilities.monthDayYear(
+                                              date: workerData.employer?.startDate,
+                                            ),
+                                            style: textTheme.bodySmall?.copyWith(
+                                              color: colorScheme.blackText,
+                                            ),
+                                          ),
+                                        ],
                                       ),
                                     ),
-                                  ],
-                                ),
-                              ),
-                              Text.rich(
-                                TextSpan(
-                                  text: "To: ",
-                                  style: textTheme.bodySmall?.copyWith(
-                                    color: colorScheme.text4,
-                                  ),
-                                  children: [
-                                    workerData.employer?.endDate != null
-                                        ? TextSpan(
+                                    Text.rich(
+                                      TextSpan(
+                                        text: "To: ",
+                                        style: textTheme.bodySmall?.copyWith(
+                                          color: colorScheme.text4,
+                                        ),
+                                        children: [
+                                          workerData.employer?.endDate != null
+                                              ? TextSpan(
                                             text: DateUtilities.monthDayYear(
                                               date:
-                                                  workerData.employer?.endDate ??
+                                              workerData.employer?.endDate ??
                                                   DateTime.now(),
                                             ),
                                             style: textTheme.bodySmall?.copyWith(
                                               color: colorScheme.blackText,
                                             ),
                                           )
-                                        : TextSpan(
+                                              : TextSpan(
                                             text: "Present",
                                             style: textTheme.bodySmall?.copyWith(
                                               color: ColorPath.niagaraGreen,
                                             ),
                                           ),
+                                        ],
+                                      ),
+                                    ),
                                   ],
                                 ),
                               ),
-                            ],
-                          ),
+                          ],
                         ),
-                    ],
+                      ],
+                    ),
                   ),
+                  SizedBox(height: 16.h),
+                  //Document Widget
+                  if (workerData.workerInfo?.resumeUrl != null &&
+                      (workerData.workerInfo?.resumeUrl?.isNotEmpty ?? false))
+                    DocumentWidget(
+                      fileName: workerData.workerInfo?.resumeUrl?.split('/').last ?? '',
+                      onPressed: () {
+                        //todo: handle doc view/download
+                      },
+                    ),
+                  SizedBox(height: 16.h),
+                  Text(
+                    "Details",
+                    style: textTheme.bodyMedium?.copyWith(
+                      color: colorScheme.textSecondary,
+                    ),
+                  ),
+                  SizedBox(height: 16.h),
+                  ActionTile(
+                    title: "Worker Information",
+                    subTitle: "View worker basic information",
+                    onPressed: () {
+                      pushNavigation(
+                        context: context,
+                        widget: UserInformation(data: workerData),
+                        routeName: NamedRoutes.viewWorkerInfo,
+                      );
+                    },
+                  ),
+                  if (workerData.employer != null)
+                    Column(
+                      children: [
+                        CustomDivider(),
+                        ActionTile(
+                          title: "Employment Information",
+                          subTitle: "View employment information",
+                          onPressed: () {
+                            pushNavigation(
+                              context: context,
+                              widget: ViewEmploymentDetails(
+                                canEdit: false,
+                                data: workerData,
+                              ),
+                              routeName: NamedRoutes.viewEmploymentDetails,
+                            );
+                          },
+                        ),
+                      ],
+                    ),
+                  CustomDivider(),
+                  ActionTile(
+                    title: "Verification Information",
+                    subTitle: "View verification information",
+                    onPressed: () {
+                      pushNavigation(
+                        context: context,
+                        widget: ViewWorkerVerificationInfo(workerData: workerData),
+                        routeName: NamedRoutes.verificationInformation,
+                      );
+                    },
+                  ),
+                  CustomDivider(),
+                  ActionTile(
+                    title: "Work History",
+                    subTitle: "View work history",
+                    onPressed: () {
+                      pushNavigation(
+                        context: context,
+                        widget: ViewWorkerWorkHistory(workerData: workerData,),
+                        routeName: NamedRoutes.viewWorkerWorkHistory,
+                      );
+                    },
+                  ),
+                  if (workerData.agency != null)
+                    Column(
+                      children: [
+                        CustomDivider(),
+                        ActionTile(
+                          title: "Agent/Agency",
+                          subTitle: "View agency information",
+                          onPressed: () {
+                            pushNavigation(
+                              context: context,
+                              widget: ViewAgencyInformation(data:  workerData,),
+                              routeName: NamedRoutes.viewWorkerAgencyInfo,
+                            );
+                          },
+                        ),
+                      ],
+                    ),
+                  CustomDivider(),
+                  ActionTile(
+                    title: "Guarantor Details",
+                    subTitle: "View Guarantor's information",
+                    onPressed: () {
+                      pushNavigation(
+                        context: context,
+                        widget: EmployerManageWorkerGuanantor(data: workerData,),
+                        routeName: NamedRoutes.employerManageWorkerGuanantor,
+                      );
+                    },
+                  ),
+                  CustomDivider(),
+                  ActionTile(
+                    title: "Ratings & Reviews",
+                    subTitle: "Leave ratings and review for Worker",
+                    onPressed: () {
+                      baseBottomSheet(context: context, content: RateUser(
+                        isEmployer: isEmployer,
+                      ));
+                    },
+                  ),
+                  CustomDivider(),
                 ],
               ),
             ),
-            SizedBox(height: 16.h),
-            //Document Widget
-            if (workerData.workerInfo?.resumeUrl != null &&
-                (workerData.workerInfo?.resumeUrl?.isNotEmpty ?? false))
-              DocumentWidget(
-                fileName: workerData.workerInfo?.resumeUrl?.split('/').last ?? '',
-                onPressed: () {
-                  //todo: handle doc view/download
+            if(userVm.isEmployer)Container(
+              width: double.infinity,
+              color: Theme.of(context).colorScheme.whiteText,
+              padding: EdgeInsets.symmetric(
+                vertical: 24.h,
+                horizontal: 24.w
+              ),
+              child: CustomButton(
+                buttonText: 'Request Worker',
+                onPressed: ()async{
+                  await employmentVm.requestEmploymentContract(workerId: workerData.id);
+                  if(employmentVm.secondState == ViewState.retrieved){
+                    baseBottomSheet(
+                      context: context,
+                      content: ActionCompleted(
+                        asset: AppAsset.actionConfirmation,
+                        title: 'Success!',
+                        subtitle: "Request Submitted\nWe sent an email to ${workerData.name ?? 'N/A'} to confirm that you he/she is willing to work with you.",
+                        buttonText: 'Done',
+                        onPressed: (){
+                          popNavigation(context: context);
+                        },
+                      ),
+                    );
+                  }else{
+                    showFlushBar(
+                        context: context,
+                        message: employmentVm.message,
+                      success: false
+                    );
+                  }
+
+
+
                 },
               ),
-            SizedBox(height: 16.h),
-            Text(
-              "Details",
-              style: textTheme.bodyMedium?.copyWith(
-                color: colorScheme.textSecondary,
-              ),
-            ),
-            SizedBox(height: 16.h),
-            ActionTile(
-              title: "Worker Information",
-              subTitle: "View worker basic information",
-              onPressed: () {
-                pushNavigation(
-                  context: context,
-                  widget: UserInformation(data: workerData),
-                  routeName: NamedRoutes.viewWorkerInfo,
-                );
-              },
-            ),
-            if (workerData.employer != null)
-              Column(
-                children: [
-                  CustomDivider(),
-                  ActionTile(
-                    title: "Employment Information",
-                    subTitle: "View employment information",
-                    onPressed: () {
-                      pushNavigation(
-                        context: context,
-                        widget: ViewEmploymentDetails(
-                          canEdit: false,
-                          data: workerData,
-                        ),
-                        routeName: NamedRoutes.viewEmploymentDetails,
-                      );
-                    },
-                  ),
-                ],
-              ),
-            CustomDivider(),
-            ActionTile(
-              title: "Verification Information",
-              subTitle: "View verification information",
-              onPressed: () {
-                pushNavigation(
-                  context: context,
-                  widget: ViewWorkerVerificationInfo(workerData: workerData),
-                  routeName: NamedRoutes.verificationInformation,
-                );
-              },
-            ),
-            CustomDivider(),
-            ActionTile(
-              title: "Work History",
-              subTitle: "View work history",
-              onPressed: () {
-                pushNavigation(
-                  context: context,
-                  widget: ViewWorkerWorkHistory(workerData: workerData,),
-                  routeName: NamedRoutes.viewWorkerWorkHistory,
-                );
-              },
-            ),
-            if (workerData.agency != null)
-              Column(
-                children: [
-                  CustomDivider(),
-                  ActionTile(
-                    title: "Agent/Agency",
-                    subTitle: "View agency information",
-                    onPressed: () {
-                      pushNavigation(
-                        context: context,
-                        widget: ViewAgencyInformation(data:  workerData,),
-                        routeName: NamedRoutes.viewWorkerAgencyInfo,
-                      );
-                    },
-                  ),
-                ],
-              ),
-            CustomDivider(),
-            ActionTile(
-              title: "Guarantor Details",
-              subTitle: "View Guarantor's information",
-              onPressed: () {
-                pushNavigation(
-                  context: context,
-                  widget: EmployerManageWorkerGuanantor(data: workerData,),
-                  routeName: NamedRoutes.employerManageWorkerGuanantor,
-                );
-              },
-            ),
-            CustomDivider(),
-            ActionTile(
-              title: "Ratings & Reviews",
-              subTitle: "Leave ratings and review for Worker",
-              onPressed: () {
-                baseBottomSheet(context: context, content: RateUser(
-                  isEmployer: isEmployer,
-                ));
-              },
-            ),
-            CustomDivider(),
+            )
+
           ],
-        ),
+        )
       ),
     );
   }

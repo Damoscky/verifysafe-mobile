@@ -15,6 +15,7 @@ class EmploymentViewModel extends BaseState {
   String get message => _message;
 
 
+  //terminate employment
   terminateEmployment({
     required String reason,
     required String description,
@@ -36,6 +37,26 @@ class EmploymentViewModel extends BaseState {
       onError: (error) {
         _message = Utilities.formatMessage(error.toString(), isSuccess: false);
         setState(ViewState.error);
+      },
+    );
+  }
+
+  //request employment contract
+  requestEmploymentContract({
+    required String? workerId,
+  }) async{
+    setSecondState(ViewState.busy);
+    final details = {
+      'worker_id': workerId,
+    };
+    await _employmentDp.requestEmploymentContract(details: details).then(
+          (response) {
+        _message = response.message ?? defaultSuccessMessage;
+        setSecondState(ViewState.retrieved);
+      },
+      onError: (error) {
+        _message = Utilities.formatMessage(error.toString(), isSuccess: false);
+        setSecondState(ViewState.error);
       },
     );
   }

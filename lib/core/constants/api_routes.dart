@@ -81,6 +81,7 @@ class ApiRoutes {
 
   //terminate employment contract
   static var terminateContract = "${dotenv.env['V1']}/exits";
+  static var requestEmploymentContract = "${dotenv.env['V1']}/work-histories/employment-request/send";
 
 
 

@@ -28,6 +28,25 @@ class EmploymentDataProvider{
     return completer.future;
   }
 
+  //request employment contract
+  Future<ApiResponse> requestEmploymentContract({required Map<String, dynamic> details}) async {
+    var completer = Completer<ApiResponse>();
+    try {
+      Map<String, dynamic> response = await NetworkManager()
+          .networkRequestManager(RequestType.post, ApiRoutes.requestEmploymentContract,
+        body: jsonEncode(details),
+        useAuth: true,
+      );
+      var result = ApiResponse.fromJson(
+          response,
+          null);
+      completer.complete(result);
+    } catch (e) {
+      completer.completeError(e);
+    }
+    return completer.future;
+  }
+
   //todo: accept/reject contract request
 
 }
