@@ -39,19 +39,19 @@ class _HomeState extends ConsumerState<Home> {
   loadDashboardData() async {
     switch (ref.read(userViewModel).userData?.userEnumType) {
       case UserType.worker:
-         ref.read(workerViewModel).fetchWorkerDashboard();
+        ref.read(workerViewModel).fetchWorkerDashboard();
         break;
       case UserType.employer:
-         ref.read(employerViewModel).fetchEmployerDashboardStats();
-         ref.read(workerViewModel).fetchWorkersDetails();
+        ref.read(employerViewModel).fetchEmployerDashboardStats();
+        ref.read(workerViewModel).fetchWorkersDetails();
         break;
       case UserType.agency:
-         ref.read(agencyViewModel).fetchAgencyDashboardStats();
-         ref.read(workerViewModel).fetchWorkersDetails();
-         ref.read(employerViewModel).fetchEmployersDetails();
+        ref.read(agencyViewModel).fetchAgencyDashboardStats();
+        ref.read(workerViewModel).fetchWorkersDetails();
+        ref.read(employerViewModel).fetchEmployersDetails();
         break;
       default:
-         ref.read(workerViewModel).fetchWorkerDashboard();
+        ref.read(workerViewModel).fetchWorkerDashboard();
     }
   }
 
@@ -146,6 +146,32 @@ class _HomeState extends ConsumerState<Home> {
                       fontWeight: FontWeight.w400,
                     ),
                   ),
+                  if (userVm.userData?.userEnumType != UserType.worker)
+                    Column(
+                      children: [
+                        SizedBox(height: 8.h),
+                        Text.rich(
+                          TextSpan(
+                            text: "Subscription Plan: ",
+                            children: [
+                              TextSpan(
+                                text:
+                                    userVm.userData?.billing?.currentPlan ??
+                                    "Free",
+                                style: textTheme.bodyLarge?.copyWith(
+                                  color: ColorPath.gloryGreen,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              ),
+                            ],
+                          ),
+                          style: textTheme.bodyLarge?.copyWith(
+                            color: ColorPath.chateauGrey,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                      ],
+                    ),
                   SizedBox(height: 24.h),
                   //Dashboard Card
                   DashboardOverviewCard(

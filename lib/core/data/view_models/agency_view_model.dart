@@ -24,10 +24,10 @@ class AgencyViewModel extends AgencyState {
 
 
   /// agency dashboard stat
-  fetchAgencyDashboardStats() {
+  fetchAgencyDashboardStats() async {
     setState(ViewState.busy);
 
-    _agencyDp.fetchDashboardStats().then(
+   await _agencyDp.fetchDashboardStats().then(
       (response) {
         _message = response.message ?? defaultSuccessMessage;
         _agencyStats = response.data;

@@ -22,7 +22,6 @@ class WorkerDataItem extends StatelessWidget {
     final textTheme = Theme.of(context).textTheme;
     return Clickable(
       onPressed: () {
-        //todo::: handle view employer info
         pushNavigation(
           context: context,
           widget: ViewWorker(workerData: workerData,),

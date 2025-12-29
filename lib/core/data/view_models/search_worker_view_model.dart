@@ -24,7 +24,7 @@ class SearchWorkerViewModel extends WorkerState {
   List<User> get workers => _workers;
 
   /// workers attached to [UserType.employer] or [UserType.agency]
-  searchWorker({bool firstCall = true,String? query}) {
+  searchWorker({bool firstCall = true,String? query}) async {
     if (firstCall) {
       pageNumber = 1;
       setSecondState(ViewState.busy);
@@ -32,7 +32,7 @@ class SearchWorkerViewModel extends WorkerState {
       setPaginatedState(ViewState.busy);
     }
 
-    _workerDataProvider
+   await  _workerDataProvider
         .fetchWorkers(pageNumber: pageNumber, limit: 5,query: query)
         .then(
           (response) {

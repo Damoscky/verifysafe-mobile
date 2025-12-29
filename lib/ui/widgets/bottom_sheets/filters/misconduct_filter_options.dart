@@ -104,7 +104,7 @@ class _MisconductFilterOptionsState extends ConsumerState<MisconductFilterOption
                       baseDialog(
                           context: context,
                           content: SelectDate(
-                              initialDate: DateFormat("dd-MM-yyyy").tryParse(_startDate ?? ''),
+                              initialDate: DateFormat("yyyy-MM-dd").tryParse(_startDate ?? ''),
                               returningValue: (value){
                                 setState(() {
                                   _startDate = value;
@@ -125,7 +125,7 @@ class _MisconductFilterOptionsState extends ConsumerState<MisconductFilterOption
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              _startDate ?? 'DD/MM/YY',
+                              _startDate ?? 'YY/MM/DD',
                               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                                   fontWeight: FontWeight.w400,
                                   color: Theme.of(context).colorScheme.textPrimary
@@ -148,7 +148,7 @@ class _MisconductFilterOptionsState extends ConsumerState<MisconductFilterOption
                       baseDialog(
                           context: context,
                           content: SelectDate(
-                              initialDate: DateFormat("dd-MM-yyyy").tryParse(_endDate ?? ''),
+                              initialDate: DateFormat("yyyy-MM-dd").tryParse(_endDate ?? ''),
                               returningValue: (value){
                                 setState(() {
                                   _endDate = value;
@@ -169,7 +169,7 @@ class _MisconductFilterOptionsState extends ConsumerState<MisconductFilterOption
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              _endDate ?? 'DD/MM/YY',
+                              _endDate ?? 'YY/MM/DD',
                               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                                   fontWeight: FontWeight.w400,
                                   color: Theme.of(context).colorScheme.textPrimary
@@ -220,8 +220,8 @@ class _MisconductFilterOptionsState extends ConsumerState<MisconductFilterOption
 
                   if(_startDate != null && _endDate != null){
 
-                    final startDate = DateFormat("dd-MM-yyyy").tryParse(_startDate ?? '');
-                    final endDate = DateFormat("dd-MM-yyyy").tryParse(_endDate ?? '');
+                    final startDate = DateFormat("yyyy-MM-dd").tryParse(_startDate ?? '');
+                    final endDate = DateFormat("yyyy-MM-dd").tryParse(_endDate ?? '');
 
                     if(!startDate!.isBefore(endDate!)) {
                       showFlushBar(

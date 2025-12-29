@@ -145,7 +145,7 @@ class _EmployerFilterOptionsState extends ConsumerState<EmployerFilterOptions> {
                         context: context,
                         content: SelectDate(
                           initialDate: DateFormat(
-                            "dd-MM-yyyy",
+                            "yyyy-MM-dd",
                           ).tryParse(vm.startDate ?? ''),
                           returningValue: (value) {
                             setState(() {
@@ -174,7 +174,7 @@ class _EmployerFilterOptionsState extends ConsumerState<EmployerFilterOptions> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              vm.startDate ?? 'DD/MM/YY',
+                              vm.startDate ?? 'YY/MM/DD',
                               style: Theme.of(context).textTheme.bodyMedium
                                   ?.copyWith(
                                     fontWeight: FontWeight.w400,
@@ -208,7 +208,7 @@ class _EmployerFilterOptionsState extends ConsumerState<EmployerFilterOptions> {
                         context: context,
                         content: SelectDate(
                           initialDate: DateFormat(
-                            "dd-MM-yyyy",
+                            "yyyy-MM-dd",
                           ).tryParse(vm.endDate ?? ''),
                           returningValue: (value) {
                             setState(() {
@@ -237,7 +237,7 @@ class _EmployerFilterOptionsState extends ConsumerState<EmployerFilterOptions> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              vm.endDate ?? 'DD/MM/YY',
+                              vm.endDate ?? 'YY/MM/DD',
                               style: Theme.of(context).textTheme.bodyMedium
                                   ?.copyWith(
                                     fontWeight: FontWeight.w400,
@@ -297,10 +297,10 @@ class _EmployerFilterOptionsState extends ConsumerState<EmployerFilterOptions> {
 
                 if (vm.startDate != null && vm.endDate != null) {
                   final startDate = DateFormat(
-                    "dd-MM-yyyy",
+                    "yyyy-MM-dd",
                   ).tryParse(vm.startDate ?? '');
                   final endDate = DateFormat(
-                    "dd-MM-yyyy",
+                    "yyyy-MM-dd",
                   ).tryParse(vm.endDate ?? '');
 
                   if (!startDate!.isBefore(endDate!)) {

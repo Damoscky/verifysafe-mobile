@@ -5,7 +5,6 @@ import 'package:verifysafe/core/data/enum/view_state.dart';
 import 'package:verifysafe/core/data/models/responses/response_data/stats.dart';
 import 'package:verifysafe/core/data/models/responses/response_data/worker_dashboard_response.dart';
 import 'package:verifysafe/core/data/models/user.dart';
-import 'package:verifysafe/core/data/models/worker/worker.dart';
 import 'package:verifysafe/core/data/states/worker_state.dart';
 import 'package:verifysafe/core/utilities/utilities.dart';
 import 'package:verifysafe/locator.dart';
@@ -51,10 +50,10 @@ class WorkerViewModel extends WorkerState {
   );
 
   /// worker dashboard card and recent work history
-  fetchWorkerDashboard() {
+  fetchWorkerDashboard() async {
     setState(ViewState.busy);
 
-    _workerDataProvider.workHistoriesOverview().then(
+   await  _workerDataProvider.workHistoriesOverview().then(
       (response) {
         _message = response.message ?? defaultSuccessMessage;
         _dashboardData = response.data;
@@ -100,7 +99,6 @@ class WorkerViewModel extends WorkerState {
           (response) {
             _message = response.message ?? defaultSuccessMessage;
             totalRecords = response.data?.total ?? 0;
-            // sortOption=null;
             pageNumber++;
 
             if (firstCall) {

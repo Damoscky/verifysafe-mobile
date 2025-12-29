@@ -24,7 +24,7 @@ class SearchEmployerViewModel extends EmployerState {
   List<User> get employers => _employers;
 
   /// employers attached to [UserType.agency]
-  searchEmployers({bool firstCall = true, String? query}) {
+  searchEmployers({bool firstCall = true, String? query}) async {
     if (firstCall) {
       pageNumber = 1;
       setSecondState(ViewState.busy);
@@ -32,7 +32,7 @@ class SearchEmployerViewModel extends EmployerState {
       setPaginatedState(ViewState.busy);
     }
 
-    _employerDp
+    await _employerDp
         .fetchEmployers(pageNumber: pageNumber, limit: 5, query: query)
         .then(
           (response) {

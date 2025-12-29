@@ -8,6 +8,7 @@ import 'package:verifysafe/core/data/enum/user_type.dart';
 import 'package:verifysafe/core/data/view_models/user_view_model.dart';
 import 'package:verifysafe/core/utilities/navigator.dart';
 import 'package:verifysafe/ui/pages/billing/bill_type.dart';
+import 'package:verifysafe/ui/pages/billing/billing_dashboard.dart';
 import 'package:verifysafe/ui/pages/guarantor/manage_guarantor.dart';
 import 'package:verifysafe/ui/pages/profile/settings/help.dart';
 import 'package:verifysafe/ui/pages/profile/settings/rate_app.dart';
@@ -101,8 +102,8 @@ class MenuDrawer extends ConsumerWidget {
                                     onPressed: () {
                                       pushNavigation(
                                         context: context,
-                                        widget: BillType(),
-                                        routeName: NamedRoutes.billType,
+                                        widget: BillingDashboard(),
+                                        routeName: NamedRoutes.billingDashboard,
                                       );
                                     },
                                   ),
