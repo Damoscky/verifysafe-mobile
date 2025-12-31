@@ -31,7 +31,7 @@ void setupLocator() {
   locator.registerLazySingleton<GuarantorDataProvider>(() => GuarantorDataProvider());
   locator.registerLazySingleton<MisconductsDataProvider>(() => MisconductsDataProvider());
   locator.registerLazySingleton<ReviewDataProvider>(() => ReviewDataProvider());
-  locator.registerLazySingleton<EmploymentDataProvider>(() => EmploymentDataProvider());
+  locator.registerLazySingleton<EmploymentDataProvider>(() => EmploymentDataProvider()); 
   locator.registerLazySingleton<BillingDataProviders>(() => BillingDataProviders());
 
 

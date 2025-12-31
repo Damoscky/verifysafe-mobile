@@ -48,184 +48,189 @@ class _ProfileState extends ConsumerState<Profile> {
         title: 'Profile',
         showBottom: true,
       ),
-      body: ListView(
-        padding: EdgeInsets.symmetric(
-          horizontal: AppDimension.paddingLeft,
-          vertical: 16.h,
-        ),
-        children: [
-          ProfileInfoCard(
-            showIdButton: userVm.userData?.userEnumType == UserType.worker,
+      body: RefreshIndicator(
+        onRefresh: () async {
+          userVm.getUserData();
+        },
+        child: ListView(
+          padding: EdgeInsets.symmetric(
+            horizontal: AppDimension.paddingLeft,
+            vertical: 16.h,
           ),
-          SizedBox(height: 32.h),
-          Text(
-            "Personal Information",
-            style: textTheme.bodyMedium?.copyWith(
-              color: colorScheme.textSecondary,
+          children: [
+            ProfileInfoCard(
+              showIdButton: userVm.userData?.userEnumType == UserType.worker,
             ),
-          ),
-          SizedBox(height: 16.h),
-          ProfileActionTile(
-            title: userVm.userData?.userEnumType == UserType.worker
-                ? "Personal Information"
-                : "${Utilities.capitalizeWord(userVm.userData?.userType ?? "")} Information",
-            subTitle: userVm.userData?.userEnumType == UserType.worker
-                ? "View and update personal data"
-                : "View and update data",
-            asset: AppAsset.profilePersonal,
-            onPressed: () {
-              pushNavigation(
-                context: context,
-                widget: ViewUserInformation(),
-                routeName: NamedRoutes.viewUserInformation,
-              );
-            },
-          ),
+            SizedBox(height: 32.h),
+            Text(
+              "Personal Information",
+              style: textTheme.bodyMedium?.copyWith(
+                color: colorScheme.textSecondary,
+              ),
+            ),
+            SizedBox(height: 16.h),
+            ProfileActionTile(
+              title: userVm.userData?.userEnumType == UserType.worker
+                  ? "Personal Information"
+                  : "${Utilities.capitalizeWord(userVm.userData?.userType ?? "")} Information",
+              subTitle: userVm.userData?.userEnumType == UserType.worker
+                  ? "View and update personal data"
+                  : "View and update data",
+              asset: AppAsset.profilePersonal,
+              onPressed: () {
+                pushNavigation(
+                  context: context,
+                  widget: ViewUserInformation(),
+                  routeName: NamedRoutes.viewUserInformation,
+                );
+              },
+            ),
 
-          CustomDivider(),
-          ProfileActionTile(
-            title: "Verification Information",
-            subTitle: "View verification information",
-            asset: AppAsset.profileVerification,
-            onPressed: () {
-              pushNavigation(
-                context: context,
-                widget: VerificationInformation(),
-                routeName: NamedRoutes.verificationInformation,
-              );
-            },
-          ),
-          //WORKERS EMPLOYMENT DETAILS
-          if (userVm.userData?.userEnumType == UserType.worker)
-            Column(
-              children: [
-                CustomDivider(),
-                ProfileActionTile(
-                  title: "Employment Details",
-                  subTitle: "View and update employmet data",
-                  asset: AppAsset.profileEmployment,
-                  onPressed: () {
-                    pushNavigation(
-                      context: context,
-                      widget: ViewEmploymentDetails(data: userVm.userData!),
-                      routeName: NamedRoutes.viewEmploymentDetails,
-                    );
-                  },
-                ),
-              ],
+            CustomDivider(),
+            ProfileActionTile(
+              title: "Verification Information",
+              subTitle: "View verification information",
+              asset: AppAsset.profileVerification,
+              onPressed: () {
+                pushNavigation(
+                  context: context,
+                  widget: VerificationInformation(),
+                  routeName: NamedRoutes.verificationInformation,
+                );
+              },
             ),
-          //EMPLOYER CONTACT PERSON DETAILS
-          if (userVm.userData?.userEnumType == UserType.employer)
-            Column(
-              children: [
-                CustomDivider(),
-                ProfileActionTile(
-                  title: "Contact Person Details",
-                  subTitle: "View and update Contact Person data",
-                  asset: AppAsset.profilePersonal,
-                  onPressed: () {
-                    pushNavigation(
-                      context: context,
-                      widget: ViewContactPerson( data: userVm.userData!,),
-                      routeName: NamedRoutes.viewEmploymentDetails,
-                    );
-                  },
-                ),
-              ],
-            ),
-          //WORKERS AGENCY DETAILS
-          if (userVm.userData?.userEnumType == UserType.worker &&
-              userVm.userData?.agency != null)
-            Column(
-              children: [
-                CustomDivider(),
-                ProfileActionTile(
-                  title: "Agent/Agency",
-                  subTitle: "View Agency infoemation",
-                  asset: AppAsset.profileAgency,
-                  onPressed: () {
-                    pushNavigation(
-                      context: context,
-                      widget: ViewWorkerAgency(data: userVm.userData!),
-                      routeName: NamedRoutes.viewWorkerAgency,
-                    );
-                  },
-                ),
-              ],
-            ),
-          CustomDivider(),
-
-          SizedBox(height: 8.h),
-          Text(
-            "Settings",
-            style: textTheme.bodyMedium?.copyWith(
-              color: colorScheme.textSecondary,
-            ),
-          ),
-          SizedBox(height: 16.h),
-          ProfileActionTile(
-            title: "Security",
-            subTitle: "Change and update password",
-            asset: AppAsset.profileSecurity,
-            onPressed: () {
-              pushNavigation(
-                context: context,
-                widget: Settings(),
-                routeName: NamedRoutes.settings,
-              );
-            },
-          ),
-          CustomDivider(),
-          ProfileActionTile(
-            title: "Notification settings",
-            subTitle: "Customize your notifications",
-            asset: AppAsset.profileAgency,
-            onPressed: () {
-              pushNavigation(
-                context: context,
-                widget: NotificationSettings(),
-                routeName: NamedRoutes.notificationSettings,
-              );
-            },
-          ),
-          SizedBox(height: 42.h),
-          Clickable(
-            onPressed: () {
-              baseBottomSheet(
-                context: context,
-                content: ActionConfirmation(
-                  title: "Log Out",
-                  subtitle: "Are you sure you want to log out?",
-                  asset: AppAsset.logout,
-                  onPressed: () {
-                    pushAndClearAllNavigation(
-                      context: context,
-                      widget: Login(),
-                      routeName: NamedRoutes.login,
-                    );
-                  },
-                ),
-              );
-            },
-            child: VerifySafeContainer(
-              bgColor: colorScheme.containerBg,
-              padding: EdgeInsets.symmetric(vertical: 12.h, horizontal: 16.w),
-              child: Row(
+            //WORKERS EMPLOYMENT DETAILS
+            if (userVm.userData?.userEnumType == UserType.worker)
+              Column(
                 children: [
-                  CustomSvg(asset: AppAsset.logout),
-                  SizedBox(width: 16.w),
-                  Text(
-                    "Log Out",
-                    style: textTheme.bodyLarge?.copyWith(
-                      color: colorScheme.text4,
-                    ),
+                  CustomDivider(),
+                  ProfileActionTile(
+                    title: "Employment Details",
+                    subTitle: "View and update employmet data",
+                    asset: AppAsset.profileEmployment,
+                    onPressed: () {
+                      pushNavigation(
+                        context: context,
+                        widget: ViewEmploymentDetails(data: userVm.userData!),
+                        routeName: NamedRoutes.viewEmploymentDetails,
+                      );
+                    },
                   ),
                 ],
               ),
+            //EMPLOYER CONTACT PERSON DETAILS
+            if (userVm.userData?.userEnumType == UserType.employer)
+              Column(
+                children: [
+                  CustomDivider(),
+                  ProfileActionTile(
+                    title: "Contact Person Details",
+                    subTitle: "View and update Contact Person data",
+                    asset: AppAsset.profilePersonal,
+                    onPressed: () {
+                      pushNavigation(
+                        context: context,
+                        widget: ViewContactPerson(data: userVm.userData!),
+                        routeName: NamedRoutes.viewEmploymentDetails,
+                      );
+                    },
+                  ),
+                ],
+              ),
+            //WORKERS AGENCY DETAILS
+            if (userVm.userData?.userEnumType == UserType.worker &&
+                userVm.userData?.agency != null)
+              Column(
+                children: [
+                  CustomDivider(),
+                  ProfileActionTile(
+                    title: "Agent/Agency",
+                    subTitle: "View Agency infoemation",
+                    asset: AppAsset.profileAgency,
+                    onPressed: () {
+                      pushNavigation(
+                        context: context,
+                        widget: ViewWorkerAgency(data: userVm.userData!),
+                        routeName: NamedRoutes.viewWorkerAgency,
+                      );
+                    },
+                  ),
+                ],
+              ),
+            CustomDivider(),
+
+            SizedBox(height: 8.h),
+            Text(
+              "Settings",
+              style: textTheme.bodyMedium?.copyWith(
+                color: colorScheme.textSecondary,
+              ),
             ),
-          ),
-          SizedBox(height: 42.h),
-        ],
+            SizedBox(height: 16.h),
+            ProfileActionTile(
+              title: "Security",
+              subTitle: "Change and update password",
+              asset: AppAsset.profileSecurity,
+              onPressed: () {
+                pushNavigation(
+                  context: context,
+                  widget: Settings(),
+                  routeName: NamedRoutes.settings,
+                );
+              },
+            ),
+            CustomDivider(),
+            ProfileActionTile(
+              title: "Notification settings",
+              subTitle: "Customize your notifications",
+              asset: AppAsset.profileAgency,
+              onPressed: () {
+                pushNavigation(
+                  context: context,
+                  widget: NotificationSettings(),
+                  routeName: NamedRoutes.notificationSettings,
+                );
+              },
+            ),
+            SizedBox(height: 42.h),
+            Clickable(
+              onPressed: () {
+                baseBottomSheet(
+                  context: context,
+                  content: ActionConfirmation(
+                    title: "Log Out",
+                    subtitle: "Are you sure you want to log out?",
+                    asset: AppAsset.logout,
+                    onPressed: () {
+                      pushAndClearAllNavigation(
+                        context: context,
+                        widget: Login(),
+                        routeName: NamedRoutes.login,
+                      );
+                    },
+                  ),
+                );
+              },
+              child: VerifySafeContainer(
+                bgColor: colorScheme.containerBg,
+                padding: EdgeInsets.symmetric(vertical: 12.h, horizontal: 16.w),
+                child: Row(
+                  children: [
+                    CustomSvg(asset: AppAsset.logout),
+                    SizedBox(width: 16.w),
+                    Text(
+                      "Log Out",
+                      style: textTheme.bodyLarge?.copyWith(
+                        color: colorScheme.text4,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            SizedBox(height: 42.h),
+          ],
+        ),
       ),
     );
   }

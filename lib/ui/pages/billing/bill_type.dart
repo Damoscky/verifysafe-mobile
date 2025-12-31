@@ -9,12 +9,9 @@ import 'package:verifysafe/core/constants/named_routes.dart';
 import 'package:verifysafe/core/data/enum/view_state.dart';
 import 'package:verifysafe/core/data/models/billing_plan.dart';
 import 'package:verifysafe/core/data/view_models/billing_view_model.dart';
-import 'package:verifysafe/core/utilities/extensions/color_extensions.dart';
 import 'package:verifysafe/core/utilities/navigator.dart';
 import 'package:verifysafe/core/utilities/utilities.dart';
 import 'package:verifysafe/ui/widgets/app_loader.dart';
-import 'package:verifysafe/ui/widgets/bottom_sheets/base_bottom_sheet.dart';
-import 'package:verifysafe/ui/widgets/bottom_sheets/payment_successful.dart';
 import 'package:verifysafe/ui/widgets/busy_overlay.dart';
 import 'package:verifysafe/ui/widgets/clickable.dart';
 import 'package:verifysafe/ui/widgets/custom_appbar.dart';
@@ -24,7 +21,6 @@ import 'package:verifysafe/ui/widgets/in_app_web_view.dart';
 import 'package:verifysafe/ui/widgets/naira_display.dart';
 import 'package:verifysafe/ui/widgets/show_flush_bar.dart';
 import 'package:verifysafe/ui/widgets/verifysafe_container.dart';
-import 'package:webview_flutter/webview_flutter.dart';
 
 class BillType extends ConsumerStatefulWidget {
   const BillType({super.key});

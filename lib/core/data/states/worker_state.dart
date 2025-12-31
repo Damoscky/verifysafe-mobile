@@ -8,11 +8,17 @@ class WorkerState extends ChangeNotifier {
   ViewState _secondState = ViewState.idle;
   ViewState get secondState => _secondState;
 
-    ViewState _thirdState = ViewState.idle;
+  ViewState _thirdState = ViewState.idle;
   ViewState get thirdState => _thirdState;
 
   ViewState _paginatedState = ViewState.idle;
   ViewState get paginatedState => _paginatedState;
+
+  ViewState _searchState = ViewState.idle;
+  ViewState get searchState => _searchState;
+
+  ViewState _historyState = ViewState.idle;
+  ViewState get historyState => _historyState;
 
   void setState(ViewState viewState, {bool notifyListener = true}) {
     _state = viewState;
@@ -21,7 +27,7 @@ class WorkerState extends ChangeNotifier {
     }
   }
 
-  void setSecondState(ViewState viewState, {bool refreshUi= true}) {
+  void setSecondState(ViewState viewState, {bool refreshUi = true}) {
     _secondState = viewState;
     if (refreshUi) {
       notifyListeners();
@@ -35,6 +41,16 @@ class WorkerState extends ChangeNotifier {
 
   void setPaginatedState(ViewState viewState) {
     _paginatedState = viewState;
+    notifyListeners();
+  }
+
+  void setSearchState(ViewState viewState) {
+    _searchState = viewState;
+    notifyListeners();
+  }
+
+  void setHistoryState(ViewState viewState) {
+    _historyState = viewState;
     notifyListeners();
   }
 }
