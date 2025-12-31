@@ -4,6 +4,7 @@ import 'package:verifysafe/core/constants/api_routes.dart';
 import 'package:verifysafe/core/data/enum/request_type.dart';
 import 'package:verifysafe/core/data/models/responses/api_response.dart';
 import 'package:verifysafe/core/data/models/responses/response_data/pagination_data.dart';
+import 'package:verifysafe/core/data/models/responses/response_data/search_history_data.dart';
 import 'package:verifysafe/core/data/models/responses/response_data/worker_dashboard_response.dart';
 import 'package:verifysafe/core/data/models/user.dart';
 import 'package:verifysafe/core/data/network_manager/network_manager.dart';
@@ -89,6 +90,48 @@ class WorkerDataProvider {
           data as Map<String, dynamic>,
           (e) => User.fromJson(e),
         ),
+      );
+      completer.complete(result);
+    } catch (e) {
+      completer.completeError(e);
+    }
+    return completer.future;
+  }
+
+  /// Search Platform [UserType.worker]
+  Future<ApiResponse<List<User>>> searchWorker({String? query}) async {
+    var completer = Completer<ApiResponse<List<User>>>();
+    try {
+      Map<String, dynamic> response = await NetworkManager()
+          .networkRequestManager(
+            RequestType.get,
+            ApiRoutes.searchWorker,
+            useAuth: true,
+            queryParameters: {"q": query},
+          );
+      var result = ApiResponse<List<User>>.fromJson(
+        response,
+        (data) => List.from(data).map((e) => User.fromJson(e)).toList(),
+      );
+      completer.complete(result);
+    } catch (e) {
+      completer.completeError(e);
+    }
+    return completer.future;
+  }
+
+  Future<ApiResponse<List<SearchHistoryData>>> fetchHistory() async {
+    var completer = Completer<ApiResponse<List<SearchHistoryData>>>();
+    try {
+      Map<String, dynamic> response = await NetworkManager()
+          .networkRequestManager(
+            RequestType.get,
+            ApiRoutes.historySearch,
+            useAuth: true,
+          );
+      var result = ApiResponse<List<SearchHistoryData>>.fromJson(
+        response,
+        (data) => List.from(data).map((e) => SearchHistoryData.fromJson(e)).toList(),
       );
       completer.complete(result);
     } catch (e) {

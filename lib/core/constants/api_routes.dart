@@ -40,6 +40,8 @@ class ApiRoutes {
   static var workers = "${dotenv.env['V1']}/workers";
   static fetchWorkers({required String? keyword}) =>
       "${dotenv.env['V1']}/workers?q=$keyword&paginate=0";
+  static var searchWorker = "${dotenv.env['V1']}/workers/all/search";
+  static var historySearch = "${dotenv.env['V1']}/workers/all/usage-history";
 
 
   //employer

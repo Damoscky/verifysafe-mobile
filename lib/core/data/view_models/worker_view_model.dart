@@ -2,6 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:verifysafe/core/constants/app_constants.dart';
 import 'package:verifysafe/core/data/data_providers/users_data_providers/worker_data_provider.dart';
 import 'package:verifysafe/core/data/enum/view_state.dart';
+import 'package:verifysafe/core/data/models/responses/response_data/search_history_data.dart';
 import 'package:verifysafe/core/data/models/responses/response_data/stats.dart';
 import 'package:verifysafe/core/data/models/responses/response_data/worker_dashboard_response.dart';
 import 'package:verifysafe/core/data/models/user.dart';
@@ -53,7 +54,7 @@ class WorkerViewModel extends WorkerState {
   fetchWorkerDashboard() async {
     setState(ViewState.busy);
 
-   await  _workerDataProvider.workHistoriesOverview().then(
+    await _workerDataProvider.workHistoriesOverview().then(
       (response) {
         _message = response.message ?? defaultSuccessMessage;
         _dashboardData = response.data;
@@ -169,6 +170,47 @@ class WorkerViewModel extends WorkerState {
             setThirdState(ViewState.error);
           },
         );
+  }
+
+  List<User> _searchResults = [];
+  List<User> get searchResults => _searchResults;
+
+  searchPlatformWorker({String? query}) async {
+    setSearchState(ViewState.busy);
+    await _workerDataProvider
+        .searchWorker(query: query)
+        .then(
+          (response) {
+            _message = response.message ?? defaultSuccessMessage;
+            _searchResults = response.data ?? [];
+            setSearchState(ViewState.retrieved);
+          },
+          onError: (error) {
+            _message = Utilities.formatMessage(
+              error.toString(),
+              isSuccess: false,
+            );
+            setSearchState(ViewState.error);
+          },
+        );
+  }
+
+  List<SearchHistoryData> _history = [];
+  List<SearchHistoryData> get history => _history;
+
+  fetchSearchHistory() async {
+    setHistoryState(ViewState.busy);
+    await _workerDataProvider.fetchHistory().then(
+      (response) {
+        _message = response.message ?? defaultSuccessMessage;
+        _history = response.data ?? [];
+        setHistoryState(ViewState.retrieved);
+      },
+      onError: (error) {
+        _message = Utilities.formatMessage(error.toString(), isSuccess: false);
+        setHistoryState(ViewState.error);
+      },
+    );
   }
 
   reset() {
