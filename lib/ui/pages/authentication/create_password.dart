@@ -10,6 +10,7 @@ import 'package:verifysafe/core/data/view_models/authentication_vms/authenticati
 import 'package:verifysafe/core/data/view_models/authentication_vms/onboarding_vms/onboarding_vm.dart';
 import 'package:verifysafe/core/data/view_models/authentication_vms/password_vm.dart';
 import 'package:verifysafe/core/utilities/navigator.dart';
+import 'package:verifysafe/core/utilities/utilities.dart';
 import 'package:verifysafe/ui/pages/authentication/onboarding/agency/agency_info.dart';
 import 'package:verifysafe/ui/pages/authentication/onboarding/employer/employer_info.dart';
 import 'package:verifysafe/ui/pages/bottom_nav.dart';
@@ -225,6 +226,7 @@ class _CreatePasswordState extends ConsumerState<CreatePassword> {
                               );
                               return;
                             }
+                            Utilities.hideKeyboard(context);
                             await onboardingVm.setupPassword(
                               password: _pwd.text,
                               confirmPassword: _confirmPwd.text,

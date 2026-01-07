@@ -25,6 +25,12 @@ class BaseState extends ChangeNotifier{
   ViewState _generalState = ViewState.idle ;
   ViewState get generalState => _generalState ;
 
+  ViewState _generalUploadState = ViewState.idle ;
+  ViewState get generalUploadState => _generalUploadState ;
+
+  ViewState _generalDocUploadState = ViewState.idle ;
+  ViewState get generalDocUploadState => _generalDocUploadState ;
+
   void setState(ViewState viewState, {bool notifyListener = true}){
     _state = viewState ;
     if(notifyListener){
@@ -60,6 +66,16 @@ class BaseState extends ChangeNotifier{
 
   void setGeneralState(ViewState viewState){
     _generalState = viewState ;
+    notifyListeners() ;
+  }
+
+  void setGeneralUploadState(ViewState viewState){
+    _generalUploadState = viewState ;
+    notifyListeners() ;
+  }
+
+  void setGeneralDocUploadState(ViewState viewState){
+    _generalDocUploadState = viewState ;
     notifyListeners() ;
   }
 }

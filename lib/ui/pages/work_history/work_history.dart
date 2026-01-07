@@ -59,15 +59,15 @@ class _WorkHistoryState extends ConsumerState<WorkHistory> {
               style: textTheme.bodyMedium?.copyWith(color: colorScheme.text4),
             ),
           ),
-          SizedBox(height: 16.h),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 24.h),
+          // SizedBox(height: 16.h),
+          // Padding(
+          //   padding: EdgeInsets.symmetric(horizontal: 24.h),
 
-            child: SortAndFilterTab(
-              sortOnPressed: () {},
-              filterOnPressed: () {},
-            ),
-          ),
+          //   child: SortAndFilterTab(
+          //     sortOnPressed: () {},
+          //     filterOnPressed: () {},
+          //   ),
+          // ),
           WorkHistoriesData(workHistories: vm.recentWorkHistory),
         ],
       ),

@@ -532,7 +532,7 @@ class OnboardingVm extends BaseState {
             routeName: NamedRoutes.identityVerification,
           );
         }
-        if (currentStep == OnboardingSteps.employerInformation) {
+        if (currentStep == OnboardingSteps.employmentInformation) {
           return replaceNavigation(
             context: context,
             widget: EmploymentDetails(),
@@ -682,7 +682,7 @@ class OnboardingVm extends BaseState {
   }
 }
 
-final onboardingViewModel = ChangeNotifierProvider.autoDispose<OnboardingVm>((
+final onboardingViewModel = ChangeNotifierProvider<OnboardingVm>((
   ref,
 ) {
   return OnboardingVm();

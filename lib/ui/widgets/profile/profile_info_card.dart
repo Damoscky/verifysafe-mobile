@@ -52,7 +52,7 @@ class ProfileInfoCard extends ConsumerWidget {
                 size: 64.h,
                 borderColor: ColorPath.persianGreen,
               ),
-              if (generalVm.generalState == ViewState.busy ||
+              if (generalVm.generalUploadState == ViewState.busy ||
                   userVm.state == ViewState.busy)
                 Positioned(
                   top: 12.5,
@@ -65,14 +65,14 @@ class ProfileInfoCard extends ConsumerWidget {
                 Clickable(
                   onPressed: () async {
                     //todo: update [ImageAndDocUtils.getimage] to  [ImageAndDocUtils.pickAndCropImage]
-                    final file = await ImageAndDocUtils.getImage();
+                    final file = await ImageAndDocUtils.pickAndCropImage(context: context);
                     if (file != null) {
-                      final base64String =
-                          await ImageAndDocUtils.fileToBase64ImageString(
-                            file: file,
-                          );
+                      // final base64String =
+                      //     await ImageAndDocUtils.fileToBase64ImageString(
+                      //       file: file,
+                      //     );
 
-                      await generalVm.uploadImage(base64String: base64String);
+                      await generalVm.uploadImage(base64String: file);
 
                       if (generalVm.generalState == ViewState.retrieved) {
                         final details = {

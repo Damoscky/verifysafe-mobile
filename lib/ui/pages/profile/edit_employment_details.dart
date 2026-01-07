@@ -132,7 +132,7 @@ class _EmploymentDetailsState extends ConsumerState<EditEmploymentDetails> {
                   final data = await ImageAndDocUtils.pickDocument();
                   await generalVm.uploadImage(base64String: data);
 
-                  if (generalVm.generalState == ViewState.retrieved) {
+                  if (generalVm.generalUploadState == ViewState.retrieved) {
                     fileUrl = generalVm.fileUploadsResponse.first.url ?? "";
                   } else {
                     showFlushBar(

@@ -221,7 +221,7 @@ class _SubmitReportState extends ConsumerState<SubmitReport> {
                     );
                     if (base64String != null) {
                       await generalVm.uploadImage(base64String: base64String);
-                      if(generalVm.generalState == ViewState.retrieved){
+                      if(generalVm.generalUploadState == ViewState.retrieved){
                         setState(() {
                           _imageUrl = generalVm.fileUploadsResponse.first.url;
                         });
@@ -229,7 +229,7 @@ class _SubmitReportState extends ConsumerState<SubmitReport> {
                       showFlushBar(
                         context: context,
                         message: generalVm.message,
-                        success: generalVm.generalState == ViewState.retrieved,
+                        success: generalVm.generalUploadState == ViewState.retrieved,
                       );
                     }
                   },

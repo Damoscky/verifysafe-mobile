@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -134,6 +136,12 @@ class CompleteProfileSetup extends ConsumerWidget {
               if (authVm.authorizationResponse?.onboarding?.isComplete == false)
                 CustomButton(
                   onPressed: () {
+                    log( authVm
+                              .authorizationResponse
+                              ?.onboarding?.toJson().toString() ?? "_____NULL_____");
+                              log(authVm.authorizationResponse?.user?.userEnumType.toString() ?? "_____NULL_____");
+                              log(authVm.authorizationResponse?.onboarding?.currentStep ?? "_____NULL_____");
+
                     onboardingVm.handleOnboardingNavigation(
                       context: context,
                       userType:

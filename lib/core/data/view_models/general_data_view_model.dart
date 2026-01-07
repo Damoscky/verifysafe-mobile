@@ -144,17 +144,20 @@ class GeneralDataViewModel extends BaseState {
   List<FileUploadResponse> _fileUploadsResponse = [];
   List<FileUploadResponse> get fileUploadsResponse => _fileUploadsResponse;
 
+  uploadImage({required String base64String, bool isDoc = false}) async {
+    if (isDoc) {
+      setGeneralDocUploadState(ViewState.busy);
+    } else {
+      setGeneralUploadState(ViewState.busy);
+    }
 
-  uploadImage({required String base64String}) async {
-    setGeneralState(ViewState.busy);
-    
     // Decode base64 string to bytes
     final bytes = base64Decode(base64String);
 
     final formData = FormData.fromMap({
       'media[]': MultipartFile.fromBytes(
         bytes,
-        filename: 'userimage.jpg', // Adjust filename as needed
+        filename: isDoc ? 'userdoc.jpg' : 'userimage.jpg', // Adjust filename as needed
         contentType: MediaType('image', 'jpeg'),
       ),
     });
@@ -165,7 +168,11 @@ class GeneralDataViewModel extends BaseState {
           (response) {
             _message = defaultSuccessMessage;
             _fileUploadsResponse = response;
-            setGeneralState(ViewState.retrieved);
+            if (isDoc) {
+              setGeneralDocUploadState(ViewState.retrieved);
+            } else {
+              setGeneralUploadState(ViewState.retrieved);
+            }
           },
           onError: (error) {
             log(error.toString());
@@ -173,7 +180,11 @@ class GeneralDataViewModel extends BaseState {
               error.toString(),
               isSuccess: false,
             );
-            setGeneralState(ViewState.error);
+            if (isDoc) {
+              setGeneralDocUploadState(ViewState.error);
+            } else {
+              setGeneralUploadState(ViewState.error);
+            }
           },
         );
   }
