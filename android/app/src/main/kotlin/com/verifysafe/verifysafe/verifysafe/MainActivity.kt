@@ -1,4 +1,4 @@
-package com.verifysafe.verifysafe.verifysafe
+package com.verifysafe.app
 
 import io.flutter.embedding.android.FlutterFragmentActivity
 
